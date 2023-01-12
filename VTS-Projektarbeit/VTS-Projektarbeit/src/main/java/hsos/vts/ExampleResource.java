@@ -1,8 +1,11 @@
 package hsos.vts;
 
+import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.Startup;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
+import org.jboss.logging.Logger;
 
+import javax.enterprise.event.Observes;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -11,15 +14,7 @@ import java.util.List;
 
 @Path("/hello")
 public class ExampleResource {
-
-    @Startup
-    public void startDB(){
-        try {
-            EmbeddedPostgres pg = EmbeddedPostgres.start();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final Logger LOGGER = Logger.getLogger("ExampleResource");
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

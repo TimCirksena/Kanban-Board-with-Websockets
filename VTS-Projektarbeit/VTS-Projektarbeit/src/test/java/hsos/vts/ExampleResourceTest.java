@@ -1,6 +1,7 @@
 package hsos.vts;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -11,6 +12,7 @@ public class ExampleResourceTest {
 
     @Test
     public void testHelloEndpoint() {
+        //EmbeddedPostgres pg = EmbeddedPostgres.start();
         given()
                 .when().get("/hello")
                 .then()

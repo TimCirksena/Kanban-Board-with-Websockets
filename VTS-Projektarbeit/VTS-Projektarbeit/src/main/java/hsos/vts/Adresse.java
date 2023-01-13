@@ -1,5 +1,6 @@
 package hsos.vts;
 
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Cacheable;

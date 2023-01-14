@@ -25,6 +25,7 @@ public class StartWebSocket {
 
     @OnClose
     public void onClose(Session session, @PathParam("username") String username) {
+
         sessions.remove(username);
         broadcast("User " + username + " left");
     }

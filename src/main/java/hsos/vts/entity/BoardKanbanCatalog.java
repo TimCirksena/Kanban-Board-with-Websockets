@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BoardKanbanCatalog {
     List<StubBoardDTO>  getAllKanbanBoards();
-    FullBoardDTO getKanbanBoardById();
+    FullBoardDTO getKanbanBoardById(long boardId);
 }
 

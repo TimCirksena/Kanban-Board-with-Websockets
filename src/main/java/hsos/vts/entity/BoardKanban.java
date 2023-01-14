@@ -3,21 +3,19 @@ package hsos.vts.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Cacheable
-public class KanbanBoard extends PanacheEntity {
+public class BoardKanban extends PanacheEntity {
 
     private String titel;
     @OneToMany
-    private List<KanbanListe> kanbanListen;
+    private List<ListeKanban> kanbanListen;
 
-    public KanbanBoard(){}
+    public BoardKanban(){}
 
     public String getTitel() {
         return titel;
@@ -27,11 +25,11 @@ public class KanbanBoard extends PanacheEntity {
         this.titel = titel;
     }
 
-    public List<KanbanListe> getKanbanListen() {
+    public List<ListeKanban> getKanbanListen() {
         return kanbanListen;
     }
 
-    public void setKanbanListen(List<KanbanListe> kanbanListen) {
+    public void setKanbanListen(List<ListeKanban> kanbanListen) {
         this.kanbanListen = kanbanListen;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Cacheable
-public class KanbanElement extends PanacheEntity {
+public class ElementKanban extends PanacheEntity {
     private int position;
     private String ersteller;
     private String titel;
@@ -17,7 +17,7 @@ public class KanbanElement extends PanacheEntity {
     @OneToMany
     private List<Kommentar> KommentareList;
 
-    public KanbanElement(){}
+    public ElementKanban(){}
 
     public int getPosition() {
         return position;

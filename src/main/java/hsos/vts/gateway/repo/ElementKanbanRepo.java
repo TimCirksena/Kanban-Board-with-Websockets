@@ -1,4 +1,4 @@
 package hsos.vts.gateway.repo;
 
-public class KanbanRepo {
+public class ElementKanbanRepo {
 }

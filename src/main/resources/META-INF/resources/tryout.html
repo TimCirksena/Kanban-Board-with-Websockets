@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>My Tiles Page</h1>
-<button id="create-card-btn" onclick="createCard()">Create Card</button>
+<button id="create-card-btn" onclick="createKanbanBoard()">Create Card</button>
 <button onclick=" createDeletePopup('item1')">Delete Item1</button>
 
 <div class="grid-container" id="existing-div">
@@ -20,7 +20,7 @@
 
 <script>
     var id = 0;
-    function createCard() {
+    function createKanbanBoard() {
         // Create card element
         var card = document.createElement("div");
         card.classList.add("card");
@@ -58,6 +58,7 @@
         var existingDiv = document.getElementById("existing-div");
         existingDiv.appendChild(card);
     }
+    /** Testung fürs deleten */
     function createDeletePopup(item) {
         // Create the pop-up
         var popup = document.createElement("div");

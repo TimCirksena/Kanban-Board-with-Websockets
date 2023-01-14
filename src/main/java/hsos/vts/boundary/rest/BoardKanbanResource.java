@@ -1,5 +1,5 @@
 package hsos.vts.boundary.rest;
 
-public class KanbanResource {
+public class BoardKanbanResource {
     //fd
 }

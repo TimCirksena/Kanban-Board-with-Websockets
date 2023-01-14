@@ -9,13 +9,13 @@ import java.util.List;
 
 @Entity
 @Cacheable
-public class KanbanListe extends PanacheEntity {
+public class ListeKanban extends PanacheEntity {
     private int position;
     private String titel;
     @OneToMany
-    private List<KanbanElement> kanbanElementList;
+    private List<ElementKanban> kanbanElementList;
 
-    public KanbanListe(){}
+    public ListeKanban(){}
 
     public int getPosition() {
         return position;
@@ -33,11 +33,11 @@ public class KanbanListe extends PanacheEntity {
         this.titel = titel;
     }
 
-    public List<KanbanElement> getKanbanElementList() {
+    public List<ElementKanban> getKanbanElementList() {
         return kanbanElementList;
     }
 
-    public void setKanbanElementList(List<KanbanElement> kanbanElementList) {
+    public void setKanbanElementList(List<ElementKanban> kanbanElementList) {
         this.kanbanElementList = kanbanElementList;
     }
 }

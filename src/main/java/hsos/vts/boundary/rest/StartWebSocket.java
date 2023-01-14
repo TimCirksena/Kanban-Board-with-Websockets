@@ -53,7 +53,7 @@ public class StartWebSocket {
             Jsonb jsonb = JsonbBuilder.create();
             String json = jsonb.toJson(stubBoardDTO);
             System.out.println(json);
-            //Darf kein Obj sein weil er das nicht richtig checkt
+            //Darf kein Obj sein, weil er das nicht richtig checkt
             sessions.get(username).getAsyncRemote().sendText(json);
         }
     }

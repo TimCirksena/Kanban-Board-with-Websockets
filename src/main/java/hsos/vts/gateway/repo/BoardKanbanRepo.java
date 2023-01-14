@@ -41,7 +41,7 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         List<BoardKanban> boards = BoardKanban.findAll().list();
         List<StubBoardDTO> dtos = new ArrayList<>();
         for (BoardKanban b : boards){
-            dtos.add(new StubBoardDTO(b.id,b.getTitel()));
+            dtos.add(new StubBoardDTO(b.getBoardId(),b.getTitel()));
         }
         return dtos;
     }

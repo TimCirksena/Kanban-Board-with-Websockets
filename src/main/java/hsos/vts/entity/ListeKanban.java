@@ -1,18 +1,30 @@
 package hsos.vts.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Cacheable
-public class ListeKanban extends PanacheEntity {
+public class ListeKanban extends PanacheEntityBase {
+
+    @Id
+    @SequenceGenerator(
+            name = "ListeKanbanSequence",
+            sequenceName = "ListeKanban_id_seq",
+            allocationSize = 1,
+            initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ListeKanbanSequence")
+    @Basic(optional = false)
+    private long listeId;
+    @Column
     private int position;
+    @Column
     private String titel;
     @OneToMany
+    @Column
     private List<ElementKanban> kanbanElementList;
 
     public ListeKanban(){}
@@ -39,5 +51,13 @@ public class ListeKanban extends PanacheEntity {
 
     public void setKanbanElementList(List<ElementKanban> kanbanElementList) {
         this.kanbanElementList = kanbanElementList;
+    }
+
+    public long getListeId() {
+        return listeId;
+    }
+
+    public void setListeId(long listeId) {
+        this.listeId = listeId;
     }
 }

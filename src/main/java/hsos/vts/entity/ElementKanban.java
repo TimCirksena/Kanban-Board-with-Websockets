@@ -1,20 +1,35 @@
 package hsos.vts.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Cacheable
-public class ElementKanban extends PanacheEntity {
+public class ElementKanban extends PanacheEntityBase {
+
+    @Id
+    @SequenceGenerator(
+            name = "ElementKanbanSequence",
+            sequenceName = "ElementKanban_id_seq",
+            allocationSize = 1,
+            initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ElementKanbanSequence")
+    @Basic(optional = false)
+    private long elementId;
+    @Column
     private int position;
+    @Column
     private String ersteller;
+    @Column
     private String titel;
+    @Column
     private String beschreibung;
     @OneToMany
+    @Column
     private List<Kommentar> KommentareList;
 
     public ElementKanban(){}
@@ -57,5 +72,20 @@ public class ElementKanban extends PanacheEntity {
 
     public void setKommentareList(List<Kommentar> kommentareList) {
         KommentareList = kommentareList;
+    }
+
+    public ElementKanban(String ersteller, String titel, String beschreibung) {
+        this.ersteller = ersteller;
+        this.titel = titel;
+        this.beschreibung = beschreibung;
+        KommentareList = new ArrayList<>();
+    }
+
+    public long getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(long elementId) {
+        this.elementId = elementId;
     }
 }

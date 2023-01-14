@@ -17,6 +17,11 @@ public class BoardKanban extends PanacheEntity {
 
     public BoardKanban(){}
 
+    public BoardKanban(String titel, List<ListeKanban> kanbanListen) {
+        this.titel = titel;
+        this.kanbanListen = kanbanListen;
+    }
+
     public String getTitel() {
         return titel;
     }

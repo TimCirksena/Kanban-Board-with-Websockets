@@ -19,9 +19,11 @@ import javax.ws.rs.core.Response;
 
 @Path("/kanban")
 @ApplicationScoped
+@Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.APPLICATION_JSON)
 public class BoardKanbanResource {
     //fd
+    @Inject
     BoardKanbanCatalog boardKanbanCatalog;
     @Inject
     Template display;
@@ -30,10 +32,19 @@ public class BoardKanbanResource {
     @Inject
     Template chat;
 
+    @Inject
+    Template kanbanBoards;
+
     @GET
-    @Produces(MediaType.TEXT_HTML)
+    @Path("/chat")
     public TemplateInstance getChat(){
         return chat.instance();
+    }
+
+    @GET
+    @Transactional
+    public TemplateInstance getBoardKanbans(){
+        return kanbanBoards.data("boards", boardKanbanCatalog.getAllKanbanBoards());
     }
 
     /*

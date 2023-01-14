@@ -6,9 +6,10 @@ import hsos.vts.entity.BoardKanban;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
-
+@ApplicationScoped
 public class BoardKanbanRepo implements BoardKanbanCatalog {
     @Override
     public List<StubBoardDTO> getAllKanbanBoards() {
@@ -25,4 +26,10 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         }
         return null;
     }
+
+
+
+
+
+
 }

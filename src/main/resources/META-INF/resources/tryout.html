@@ -11,6 +11,7 @@
 </head>
 <body>
 <h1>My Tiles Page</h1>
+<button id="send-message-button">Send Message</button>
 <button id="create-card-btn" onclick="createKanbanBoard()">Create Card</button>
 <button onclick=" createDeletePopup('item1')">Delete Item1</button>
 
@@ -19,8 +20,29 @@
 </div>
 
 <script>
+    var socket = new WebSocket("ws://localhost:8080/landingPage");
+
     var id = 0;
-    function createKanbanBoard() {
+    socket.onmessage = function (event) {
+        //Sobald .sendText im WebSocket aufgerufen wird holt er sich die JSON
+        var stubBoardDTO = JSON.parse(event.data);
+        console.log(stubBoardDTO)
+        var titel = stubBoardDTO.titel;
+        var boardId = stubBoardDTO.boardId;
+        createKanbanBoard(titel, boardId);
+    }
+    socket.onopen = function (){
+        //Für initiales aufrufen
+        socket.send("")
+    }
+
+    var sendMessageButton = document.getElementById("send-message-button");
+    sendMessageButton.addEventListener("click", function () {
+        var message = "Hello from the client!";
+        socket.send(message);
+    });
+
+    function createKanbanBoard(titel, boardId) {
         // Create card element
         var card = document.createElement("div");
         card.classList.add("card");
@@ -45,14 +67,14 @@
         // Create card title
         var cardTitle = document.createElement("h1");
         cardTitle.classList.add("card-title");
-        cardTitle.innerHTML = "Card title";
+        cardTitle.innerHTML = titel;
         cardBody.appendChild(cardTitle);
 
         // Create card link
         var cardLink2 = document.createElement("a");
         cardLink2.classList.add("card-link");
         cardLink2.href = "#";
-        cardLink2.innerHTML = "Card link";
+        cardLink2.innerHTML = "/kanban/" + boardId;
         cardBody.appendChild(cardLink2);
 
         var existingDiv = document.getElementById("existing-div");

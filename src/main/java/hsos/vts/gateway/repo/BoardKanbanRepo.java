@@ -35,9 +35,13 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         //hier noch project hinkriegen, man kann ja safe optional selber machen
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
         if(board.isPresent()){
-            return new FullBoardDTO();
+            FullBoardDTO fullBoardDTO = new FullBoardDTO(board.get());
+            return fullBoardDTO;
         }
-        return null;
+        else {
+            return null;
+            //return Optional.empty();
+        }
     }
 
 

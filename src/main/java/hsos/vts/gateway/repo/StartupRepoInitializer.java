@@ -18,9 +18,8 @@ public class StartupRepoInitializer {
 
     @Transactional
     public void startupInit(@Observes StartupEvent evt){
-        deleteEverything();
-
-        kanbanBoardsErstellen();
+        //deleteEverything();
+        //kanbanBoardsErstellen();
     }
 
     private void deleteEverything(){

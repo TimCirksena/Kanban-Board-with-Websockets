@@ -1,4 +1,4 @@
-package hsos.vts.boundary.rest;
+package hsos.vts.boundary.view;
 
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanbanCatalog;
@@ -33,7 +33,7 @@ public class BoardKanbanResource {
     Template chat;
 
     @Inject
-    Template kanbanBoards;
+    Template kanbanBoards_view;
 
     @GET
     @Path("/chat")
@@ -44,7 +44,7 @@ public class BoardKanbanResource {
     @GET
     @Transactional
     public TemplateInstance getBoardKanbans(){
-        return kanbanBoards.data("boards", boardKanbanCatalog.getAllKanbanBoards());
+        return kanbanBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
     }
 
     /*

@@ -20,7 +20,7 @@ public class BoardKanban extends PanacheEntityBase {
     private long boardId;
     @Column
     private String titel;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Column
     private List<ListeKanban> kanbanListen;
 

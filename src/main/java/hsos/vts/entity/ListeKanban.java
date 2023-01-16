@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,11 +24,16 @@ public class ListeKanban extends PanacheEntityBase {
     private int position;
     @Column
     private String titel;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Column
     private List<ElementKanban> kanbanElementList;
 
     public ListeKanban(){}
+
+    public ListeKanban(String titel) {
+        this.titel = titel;
+        this.kanbanElementList = new ArrayList<>();
+    }
 
     public int getPosition() {
         return position;

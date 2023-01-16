@@ -16,23 +16,7 @@ import java.util.List;
 import java.util.Optional;
 @ApplicationScoped
 public class BoardKanbanRepo implements BoardKanbanCatalog {
-    @Transactional
-    public void startupInit(@Observes StartupEvent evt){
-        BoardKanban.deleteAll();
 
-        String[] strings = new String[5];
-        strings[0] = "VTS Board";
-        strings[1] = "Working Student Board";
-        strings[2] = "SWA Board";
-        strings[3] = "Mathe Board";
-        strings[4] = "Freizeit Board";
-
-        for(String s : strings){
-            List<ListeKanban> kanbanListen = new ArrayList<>();
-            BoardKanban board = new BoardKanban(s,kanbanListen);
-            board.persist();
-        }
-    }
 
     @Override
     public List<StubBoardDTO> getAllKanbanBoards() {

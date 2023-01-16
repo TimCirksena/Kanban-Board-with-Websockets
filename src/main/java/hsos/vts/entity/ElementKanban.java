@@ -28,11 +28,18 @@ public class ElementKanban extends PanacheEntityBase {
     private String titel;
     @Column
     private String beschreibung;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Column
     private List<Kommentar> KommentareList;
 
     public ElementKanban(){}
+
+    public ElementKanban(String ersteller, String titel, String beschreibung) {
+        this.ersteller = ersteller;
+        this.titel = titel;
+        this.beschreibung = beschreibung;
+        KommentareList = new ArrayList<>();
+    }
 
     public int getPosition() {
         return position;
@@ -72,13 +79,6 @@ public class ElementKanban extends PanacheEntityBase {
 
     public void setKommentareList(List<Kommentar> kommentareList) {
         KommentareList = kommentareList;
-    }
-
-    public ElementKanban(String ersteller, String titel, String beschreibung) {
-        this.ersteller = ersteller;
-        this.titel = titel;
-        this.beschreibung = beschreibung;
-        KommentareList = new ArrayList<>();
     }
 
     public long getElementId() {

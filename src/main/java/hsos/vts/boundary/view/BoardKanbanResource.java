@@ -28,7 +28,6 @@ public class BoardKanbanResource {
     @Inject
     Template display;
 
-
     @Inject
     Template chat;
 

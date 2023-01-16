@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .create-element-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comments-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+<div class="create-element-container">
+    <form id="create-form">
+        <label for="title-input">Title:</label>
+        <input type="text" id="title-input">
+
+        <label for="description-input">Description:</label>
+        <textarea id="description-input"></textarea>
+
+        <button type="submit" id="save-button">Save</button>
+    </form>
+    <div class="comments-section">
+        <h3>Comments:</h3>
+        <div id="comments-display"></div>
+        <form>
+            <label for="new-comment">Add a comment:</label>
+            <input type="text" id="new-comment" name="new-comment">
+            <button type="submit" id="send-comment-button">Send</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    // Get form elements
+    const createForm = document.getElementById("create-form");
+    const titleInput = document.getElementById("title-input");
+    const descriptionInput = document.getElementById("description-input");
+    const saveButton = document.getElementById("save-button");
+
+    // Handle form submission
+    createForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const title = titleInput.value;
+        const description = descriptionInput.value;
+
+        // Send data to Quarkus
+        fetch("/kanban/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle response from Quarkus
+                if (data.success) {
+                    // Clear form fields
+                    titleInput.value = "";
+                    descriptionInput.value = "";
+
+                    // Show success message
+                    alert("Element created successfully!");
+                } else {
+                    // Show error message
+                    alert("Error creating element: " + data.message);
+                }
+            })
+            .catch(err => {
+                // Show error message
+                alert("Error creating element: " + err);
+            });
+    });
+</script>
+</body>
+</html>

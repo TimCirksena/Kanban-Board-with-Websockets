@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ElementKanbanResource {
 
     @Inject
-    private ElementKanbanCatalog elementKanbanCatalog;
+    ElementKanbanCatalog elementKanbanCatalog;
 
     @GET
     @Transactional

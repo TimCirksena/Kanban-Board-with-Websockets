@@ -48,8 +48,11 @@
         // Create card link
         var cardLink2 = document.createElement("a");
         cardLink2.classList.add("card-link");
-        cardLink2.href = "#";
-        cardLink2.innerHTML = "/kanban/" + boardId;
+        cardLink2.innerHTML = "Zum Kanbanboard";
+        cardLink2.addEventListener("click", function(e) {
+            e.preventDefault();
+            window.location.href = "http://localhost:8080/kanban/board/" + boardId;
+        });
         cardBody.appendChild(cardLink2);
 
         var existingDiv = document.getElementById("existing-div");

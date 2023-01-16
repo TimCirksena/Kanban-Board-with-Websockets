@@ -29,7 +29,7 @@ public class ListeKanbanResource {
     @GET
     @Transactional
     public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId){
-        return singleBoard_view.data("boards", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
+        return singleBoard_view.data("listeKanbans", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
                 "boardTitel", boardKanbanCatalog.getKanbanBoardById(kanbanId));
     }
 }

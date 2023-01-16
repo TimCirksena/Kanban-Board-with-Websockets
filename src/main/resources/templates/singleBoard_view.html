@@ -18,6 +18,13 @@
             background: white;
         }
 
+        .draggable {
+            text-align: center;
+            background: white;
+            padding: 10px;
+            margin: 8px;
+        }
+
         .dropzone {
             display: inline-block;
             float: left;
@@ -66,26 +73,20 @@
 <button id="add-button" class="add-button">+</button>
 <div id="boardKanban">
     <h1>{boardTitel.titel}</h1>
-    <div class="dropzone" id="droptarget2">
 
-        <h2 class="list-title">titel Der Liste</h2>
-        <label for="color-picker">Background color:
-            <input type="color" id="color-picker" name="color-picker" style="width: 30px; height: 15px;">
-        </label>
-        <div class="draggable" draggable="true">This div is draggable</div>
-        <div class="draggable" draggable="true">This div is draggable</div>
-    </div>
-    <div class="dropzone" id="droptarget">
-        <h2 class="list-title">titel Der Liste2</h2>
-        <label for="color-picker">Background color:
-            <input type="color" id="color-picker1" name="color-picker" style="width: 30px; height: 15px;">
-        </label>
-
-    </div>
 </div>
 <script>
+
     let dragged;
     var id = 2;
+
+    {#for listeKanban in listeKanbans}
+        var newListKanbanDiv = createKanbanListElement( "{listeKanban.titel}",{listeKanban.listeId});
+        {#for elementKanban in listeKanban.stubElementDTOS}
+            newListKanbanDiv.appendChild(createCard("{elementKanban.titel}"));
+        {/for}
+    {/for}
+
     function dragzone() {
         /* events fired on the draggable target */
         const sources = document.querySelectorAll(".draggable");
@@ -136,14 +137,68 @@
         })
     }
 
-    //Colorpicker for elements that exist
-    document.getElementById("color-picker").addEventListener("change", function () {
-        var parent = this.parentElement.parentElement;
-        parent.style.backgroundColor = this.value;
-    });
     //New List-Item
-    document.getElementById("add-button").addEventListener("click", function () {
+    document.getElementById("add-button").addEventListener("click", createKanbanDummy);
 
+    function createKanbanListElement(titel, listeId) {
+        // Create new dropzone element
+        var newListKanbanDiv = document.createElement("div");
+        newListKanbanDiv.classList.add("dropzone");
+        newListKanbanDiv.setAttribute("id", "color-picker" + id);
+        id++;
+
+        // Create card link
+        var cardLink2 = document.createElement("a");
+        cardLink2.classList.add("card-link");
+        cardLink2.href = "#";
+        cardLink2.innerHTML = "ListeID" + listeId;
+        newListKanbanDiv.appendChild(cardLink2);
+
+        // Create new h2 element for the title
+        var newTitle = document.createElement("h2");
+        newTitle.classList.add("list-title");
+        newTitle.innerHTML = titel;
+
+        // Create new label for color picker
+        var colorPickerLabel = document.createElement("label");
+        colorPickerLabel.setAttribute("for", "color-picker");
+        colorPickerLabel.innerHTML = "Background color: ";
+
+        // Create new color picker input
+        var colorPickerInput = document.createElement("input");
+        colorPickerInput.setAttribute("type", "color");
+        colorPickerInput.setAttribute("id", "color-picker");
+        colorPickerInput.setAttribute("name", "color-picker");
+        colorPickerInput.setAttribute("style", "width: 30px; height: 15px;");
+        colorPickerInput.addEventListener("change", function () {
+            var parent = this.parentElement.parentElement;
+            parent.style.backgroundColor = this.value;
+        });
+
+        // Append elements to new dropzone element
+        newListKanbanDiv.appendChild(newTitle);
+        newListKanbanDiv.appendChild(colorPickerLabel);
+        colorPickerLabel.appendChild(colorPickerInput);
+
+
+
+        // Append new dropzone element to boardKanban div
+        document.getElementById("boardKanban").appendChild(newListKanbanDiv);
+        dragzone();
+
+        return newListKanbanDiv;
+    }
+
+    function createCard(title) {
+        // Create card element
+        var card = document.createElement("div");
+        card.setAttribute("draggable", "true");
+        card.classList.add("card", "draggable");
+        card.innerHTML = title;
+        return card;
+    }
+
+    function createKanbanDummy() {
         // Create new dropzone element
         var newDropzone = document.createElement("div");
         newDropzone.classList.add("dropzone");
@@ -179,9 +234,8 @@
         // Append new dropzone element to boardKanban div
         document.getElementById("boardKanban").appendChild(newDropzone);
         dragzone();
-    });
 
-
+    }
 
 </script>
 </body>

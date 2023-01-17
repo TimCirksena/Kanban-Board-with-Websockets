@@ -51,7 +51,7 @@ public class BoardKanbanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewBoardKanban(String titel){
-
+        System.out.println(titel);
         boardKanbanWebsocket.kanbanBoardCreated(boardKanbanCatalog.createBoard(titel));
         return Response.ok().build();
     }

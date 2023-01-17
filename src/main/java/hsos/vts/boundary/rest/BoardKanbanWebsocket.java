@@ -2,6 +2,8 @@ package hsos.vts.boundary.rest;
 
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanbanCatalog;
+import io.vertx.core.json.JsonObject;
+import net.bytebuddy.jar.asm.Type;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -62,10 +64,13 @@ public class BoardKanbanWebsocket {
     public void kanbanBoardCreated(StubBoardDTO boardDTO){
         Jsonb jsonb = JsonbBuilder.create();
         String json = jsonb.toJson(boardDTO);
-        System.out.println(json);
+        JsonObject typeHelper = new JsonObject(json);
+        typeHelper.put("type","kanban_board_created");
+        String finalJson = typeHelper.toString();
+        System.out.println(finalJson);
         //Darf kein Obj sein weil er das nicht richtig checkt
         for (Session session : sessions) {
-            session.getAsyncRemote().sendText(json);
+            session.getAsyncRemote().sendText(finalJson);
         }
     }
 

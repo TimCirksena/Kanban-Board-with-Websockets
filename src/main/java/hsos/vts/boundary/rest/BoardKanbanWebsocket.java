@@ -52,7 +52,7 @@ public class BoardKanbanWebsocket {
 
     @OnClose
     public void onClose(Session session) {
-
+        sessions.remove(session);
     }
 
     @OnError

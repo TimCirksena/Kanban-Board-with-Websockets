@@ -5,15 +5,39 @@
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
     <title>My Tiles Page</title>
+    <style>
+        .button {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            border-radius: 50%;
+        }
+    </style>
     <meta charset="UTF-8">
 </head>
 <body>
 <h1>My Tiles Page</h1>
 <button id="send-message-button">Send Message</button>
-<button id="create-card-btn" onclick="createKanbanBoard()">Create Card</button>
+<button id="open-modal-btn" >Kanban-board hinzufügen</button>
 <button onclick=" createDeletePopup('item1')">Delete Item1</button>
-
 <div class="grid-container" id="existing-div"></div>
+<div style="position: fixed; bottom: 20px; right: 20px;">
+    <form >
+        <label>
+            <input type="text" id="input-field" placeholder="Enter text here">
+        </label>
+        <button type="submit" class="button" id="submit-kanban">
+            <span style="font-size: 20px;">+</span>
+        </button>
+    </form>
+</div>
+
 <script>
     var id = 0;
 
@@ -62,6 +86,43 @@
     {#for board in boards}
         createKanbanBoard("{board.titel}",{board.boardId});
     {/for}
+
+    var socket = new WebSocket("ws://localhost:8080/kanban");
+
+    socket.onmessage = function(event) {
+        var message = JSON.parse(event.data);
+        console.log(message);
+        createKanbanBoard(message.titel, message.boardId);
+    };
+
+    document.getElementById("submit-kanban").addEventListener("click", function(event) {
+        event.preventDefault(); // prevent the form from submitting
+
+        var inputField = document.getElementById("input-field");
+        var text = inputField.value;
+
+        // neues Request object
+        var request = new Request("http://localhost:8080/kanban", {
+            method: "POST",
+            body: JSON.stringify(text), // the request body
+            headers: { "Content-Type": "application/json" }
+        });
+
+        // mit fetch zu quarkus markus senden
+        fetch(request)
+            .then(function(response) {
+                // handle the response
+                if (response.ok) {
+                    alert("Kanban board erstellt!");
+                } else {
+                    alert("Fehler bei erstellen des Kanban boards " + response.status);
+                }
+            })
+            .catch(function(error) {
+                alert("Fehler bei erstellen des Kanban boards: " + error);
+            });
+    });
+
 
 
 </script>

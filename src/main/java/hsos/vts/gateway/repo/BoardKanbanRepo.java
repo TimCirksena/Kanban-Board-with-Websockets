@@ -45,8 +45,11 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
     }
 
 
-
-
-
-
+    @Override
+    public StubBoardDTO createBoard(String boardTitel) {
+        List<ListeKanban> kanbanListen = new ArrayList<>();
+        BoardKanban board = new BoardKanban(boardTitel,kanbanListen);
+        board.persist();
+        return new StubBoardDTO(board.getBoardId(), board.getTitel());
+    }
 }

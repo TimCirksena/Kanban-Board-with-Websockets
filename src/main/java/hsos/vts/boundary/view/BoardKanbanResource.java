@@ -1,6 +1,7 @@
 package hsos.vts.boundary.view;
 
 import hsos.vts.boundary.acl.StubBoardDTO;
+import hsos.vts.boundary.rest.BoardKanbanWebsocket;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.Template;
@@ -10,10 +11,7 @@ import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,6 +25,8 @@ public class BoardKanbanResource {
     BoardKanbanCatalog boardKanbanCatalog;
     @Inject
     Template display;
+    @Inject
+    BoardKanbanWebsocket boardKanbanWebsocket;
 
     @Inject
     Template chat;
@@ -44,6 +44,16 @@ public class BoardKanbanResource {
     @Transactional
     public TemplateInstance getBoardKanbans(){
         return kanbanBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
+    }
+
+    @POST
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createNewBoardKanban(String titel){
+
+        boardKanbanWebsocket.kanbanBoardCreated(boardKanbanCatalog.createBoard(titel));
+        return Response.ok().build();
     }
 
     /*

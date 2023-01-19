@@ -56,7 +56,7 @@
 
         var jsonString = JSON.stringify(obj);
         console.log(jsonString);
-        var request = new Request("http://localhost:8080/kanban/boardForList", {
+        var request = new Request("http://localhost:8080/kanban/create/boardForList", {
             method: "POST",
             body: jsonString,
             headers: { "Content-Type": "application/json"}

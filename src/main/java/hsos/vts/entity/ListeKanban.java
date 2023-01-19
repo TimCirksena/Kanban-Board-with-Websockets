@@ -71,4 +71,15 @@ public class ListeKanban extends PanacheEntityBase {
     public void setListeId(long listeId) {
         this.listeId = listeId;
     }
+
+    @Override
+    public String toString() {
+        return "ListeKanban{" +
+                "listeId=" + listeId +
+                ", position=" + position +
+                ", titel='" + titel + '\'' +
+                ", kanbanElementList=" + kanbanElementList +
+                ", strings=" + strings +
+                '}';
+    }
 }

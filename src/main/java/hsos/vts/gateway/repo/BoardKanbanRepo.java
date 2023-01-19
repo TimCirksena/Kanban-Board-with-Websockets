@@ -66,8 +66,13 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
     public ListeKanbanDTO addListToBoard(long boardId, String listTitel) {
         ListeKanban listeKanban = new ListeKanban(listTitel);
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
+        //Hier weist Quarkus die id automatisch mit magie zu
         board.get().getKanbanListen().add(listeKanban);
-        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(listeKanban);
+        //Jetzt müssen das so machen, weil sonst die Id verloren geht
+        //TODO: Verstehen
+        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(board.get().getKanbanListen().get(board.get().getKanbanListen().size()-1));
+        System.out.println("DTO" + listeKanbanDTO.toString());
+        System.out.println("ListeKanban:" + listeKanban.toString());
         return listeKanbanDTO;
     }
 

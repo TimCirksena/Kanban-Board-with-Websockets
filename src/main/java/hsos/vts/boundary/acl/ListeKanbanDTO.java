@@ -24,4 +24,13 @@ public class ListeKanbanDTO {
             this.stubElementDTOS.add(new StubElementDTO(elementKanban));
         }
     }
+
+    @Override
+    public String toString() {
+        return "ListeKanbanDTO{" +
+                "stubElementDTOS=" + stubElementDTOS +
+                ", titel='" + titel + '\'' +
+                ", listeId=" + listeId +
+                '}';
+    }
 }

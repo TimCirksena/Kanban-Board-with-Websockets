@@ -1,6 +1,7 @@
 package hsos.vts.boundary.websockets;
 
 import hsos.vts.boundary.acl.ListeKanbanDTO;
+import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.vertx.core.json.JsonObject;
 
@@ -8,7 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +33,22 @@ public class SingleBoardWebsocket {
         for (Session session : sessions) {
             session.getAsyncRemote().sendText(finalJson);
         }
+    }
+    @OnOpen
+    public void onOpen(Session session) {
+        sessions.add(session);
+    }
+
+    @OnMessage
+    public void onMessage(String message) {
+    }
+
+    @OnClose
+    public void onClose(Session session) {
+        sessions.remove(session);
+    }
+
+    @OnError
+    public void onError(Session session, Throwable throwable) {
     }
 }

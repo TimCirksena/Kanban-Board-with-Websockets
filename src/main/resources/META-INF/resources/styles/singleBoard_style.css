@@ -1,0 +1,80 @@
+body {
+    /* Prevent the user selecting text in the example */
+    user-select: none;
+}
+h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#draggable {
+    text-align: center;
+    background: white;
+}
+
+.draggable {
+    text-align: center;
+    background: white;
+    padding: 10px;
+    margin: 8px;
+}
+
+.dropzone {
+    display: inline-block;
+    float: left;
+    width: 200px;
+    height: 500px;
+    background: blueviolet;
+    margin: 10px;
+    padding: 10px;
+}
+
+.dropzone.dragover {
+    background-color: purple;
+}
+
+.list-title {
+    background-color: #f1f1f1;
+    color: #333333;
+    padding: 10px;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.add-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px; /* half of width and height */
+    background-color: blue;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: darkblue;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #555;
+}

@@ -4,73 +4,13 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link href="../META-INF/resources/styles/style.css" rel="stylesheet">
+    <link href="/styles/singleBoard_style.css" rel="stylesheet">
     <title>My Tiles Page</title>
     <meta charset="UTF-8">
-    <style>
-        body {
-            /* Prevent the user selecting text in the example */
-            user-select: none;
-        }
-
-        #draggable {
-            text-align: center;
-            background: white;
-        }
-
-        .draggable {
-            text-align: center;
-            background: white;
-            padding: 10px;
-            margin: 8px;
-        }
-
-        .dropzone {
-            display: inline-block;
-            float: left;
-            width: 200px;
-            height: 500px;
-            background: blueviolet;
-            margin: 10px;
-            padding: 10px;
-        }
-
-        .dropzone.dragover {
-            background-color: purple;
-        }
-
-        .list-title {
-            background-color: #f1f1f1;
-            color: #333333;
-            padding: 10px;
-        }
-
-        .dragging {
-            opacity: 0.5;
-        }
-
-        .add-button {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 25px; /* half of width and height */
-            background-color: blue;
-            color: white;
-            font-size: 30px;
-            text-align: center;
-            line-height: 50px;
-            cursor: pointer;
-        }
-
-        .add-button:hover {
-            background-color: darkblue;
-        }
-    </style>
 </head>
 <body>
 <button id="add-button" class="add-button">+</button>
+<a href="http://localhost:8080/kanban" class="back-button">Back</a>
 <div id="boardKanban">
     <h1>{boardTitel.titel}</h1>
 

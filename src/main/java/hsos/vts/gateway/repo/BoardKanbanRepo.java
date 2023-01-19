@@ -1,17 +1,13 @@
 package hsos.vts.gateway.repo;
 
 import hsos.vts.boundary.acl.FullBoardDTO;
-import hsos.vts.boundary.acl.KanbanDTO;
+import hsos.vts.boundary.acl.ListeKanbanDTO;
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanban;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ListeKanban;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +59,16 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
             return boardId;
         }
         return -1;
+    }
+
+
+    @Override
+    public ListeKanbanDTO addListToBoard(long boardId, String listTitel) {
+        ListeKanban listeKanban = new ListeKanban(listTitel);
+        Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
+        board.get().getKanbanListen().add(listeKanban);
+        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(listeKanban);
+        return listeKanbanDTO;
     }
 
 }

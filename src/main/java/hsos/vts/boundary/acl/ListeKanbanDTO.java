@@ -6,17 +6,17 @@ import hsos.vts.entity.ListeKanban;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListKanbanDTO {
+public class ListeKanbanDTO {
 
 
     public List<StubElementDTO> stubElementDTOS;
     public String titel;
     public long listeId;
 
-    public ListKanbanDTO() {
+    public ListeKanbanDTO() {
     }
 
-    public ListKanbanDTO(ListeKanban listeKanban) {
+    public ListeKanbanDTO(ListeKanban listeKanban) {
         this.titel = listeKanban.getTitel();
         this.listeId = listeKanban.getListeId();
         this.stubElementDTOS = new ArrayList<>();

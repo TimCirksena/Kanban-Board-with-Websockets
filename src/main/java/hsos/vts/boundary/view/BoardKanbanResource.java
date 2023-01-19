@@ -1,6 +1,8 @@
 package hsos.vts.boundary.view;
 
+import hsos.vts.boundary.acl.PostListeDTO;
 import hsos.vts.boundary.websockets.AllBoardsWebsocket;
+import hsos.vts.boundary.websockets.SingleBoardWebsocket;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -26,22 +28,20 @@ public class BoardKanbanResource {
     AllBoardsWebsocket allBoardsWebsocket;
 
     @Inject
+    SingleBoardWebsocket singleBoardWebsocket;
+
+    @Inject
     Template chat;
 
     @Inject
     Template allBoards_view;
 
     @GET
-    @Path("/chat")
-    public TemplateInstance getChat(){
-        return chat.instance();
-    }
-
-    @GET
     @Transactional
     public TemplateInstance getBoardKanbans(){
         return allBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
     }
+
 
     @POST
     @Transactional
@@ -63,6 +63,15 @@ public class BoardKanbanResource {
     }
 
 
+    @POST
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/boardForList")
+    public Response createNewListElement(PostListeDTO postListeDTO){
+        singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel));
+        return Response.ok().build();
+    }
     /*
         @GET
         @Transactional

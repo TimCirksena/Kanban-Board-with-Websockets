@@ -28,6 +28,11 @@ public class ListeKanban extends PanacheEntityBase {
     @Column
     private List<ElementKanban> kanbanElementList;
 
+    //private List<> moin;
+
+    @ElementCollection
+    public List<String> strings;
+
     public ListeKanban(){}
 
     public ListeKanban(String titel) {

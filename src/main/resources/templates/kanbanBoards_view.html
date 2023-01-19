@@ -3,66 +3,8 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link href="../META-INF/resources/styles/style.css" rel="stylesheet">
+    <link href="/styles/kanbanBoards_style.css" rel="stylesheet">
     <title>Rudi's Kanban Boards</title>
-    <style>
-        .button {
-            background-color: #04AA6D;
-            border: none;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 26px;
-            margin: 4px 2px;
-            border-radius: 70%;
-        }
-
-        /*Quelle: https://stackoverflow.com/questions/60253431/vertical-alignement-of-span-inside-a-div-when-the-font-size-is-big*/
-        .plus {
-            --b: 4px; /* the thickness */
-            width: 40px; /* the size */
-            aspect-ratio: 1;
-            border: 10px solid #000; /* the outer space */
-            background: conic-gradient(from 90deg at var(--b) var(--b), #000 90deg, #fff 0) calc(100% + var(--b) / 2) calc(100% + var(--b) / 2)/
-                    calc(50% + var(--b)) calc(50% + var(--b));
-            display: inline-block;
-        }
-
-        .alt {
-            border: none;
-            margin: 10px;
-            background: conic-gradient(from 90deg at var(--b) var(--b), #fff 90deg, #000 0) calc(100% + var(--b) / 2) calc(100% + var(--b) / 2)/
-                    calc(50% + var(--b)) calc(50% + var(--b));
-        }
-
-        .radius {
-            border-radius: 50%;
-        }
-
-        #titelBoardInput_label {
-            margin-right: 5px;
-        }
-
-        .delete-kanban {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background-color: red;
-            color: white;
-            text-align: center;
-            line-height: 20px;
-            cursor: pointer;
-        }
-
-        .delete-kanban:hover {
-            background-color: darkred;
-        }
-    </style>
     <meta charset="UTF-8">
 </head>
 <body>

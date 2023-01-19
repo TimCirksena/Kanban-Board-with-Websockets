@@ -1,4 +1,4 @@
-package hsos.vts.boundary.rest;
+package hsos.vts.boundary.websockets;
 
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanban;

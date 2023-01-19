@@ -1,12 +1,9 @@
 package hsos.vts.boundary.view;
 
-import hsos.vts.boundary.acl.StubBoardDTO;
-import hsos.vts.boundary.rest.BoardKanbanWebsocket;
+import hsos.vts.boundary.websockets.AllBoardsWebsocket;
 import hsos.vts.entity.BoardKanbanCatalog;
-import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,13 +23,13 @@ public class BoardKanbanResource {
     @Inject
     Template display;
     @Inject
-    BoardKanbanWebsocket boardKanbanWebsocket;
+    AllBoardsWebsocket allBoardsWebsocket;
 
     @Inject
     Template chat;
 
     @Inject
-    Template kanbanBoards_view;
+    Template allBoards_view;
 
     @GET
     @Path("/chat")
@@ -43,7 +40,7 @@ public class BoardKanbanResource {
     @GET
     @Transactional
     public TemplateInstance getBoardKanbans(){
-        return kanbanBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
+        return allBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
     }
 
     @POST
@@ -52,7 +49,7 @@ public class BoardKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewBoardKanban(String titel){
         System.out.println(titel);
-        boardKanbanWebsocket.kanbanBoardCreated(boardKanbanCatalog.createBoard(titel));
+        allBoardsWebsocket.kanbanBoardCreated(boardKanbanCatalog.createBoard(titel));
         return Response.ok().build();
     }
 
@@ -61,7 +58,7 @@ public class BoardKanbanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteBoard(long boardId){
-        boardKanbanWebsocket.kanbanBoardDelete(boardKanbanCatalog.deleteKanbanBoardById(boardId));
+        allBoardsWebsocket.kanbanBoardDelete(boardKanbanCatalog.deleteKanbanBoardById(boardId));
         return Response.ok().build();
     }
 

@@ -1,9 +1,8 @@
-package hsos.vts.boundary.rest;
+package hsos.vts.boundary.websockets;
 
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.vertx.core.json.JsonObject;
-import net.bytebuddy.jar.asm.Type;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @ServerEndpoint("/kanban")
 @ApplicationScoped
-public class BoardKanbanWebsocket {
+public class AllBoardsWebsocket {
     List<Session> sessions = new ArrayList<>();
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;

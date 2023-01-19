@@ -56,6 +56,16 @@ public class BoardKanbanResource {
         return Response.ok().build();
     }
 
+    @DELETE
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteBoard(long boardId){
+        boardKanbanWebsocket.kanbanBoardDelete(boardKanbanCatalog.deleteKanbanBoardById(boardId));
+        return Response.ok().build();
+    }
+
+
     /*
         @GET
         @Transactional

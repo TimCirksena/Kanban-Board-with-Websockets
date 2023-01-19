@@ -18,32 +18,49 @@
             margin: 4px 2px;
             border-radius: 70%;
         }
+
         /*Quelle: https://stackoverflow.com/questions/60253431/vertical-alignement-of-span-inside-a-div-when-the-font-size-is-big*/
         .plus {
             --b: 4px; /* the thickness */
             width: 40px; /* the size */
             aspect-ratio: 1;
             border: 10px solid #000; /* the outer space */
-            background:
-                    conic-gradient(from 90deg at var(--b) var(--b),#000 90deg,#fff 0)
-                    calc(100% + var(--b)/2) calc(100% + var(--b)/2)/
-                    calc(50%  + var(--b))   calc(50%  + var(--b));
+            background: conic-gradient(from 90deg at var(--b) var(--b), #000 90deg, #fff 0) calc(100% + var(--b) / 2) calc(100% + var(--b) / 2)/
+                    calc(50% + var(--b)) calc(50% + var(--b));
             display: inline-block;
         }
 
         .alt {
             border: none;
             margin: 10px;
-            background:
-                    conic-gradient(from 90deg at var(--b) var(--b),#fff 90deg,#000 0)
-                    calc(100% + var(--b)/2) calc(100% + var(--b)/2)/
-                    calc(50%  + var(--b))   calc(50%  + var(--b));
+            background: conic-gradient(from 90deg at var(--b) var(--b), #fff 90deg, #000 0) calc(100% + var(--b) / 2) calc(100% + var(--b) / 2)/
+                    calc(50% + var(--b)) calc(50% + var(--b));
         }
+
         .radius {
             border-radius: 50%;
         }
-        #titelBoardInput_label{
+
+        #titelBoardInput_label {
             margin-right: 5px;
+        }
+
+        .delete-kanban {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+        }
+
+        .delete-kanban:hover {
+            background-color: darkred;
         }
     </style>
     <meta charset="UTF-8">
@@ -51,7 +68,7 @@
 <body>
 <h1>Willkommen zu Rudi's Kanban Boards</h1>
 <button id="send-message-button">Send Message</button>
-<button id="open-modal-btn" >Kanban-board hinzufügen</button>
+<button id="open-modal-btn">Kanban-board hinzufügen</button>
 <button onclick=" createDeletePopup('item1')">Delete Item1</button>
 <div class="grid-container" id="existing-div"></div>
 <div style="position: fixed; bottom: 20px; right: 20px;">
@@ -66,18 +83,28 @@
 </div>
 
 <script>
-    var id = 0;
+
     function createKanbanBoard(titel, boardId) {
         // Create card element
         var card = document.createElement("div");
         card.classList.add("card");
         card.style.width = "25rem";
-        card.id = "card" + id;
-        id++;
+        card.id = "card" + boardId;
+
         // Create card body
         var cardBody = document.createElement("div");
         cardBody.classList.add("card-body");
         card.appendChild(cardBody);
+
+        // Create delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-kanban");
+        deleteButton.id = "delete" + boardId;
+        deleteButton.innerHTML = "X";
+        deleteButton.addEventListener("click", function (e) {
+            deleteKanban(boardId);
+        });
+        cardBody.appendChild(deleteButton);
 
         // Create card link
         var cardLink1 = document.createElement("a");
@@ -99,7 +126,7 @@
         var cardLink2 = document.createElement("a");
         cardLink2.classList.add("card-link");
         cardLink2.innerHTML = "Zum Kanbanboard";
-        cardLink2.addEventListener("click", function(e) {
+        cardLink2.addEventListener("click", function (e) {
             e.preventDefault();
             window.location.href = "http://localhost:8080/kanban/board/" + boardId;
         });
@@ -108,21 +135,48 @@
         var existingDiv = document.getElementById("existing-div");
         existingDiv.appendChild(card);
     }
+
     //mit qute wird die datenbank abgefragt, und alle vorhandenen kanbanboards werden angezeigt
     {#for board in boards}
-        createKanbanBoard("{board.titel}",{board.boardId});
+    createKanbanBoard("{board.titel}",{board.boardId});
     {/for}
 
     var socket = new WebSocket("ws://localhost:8080/kanban");
-    socket.onmessage = function(event) {
+    socket.onmessage = function (event) {
         var message = JSON.parse(event.data);
         console.log(message);
-        if(message.type === "kanban_board_created"){
+        if (message.type === "kanban_board_created") {
             createKanbanBoard(message.titel, message.boardId);
+        }
+        if(message.type === "kanban_board_deleted"){
+            document.getElementById("card" + message.boardId).remove();
         }
     };
 
-    document.getElementById("submit-kanban").addEventListener("click", function(event) {
+    function deleteKanban(boardId) {
+        var request = new Request("http://localhost:8080/kanban", {
+            method: "DELETE",
+            body: boardId,
+            headers: { "Content-Type" : "application/json"}
+        });
+        // mit fetch zu quarkus markus senden
+        fetch(request)
+            .then(function (response) {
+                // popups erstellen, die dem user feedback geben
+                if (response.ok) {
+                    alert("Kanban board wurde deleted!");
+
+                } else {
+                    alert("Fehler beim löschen des Kanban boards " + response.status);
+                }
+            })
+            .catch(function (error) {
+                alert("Fehler beim löschen des Kanban boards: " + error);
+            });
+    }
+
+
+    document.getElementById("submit-kanban").addEventListener("click", function (event) {
         event.preventDefault(); // prevent the form from submitting
 
         var inputField = document.getElementById("input-field");
@@ -132,12 +186,12 @@
         var request = new Request("http://localhost:8080/kanban", {
             method: "POST",
             body: kanbanBoardTitel,
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type" : "application/json"}
         });
 
         // mit fetch zu quarkus markus senden
         fetch(request)
-            .then(function(response) {
+            .then(function (response) {
                 // popups erstellen, die dem user feedback geben
                 if (response.ok) {
                     alert("Kanban board erstellt!");
@@ -145,10 +199,11 @@
                     alert("Fehler bei erstellen des Kanban boards " + response.status);
                 }
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 alert("Fehler bei erstellen des Kanban boards: " + error);
             });
     });
+
 </script>
 </body>
 </html>

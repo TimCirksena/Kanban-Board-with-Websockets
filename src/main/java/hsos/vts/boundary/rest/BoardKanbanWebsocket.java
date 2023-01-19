@@ -20,6 +20,7 @@ public class BoardKanbanWebsocket {
     List<Session> sessions = new ArrayList<>();
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
+
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);
@@ -30,7 +31,7 @@ public class BoardKanbanWebsocket {
     public void onMessage(String message) {
 
 
-        for (Session s: sessions){
+        for (Session s : sessions) {
             s.getAsyncRemote().sendText("hi");
         }
 
@@ -61,11 +62,11 @@ public class BoardKanbanWebsocket {
     public void onError(Session session, Throwable throwable) {
     }
 
-    public void kanbanBoardCreated(StubBoardDTO boardDTO){
+    public void kanbanBoardCreated(StubBoardDTO boardDTO) {
         Jsonb jsonb = JsonbBuilder.create();
         String json = jsonb.toJson(boardDTO);
         JsonObject typeHelper = new JsonObject(json);
-        typeHelper.put("type","kanban_board_created");
+        typeHelper.put("type", "kanban_board_created");
         String finalJson = typeHelper.toString();
         System.out.println(finalJson);
         //Darf kein Obj sein weil er das nicht richtig checkt
@@ -74,6 +75,22 @@ public class BoardKanbanWebsocket {
         }
     }
 
+    public void kanbanBoardDelete(long boardId) {
+        if(boardId > 0){
+            JsonObject typeHelper = new JsonObject();
+            typeHelper.put("type", "kanban_board_deleted");
+            typeHelper.put("boardId", boardId);
+            String finalJson = typeHelper.toString();
+            for (Session session : sessions) {
+                session.getAsyncRemote().sendText(finalJson);
+            }
+        }
+        else{
+            System.out.println("Fehler im Websocket bei delete");
+        }
+
+
+    }
 
     /*
         @OnMessage

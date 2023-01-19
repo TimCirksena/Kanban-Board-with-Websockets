@@ -1,6 +1,7 @@
 package hsos.vts.gateway.repo;
 
 import hsos.vts.boundary.acl.FullBoardDTO;
+import hsos.vts.boundary.acl.KanbanDTO;
 import hsos.vts.boundary.acl.StubBoardDTO;
 import hsos.vts.entity.BoardKanban;
 import hsos.vts.entity.BoardKanbanCatalog;
@@ -52,4 +53,16 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         board.persist();
         return new StubBoardDTO(board.getBoardId(), board.getTitel());
     }
+
+    @Override
+    public long deleteKanbanBoardById(long boardId) {
+        BoardKanban.deleteById(boardId);
+        // Überprüfung ob das item noch existiert
+        Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
+        if(board.isEmpty()){
+            return boardId;
+        }
+        return -1;
+    }
+
 }

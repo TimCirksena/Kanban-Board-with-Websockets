@@ -1,4 +1,21 @@
 let dragged;
+
+
+var modalElement = document.getElementById("modalElement");
+
+// Get the <span> element that closes the modal
+var close_modal_element = document.getElementsByClassName("close-modal-element")[0];
+
+// When the user clicks on <span> (x), close the modal
+close_modal_element.onclick = function () {
+    modalElement.style.display = "none";
+}
+
+
+// Get the form element
+var create_element_form = document.getElementById("modal-element-form");
+
+
 function dragzone() {
     /* events fired on the draggable target */
     const sources = document.querySelectorAll(".draggable");
@@ -56,11 +73,11 @@ socket.onmessage = function (event) {
     if (message.type === "liste_kanban_created") {
         createKanbanList(message.titel, message.listeId);
     }
-    if(message.type === "liste_kanban_deleted"){
+    if (message.type === "liste_kanban_deleted") {
         document.getElementById("liste" + message.listeId).remove();
     }
-    if(message.type === "element_added"){
-        addElementToKanbanList(message.listeId,message.elementId,message.titel);
+    if (message.type === "element_added") {
+        addElementToKanbanList(message.listeId, message.elementId, message.titel);
     }
 };
 //New List-Item
@@ -80,7 +97,7 @@ document.getElementById("add-button").addEventListener("click", function (event)
     var request = new Request("http://localhost:8080/kanban/board/PostForList", {
         method: "POST",
         body: jsonString,
-        headers: { "Content-Type": "application/json"}
+        headers: {"Content-Type": "application/json"}
     });
     // mit fetch zu quarkus markus senden
     fetch(request)
@@ -98,7 +115,7 @@ document.getElementById("add-button").addEventListener("click", function (event)
     modal.style.display = "none";
 });
 
-function deleteListe(listeId, boardId){
+function deleteListe(listeId, boardId) {
 
     var obj = new Object();
     obj.listeId = listeId;
@@ -108,7 +125,7 @@ function deleteListe(listeId, boardId){
     var request = new Request("http://localhost:8080/kanban/board", {
         method: "DELETE",
         body: jsonString,
-        headers: { "Content-Type" : "application/json"}
+        headers: {"Content-Type": "application/json"}
     });
     // mit fetch zu quarkus markus senden
     fetch(request)
@@ -169,7 +186,9 @@ function createKanbanList(titel, listeId) {
     var addElementButton = document.createElement("button");
     addElementButton.innerHTML = "+ Element hinzufügen";
     addElementButton.classList.add("add-element-button");
-    addElementButton.addEventListener("click", function (event){
+    //damit wir schneller an die Id im modal kommen
+    addElementButton.id = listeId;
+    addElementButton.addEventListener("click", function (event) {
         openAddElementModal(listeId);
     })
 
@@ -189,6 +208,7 @@ function createKanbanList(titel, listeId) {
 
     return newListKanbanDiv;
 }
+
 /*
 function createCard(title) {
     // Create card element
@@ -199,9 +219,8 @@ function createCard(title) {
     return card;
 }*/
 
-function addElementToKanbanList(listeId, elementId, titel){
+function addElementToKanbanList(listeId, elementId, titel) {
     var parentDiv = document.getElementById("liste" + listeId);
-
     // Create new card element
     var newCard = document.createElement("div");
     newCard.setAttribute("draggable", "true");
@@ -222,13 +241,61 @@ function addElementToKanbanList(listeId, elementId, titel){
     dragzone()
 }
 
-function openAddElementModal(listeId){
-    window.open("/kanban/create/"+listeId, "_blank");
+
+function openAddElementModal(listeId) {
+// When the user clicks the button, open the modal
+    modalElement.style.display = "block";
+
+    // Get form elements
+    const titleInput = document.getElementById("title-input");
+    const erstellerInput = document.getElementById("ersteller-input");
+    const descriptionInput = document.getElementById("description-input");
+    const saveButton = document.getElementById("save-element-button");
+
+
+// Handle form submission
+    saveButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        var obj = new Object();
+        obj.listeId = listeId;
+        obj.titel = titleInput.value;
+        obj.ersteller = erstellerInput.value;
+        obj.beschreibung = descriptionInput.value;
+
+        console.log("post obj:");
+        console.log(obj);
+
+        fetch("/kanban/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(obj)
+        }).then(function (response) {
+            // popups erstellen, die dem user feedback geben
+            if (response.ok) {
+                console.log("Element erstellt!");
+            } else {
+                alert("Fehler bei erstellen des Elements " + response.status);
+            }
+        })
+            .catch(function (error) {
+                alert("Fehler bei erstellen des Elements: " + error);
+            });
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modalElement) {
+            modalElement.style.display = "none";
+        }
+    }
+
 }
 
 modalAddListe();
 
-function modalAddListe(){
+function modalAddListe() {
     var modal = document.getElementById("modal");
     console.log(modal);
 // Get the button that opens the modal
@@ -259,3 +326,8 @@ function modalAddListe(){
     var form = document.getElementById("modal-form");
 
 }
+
+function modalAddElement() {
+
+}
+

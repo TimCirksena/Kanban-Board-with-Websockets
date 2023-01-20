@@ -28,6 +28,33 @@
         </form>
     </div>
 </div>
+<div id="modalElement" class="modal" style="position: fixed; bottom: 20px; right: 20px;">
+    <div class="modal-content">
+        <label>Neues Element hinzufügen</label>
+        <button class="close-modal-element">&times;</button>
+        <form id="create-element-form">
+            <label for="title-input">Title:</label>
+            <input type="text" id="title-input">
+
+            <label for="ersteller-input">Ersteller:</label>
+            <input type="text" id="ersteller-input">
+
+            <label for="description-input">Description:</label>
+            <textarea id="description-input"></textarea>
+
+            <button type="submit" id="save-element-button">Save</button>
+        </form>
+        <div class="comments-section">
+            <h3>Comments:</h3>
+            <div id="comments-display"></div>
+            <form>
+                <label for="new-comment">Add a comment:</label>
+                <input type="text" id="new-comment" name="new-comment">
+                <button type="submit" id="send-comment-button">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="/scripts/singleBoard_script.js"></script>
 <script>
 

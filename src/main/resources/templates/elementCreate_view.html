@@ -62,13 +62,13 @@
             },
             body: JSON.stringify(obj)
         }).then(function (response) {
-                // popups erstellen, die dem user feedback geben
-                if (response.ok) {
-                    console.log("Element erstellt!");
-                } else {
-                    alert("Fehler bei erstellen des Elements " + response.status);
-                }
-            })
+            // popups erstellen, die dem user feedback geben
+            if (response.ok) {
+                console.log("Element erstellt!");
+            } else {
+                alert("Fehler bei erstellen des Elements " + response.status);
+            }
+        })
             .catch(function (error) {
                 alert("Fehler bei erstellen des Elements: " + error);
             });

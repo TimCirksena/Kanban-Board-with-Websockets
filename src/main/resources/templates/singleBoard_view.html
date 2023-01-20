@@ -34,7 +34,7 @@
     {#for listeKanban in listeKanbans}
     var newListKanbanDiv = createKanbanList("{listeKanban.titel}",{listeKanban.listeId});
     {#for elementKanban in listeKanban.stubElementDTOS}
-    addElementToKanbanList({listeKanban.listeId},{elementKanban.elementId},"{elementKanban.titel}");
+    addElementToKanbanList({ listeKanban.listeId },{ elementKanban.elementId },"{elementKanban.titel}");
     {/for}
     {/for}
 

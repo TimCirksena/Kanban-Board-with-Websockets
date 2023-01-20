@@ -120,6 +120,7 @@ modalAddBoard();
 function modalAddBoard(){
     var modal = document.getElementById("modal");
     console.log(modal);
+
 // Get the button that opens the modal
     var btn = document.getElementById("open-modal-btn");
     console.log(btn);
@@ -129,6 +130,8 @@ function modalAddBoard(){
 // When the user clicks the button, open the modal
     btn.onclick = function () {
         modal.style.display = "block";
+        //Für den autofocus, damit instant geschrieben werden kann
+        document.getElementById("input-field").focus();
     }
 // When the user clicks on <span> (x), close the modal
     span.onclick = function () {

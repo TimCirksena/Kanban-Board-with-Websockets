@@ -80,6 +80,16 @@ h1{
 .back-button:hover {
     background-color: #555;
 }
+.element-button-div{
+    position: absolute;
+    bottom: 0;
+    width: inherit;
+    margin-left: -10px;
+}
+
+.add-element-button {
+    width: inherit;
+}
 .delete-kanban {
     position: absolute;
     top: 0;

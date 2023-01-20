@@ -46,6 +46,15 @@ public class SingleBoardWebsocket {
                 session.getAsyncRemote().sendText(finalJson);
             }
     }
+    /**
+     * TODO: hier ist noch unklar wie genau das mit javascript dann geht
+     * refreshen wir einfach nur die listen?
+     * vielleicht alerts wenn was nicht klappt und dann reseten
+     * */
+    public void elementVonListeZuListeGetauscht(){
+
+    }
+
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);

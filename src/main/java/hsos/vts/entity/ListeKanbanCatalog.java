@@ -10,4 +10,6 @@ public interface ListeKanbanCatalog {
     void addKanbanElement(long listId, FullElementDTO element);
 
     long deleteListeKanbanById(long listeId, long boardId);
+
+    void moveFromListToList(long listIdProvider, long listIdConsumer, long elementId);
 }

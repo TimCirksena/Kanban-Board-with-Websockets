@@ -38,6 +38,7 @@ h1{
     background-color: #f1f1f1;
     color: #333333;
     padding: 10px;
+    margin-top: 25px;
 }
 
 .dragging {
@@ -86,7 +87,7 @@ h1{
     margin: 5px;
     width: 25px;
     height: 25px;
-    border-radius: 50%;
+
     background-color: red;
     color: white;
     text-align: center;

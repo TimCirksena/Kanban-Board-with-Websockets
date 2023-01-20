@@ -42,7 +42,6 @@
             createKanbanListElement(message.titel, message.listeId);
         }
         if(message.type === "liste_kanban_deleted"){
-            console.log("DEBUUUUUUUUUUUUUUUGGUS: " +message.listeId);
             document.getElementById("liste" + message.listeId).remove();
         }
     };
@@ -97,7 +96,7 @@
             .then(function (response) {
                 // popups erstellen, die dem user feedback geben
                 if (response.ok) {
-                    alert("Liste wurde deleted!");
+                    console.log("Die Liste wurde deleted")
 
                 } else {
                     alert("Fehler beim löschen der Liste " + response.status);
@@ -114,13 +113,6 @@
         newListKanbanDiv.classList.add("dropzone");
         newListKanbanDiv.setAttribute("id", "color-picker" + listeId);
         newListKanbanDiv.id = "liste" + listeId;
-
-        // Create card link
-        var cardLink2 = document.createElement("a");
-        cardLink2.classList.add("card-link");
-        cardLink2.href = "#";
-        cardLink2.innerHTML = "ListeID" + listeId;
-        newListKanbanDiv.appendChild(cardLink2);
 
         // Create new h2 element for the title
         var newTitle = document.createElement("h2");

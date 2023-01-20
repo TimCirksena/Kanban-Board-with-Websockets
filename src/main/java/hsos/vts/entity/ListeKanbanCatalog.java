@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ListeKanbanCatalog {
     List<StubElementDTO> getAllStubElementDTOInList(long listId);
-
     void addKanbanElement(long listId, FullElementDTO element);
+
+    long deleteListeKanbanById(long listeId, long boardId);
 }

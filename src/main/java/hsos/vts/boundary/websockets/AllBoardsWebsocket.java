@@ -87,8 +87,6 @@ public class AllBoardsWebsocket {
         else{
             System.out.println("Fehler im Websocket bei delete");
         }
-
-
     }
 
     /*

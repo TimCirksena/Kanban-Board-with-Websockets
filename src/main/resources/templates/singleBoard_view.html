@@ -38,8 +38,12 @@
     socket.onmessage = function (event) {
         var message = JSON.parse(event.data);
         console.log(message);
-        if (message.type === "list_kanban_created") {
+        if (message.type === "liste_kanban_created") {
             createKanbanListElement(message.titel, message.listeId);
+        }
+        if(message.type === "liste_kanban_deleted"){
+            console.log("DEBUUUUUUUUUUUUUUUGGUS: " +message.listeId);
+            document.getElementById("liste" + message.listeId).remove();
         }
     };
     //New List-Item
@@ -76,11 +80,40 @@
             });
     });
 
+    function deleteListe(listeId, boardId){
+
+        var obj = new Object();
+        obj.listeId = listeId;
+        obj.boardId = boardId;
+        var jsonString = JSON.stringify(obj);
+
+        var request = new Request("http://localhost:8080/kanban/board", {
+            method: "DELETE",
+            body: jsonString,
+            headers: { "Content-Type" : "application/json"}
+        });
+        // mit fetch zu quarkus markus senden
+        fetch(request)
+            .then(function (response) {
+                // popups erstellen, die dem user feedback geben
+                if (response.ok) {
+                    alert("Liste wurde deleted!");
+
+                } else {
+                    alert("Fehler beim löschen der Liste " + response.status);
+                }
+            })
+            .catch(function (error) {
+                alert("Fehler beim löschen der Liste: " + error);
+            });
+    }
+
     function createKanbanListElement(titel, listeId) {
         // Create new dropzone element
         var newListKanbanDiv = document.createElement("div");
         newListKanbanDiv.classList.add("dropzone");
         newListKanbanDiv.setAttribute("id", "color-picker" + listeId);
+        newListKanbanDiv.id = "liste" + listeId;
 
         // Create card link
         var cardLink2 = document.createElement("a");
@@ -98,6 +131,18 @@
         var colorPickerLabel = document.createElement("label");
         colorPickerLabel.setAttribute("for", "color-picker");
         colorPickerLabel.innerHTML = "Background color: ";
+
+        // Create delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-kanban");
+        deleteButton.id = "delete" + listeId;
+        deleteButton.innerHTML = "X";
+        deleteButton.addEventListener("click", function (e) {
+            var currentUrl = window.location.href;
+            var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+            deleteListe(listeId, boardId);
+        });
+        newListKanbanDiv.appendChild(deleteButton);
 
         // Create new color picker input
         var colorPickerInput = document.createElement("input");
@@ -130,6 +175,7 @@
         card.innerHTML = title;
         return card;
     }
+
 
 
 </script>

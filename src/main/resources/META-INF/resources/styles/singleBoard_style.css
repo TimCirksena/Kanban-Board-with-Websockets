@@ -20,6 +20,7 @@ h1{
 }
 
 .dropzone {
+    position: relative;
     display: inline-block;
     float: left;
     width: 200px;
@@ -77,4 +78,22 @@ h1{
 
 .back-button:hover {
     background-color: #555;
+}
+.delete-kanban {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.delete-kanban:hover {
+    background-color: darkred;
 }

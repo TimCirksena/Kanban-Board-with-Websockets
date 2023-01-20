@@ -38,13 +38,5 @@ public class ElementResource {
         return elementCreate_view.data("boards", elementKanbanCatalog.getElementById(elementId));
     }
 
-    @POST
-    @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/boardForList")
-    public Response createNewListElement(PostListeDTO postListeDTO){
-        singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel));
-        return Response.ok().build();
-    }
+
 }

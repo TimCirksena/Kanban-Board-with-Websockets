@@ -63,15 +63,7 @@ public class BoardKanbanResource {
     }
 
 
-    @POST
-    @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/boardForList")
-    public Response createNewListElement(PostListeDTO postListeDTO){
-        singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel));
-        return Response.ok().build();
-    }
+
     /*
         @GET
         @Transactional

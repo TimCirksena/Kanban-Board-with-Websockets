@@ -1,6 +1,8 @@
 package hsos.vts.boundary.view;
 
 
+import hsos.vts.boundary.acl.PostListeDTO;
+import hsos.vts.boundary.websockets.SingleBoardWebsocket;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
@@ -11,6 +13,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/kanban/board")
 @ApplicationScoped
@@ -19,6 +22,9 @@ import javax.ws.rs.core.MediaType;
 public class ListeKanbanResource {
     @Inject
     ListeKanbanCatalog listeKanbanCatalog;
+
+    @Inject
+    SingleBoardWebsocket singleBoardWebsocket;
 
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
@@ -31,5 +37,14 @@ public class ListeKanbanResource {
     public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId){
         return singleBoard_view.data("listeKanbans", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
                 "boardTitel", boardKanbanCatalog.getKanbanBoardById(kanbanId));
+    }
+    @POST
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/PostForList")
+    public Response createNewListElement(PostListeDTO postListeDTO){
+        singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel));
+        return Response.ok().build();
     }
 }

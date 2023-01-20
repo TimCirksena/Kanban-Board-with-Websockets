@@ -64,15 +64,17 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
 
     @Override
     public ListeKanbanDTO addListToBoard(long boardId, String listTitel) {
+        //Zuerst persisten dann adden, sonst geht die Id verloren
         ListeKanban listeKanban = new ListeKanban(listTitel);
+        listeKanban.persist();
+        //Board wird gefunden
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
-        //Hier weist Quarkus die id automatisch mit magie zu
+        //Mittels get() bekommen wir das richtige board, weil vorher nur optional
         board.get().getKanbanListen().add(listeKanban);
-        //Jetzt müssen das so machen, weil sonst die Id verloren geht
-        //TODO: Verstehen
-        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(board.get().getKanbanListen().get(board.get().getKanbanListen().size()-1));
-        System.out.println("DTO" + listeKanbanDTO.toString());
-        System.out.println("ListeKanban:" + listeKanban.toString());
+        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(listeKanban);
+        //Debugging
+        //System.out.println("DTO" + listeKanbanDTO.toString());
+        //System.out.println("ListeKanban:" + listeKanban.toString());
         return listeKanbanDTO;
     }
 

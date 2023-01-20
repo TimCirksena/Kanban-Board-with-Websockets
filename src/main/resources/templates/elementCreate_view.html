@@ -11,6 +11,9 @@
         <label for="title-input">Title:</label>
         <input type="text" id="title-input">
 
+        <label for="ersteller-input">Ersteller:</label>
+        <input type="text" id="ersteller-input">
+
         <label for="description-input">Description:</label>
         <textarea id="description-input"></textarea>
 
@@ -29,49 +32,45 @@
 
 
 <script>
+    var listeId = {listeId};
+
     // Get form elements
     const createForm = document.getElementById("create-form");
     const titleInput = document.getElementById("title-input");
+    const erstellerInput = document.getElementById("ersteller-input");
     const descriptionInput = document.getElementById("description-input");
     const saveButton = document.getElementById("save-button");
+
+
 
     // Handle form submission
     createForm.addEventListener("submit", (e) => {
         e.preventDefault();
+        var obj = new Object();
+        obj.listeId = listeId;
+        obj.titel = titleInput.value;
+        obj.ersteller = erstellerInput.value;
+        obj.beschreibung = descriptionInput.value;
 
-        // Get form data
-        const title = titleInput.value;
-        const description = descriptionInput.value;
+        console.log("post obj:");
+        console.log(obj);
 
-        // Send data to Quarkus
         fetch("/kanban/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                title: title,
-                description: description
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle response from Quarkus
-                if (data.success) {
-                    // Clear form fields
-                    titleInput.value = "";
-                    descriptionInput.value = "";
-
-                    // Show success message
-                    alert("Element created successfully!");
+            body: JSON.stringify(obj)
+        }).then(function (response) {
+                // popups erstellen, die dem user feedback geben
+                if (response.ok) {
+                    console.log("Element erstellt!");
                 } else {
-                    // Show error message
-                    alert("Error creating element: " + data.message);
+                    alert("Fehler bei erstellen des Elements " + response.status);
                 }
             })
-            .catch(err => {
-                // Show error message
-                alert("Error creating element: " + err);
+            .catch(function (error) {
+                alert("Fehler bei erstellen des Elements: " + error);
             });
     });
 </script>

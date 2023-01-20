@@ -1,12 +1,11 @@
 package hsos.vts.gateway.repo;
 
-import hsos.vts.boundary.acl.FullElementDTO;
+import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.StubElementDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
 import hsos.vts.entity.ElementKanban;
 import hsos.vts.entity.ListeKanban;
 import hsos.vts.entity.BoardKanban;
-import hsos.vts.entity.ListeKanban;
 import hsos.vts.entity.ListeKanbanCatalog;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -25,8 +24,14 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
     }
 
     @Override
-    public void addKanbanElement(long listId, FullElementDTO element) {
+    public StubElementDTO addKanbanElement(PostElementDTO dto) {
+        ElementKanban elementKanban = new ElementKanban(dto.ersteller, dto.titel, dto.beschreibung);
+        elementKanban.persist();
 
+        ListeKanban listeToAdd = ListeKanban.findById(dto.listeId);
+        listeToAdd.getKanbanElementList().add(elementKanban);
+
+        return new StubElementDTO(listeToAdd.getListeId(), elementKanban.getElementId(), elementKanban.getTitel());
     }
 
     /**

@@ -17,6 +17,7 @@ h1{
     background: white;
     padding: 10px;
     margin: 8px;
+    border-radius: 5px;
 }
 
 .dropzone {

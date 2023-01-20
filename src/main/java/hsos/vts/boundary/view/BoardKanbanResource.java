@@ -22,10 +22,13 @@ public class BoardKanbanResource {
     //fd
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
+
     @Inject
     AllBoardsWebsocket allBoardsWebsocket;
+
     @Inject
     SingleBoardWebsocket singleBoardWebsocket;
+
     @Inject
     Template allBoards_view;
 

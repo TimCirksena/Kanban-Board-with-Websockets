@@ -1,6 +1,4 @@
-function hello(){
-    alert("Hello, ich bin eine Nachricht!");
-}
+let dragged;
 function dragzone() {
     /* events fired on the draggable target */
     const sources = document.querySelectorAll(".draggable");
@@ -56,10 +54,13 @@ socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);
     if (message.type === "liste_kanban_created") {
-        createKanbanListElement(message.titel, message.listeId);
+        createKanbanList(message.titel, message.listeId);
     }
     if(message.type === "liste_kanban_deleted"){
         document.getElementById("liste" + message.listeId).remove();
+    }
+    if(message.type === "element_added"){
+        addElementToKanbanList(message.listeId,message.elementId,message.titel);
     }
 };
 //New List-Item
@@ -125,7 +126,7 @@ function deleteListe(listeId, boardId){
         });
 }
 
-function createKanbanListElement(titel, listeId) {
+function createKanbanList(titel, listeId) {
     // Create new dropzone element
     var newListKanbanDiv = document.createElement("div");
     newListKanbanDiv.classList.add("dropzone");
@@ -169,7 +170,7 @@ function createKanbanListElement(titel, listeId) {
     addElementButton.innerHTML = "+ Element hinzufügen";
     addElementButton.classList.add("add-element-button");
     addElementButton.addEventListener("click", function (event){
-        addElementToList(listeId);
+        openAddElementModal(listeId);
     })
 
     var eButtonDiv = document.createElement("div");
@@ -188,7 +189,7 @@ function createKanbanListElement(titel, listeId) {
 
     return newListKanbanDiv;
 }
-
+/*
 function createCard(title) {
     // Create card element
     var card = document.createElement("div");
@@ -196,10 +197,33 @@ function createCard(title) {
     card.classList.add("card", "draggable");
     card.innerHTML = title;
     return card;
+}*/
+
+function addElementToKanbanList(listeId, elementId, titel){
+    var parentDiv = document.getElementById("liste" + listeId);
+
+    // Create new card element
+    var newCard = document.createElement("div");
+    newCard.setAttribute("draggable", "true");
+    newCard.classList.add("element", "draggable");
+    newCard.setAttribute("id", "element" + elementId);
+
+    // Create new card title element
+    var newCardTitle = document.createElement("p");
+    newCardTitle.classList.add("element-title");
+    newCardTitle.innerHTML = titel;
+
+    // Append title to card
+    newCard.appendChild(newCardTitle);
+
+    // Append card to parent div
+    parentDiv.appendChild(newCard);
+
+    dragzone()
 }
 
-function addElementToList(listeId){
-
+function openAddElementModal(listeId){
+    window.open("/kanban/create/"+listeId, "_blank");
 }
 
 modalAddListe();

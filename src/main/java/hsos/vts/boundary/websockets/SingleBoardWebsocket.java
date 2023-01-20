@@ -3,6 +3,7 @@ package hsos.vts.boundary.websockets;
 import hsos.vts.boundary.acl.DeleteListeDTO;
 import hsos.vts.boundary.acl.ListeKanbanDTO;
 import hsos.vts.boundary.acl.StubBoardDTO;
+import hsos.vts.boundary.acl.StubElementDTO;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.vertx.core.json.JsonObject;
 
@@ -31,9 +32,7 @@ public class SingleBoardWebsocket {
         String finalJson = typeHelper.toString();
         System.out.println(finalJson);
         //Darf kein Obj sein weil er das nicht richtig checkt
-        for (Session session : sessions) {
-            session.getAsyncRemote().sendText(finalJson);
-        }
+        broadcast(finalJson);
     }
     public void listeKanbanDelete(DeleteListeDTO deleteListeDTO) {
 
@@ -42,10 +41,18 @@ public class SingleBoardWebsocket {
             typeHelper.put("listeId", deleteListeDTO.listeId);
             typeHelper.put("boardId", deleteListeDTO.boardId);
             String finalJson = typeHelper.toString();
-            for (Session session : sessions) {
-                session.getAsyncRemote().sendText(finalJson);
-            }
+            broadcast(finalJson);
     }
+    public void addElementToList(StubElementDTO stubElementDTO){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("type","element_added");
+        jsonObject.put("listeId",stubElementDTO.listeId);
+        jsonObject.put("elementId",stubElementDTO.elementId);
+        jsonObject.put("titel",stubElementDTO.titel);
+        broadcast(jsonObject.toString());
+    }
+
+
     /**
      * TODO: hier ist noch unklar wie genau das mit javascript dann geht
      * refreshen wir einfach nur die listen?
@@ -71,5 +78,11 @@ public class SingleBoardWebsocket {
 
     @OnError
     public void onError(Session session, Throwable throwable) {
+    }
+
+    private void broadcast(String json){
+        for (Session session : sessions) {
+            session.getAsyncRemote().sendText(json);
+        }
     }
 }

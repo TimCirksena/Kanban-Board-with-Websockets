@@ -30,11 +30,11 @@
 </div>
 <script src="/scripts/singleBoard_script.js"></script>
 <script>
-    let dragged;
+
     {#for listeKanban in listeKanbans}
-    var newListKanbanDiv = createKanbanListElement("{listeKanban.titel}",{listeKanban.listeId});
+    var newListKanbanDiv = createKanbanList("{listeKanban.titel}",{listeKanban.listeId});
     {#for elementKanban in listeKanban.stubElementDTOS}
-    newListKanbanDiv.appendChild(createCard("{elementKanban.titel}"));
+    addElementToKanbanList({listeKanban.listeId},{elementKanban.elementId},"{elementKanban.titel}");
     {/for}
     {/for}
 

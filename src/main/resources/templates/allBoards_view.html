@@ -23,128 +23,17 @@
         </button>
     </form>
 </div>
-
+<script src="/scripts/allBoards_script.js"></script>
 <script>
 
-    function createKanbanBoard(titel, boardId) {
-        // Create card element
-        var card = document.createElement("div");
-        card.classList.add("card");
-        card.style.width = "25rem";
-        card.id = "card" + boardId;
 
-        // Create card body
-        var cardBody = document.createElement("div");
-        cardBody.classList.add("card-body");
-        card.appendChild(cardBody);
-
-        // Create delete button
-        var deleteButton = document.createElement("button");
-        deleteButton.classList.add("delete-kanban");
-        deleteButton.id = "delete" + boardId;
-        deleteButton.innerHTML = "X";
-        deleteButton.addEventListener("click", function (e) {
-            deleteKanban(boardId);
-        });
-        cardBody.appendChild(deleteButton);
-
-        // Create card link
-        var cardLink1 = document.createElement("a");
-        cardLink1.classList.add("card-link");
-        cardLink1.href = "#";
-        cardLink1.innerHTML = "Another link";
-        var paddingLeft = document.createElement("div");
-        paddingLeft.classList.add("padding-left-xl");
-        paddingLeft.appendChild(cardLink1);
-        cardBody.appendChild(paddingLeft);
-
-        // Create card title
-        var cardTitle = document.createElement("h1");
-        cardTitle.classList.add("card-title");
-        cardTitle.innerHTML = titel;
-        cardBody.appendChild(cardTitle);
-
-        // Create card link
-        var cardLink2 = document.createElement("a");
-        cardLink2.classList.add("card-link");
-        cardLink2.innerHTML = "Zum Kanbanboard";
-        cardLink2.addEventListener("click", function (e) {
-            e.preventDefault();
-            window.location.href = "http://localhost:8080/kanban/board/" + boardId;
-        });
-        cardBody.appendChild(cardLink2);
-
-        var existingDiv = document.getElementById("existing-div");
-        existingDiv.appendChild(card);
-    }
 
     //mit qute wird die datenbank abgefragt, und alle vorhandenen kanbanboards werden angezeigt
     {#for board in boards}
     createKanbanBoard("{board.titel}",{board.boardId});
     {/for}
 
-    var socket = new WebSocket("ws://localhost:8080/kanban");
-    socket.onmessage = function (event) {
-        var message = JSON.parse(event.data);
-        console.log(message);
-        if (message.type === "kanban_board_created") {
-            createKanbanBoard(message.titel, message.boardId);
-        }
-        if(message.type === "kanban_board_deleted"){
-            document.getElementById("card" + message.boardId).remove();
-        }
-    };
 
-    function deleteKanban(boardId) {
-        var request = new Request("http://localhost:8080/kanban", {
-            method: "DELETE",
-            body: boardId,
-            headers: { "Content-Type" : "application/json"}
-        });
-        // mit fetch zu quarkus markus senden
-        fetch(request)
-            .then(function (response) {
-                // popups erstellen, die dem user feedback geben
-                if (response.ok) {
-                    alert("Kanban board wurde deleted!");
-
-                } else {
-                    alert("Fehler beim löschen des Kanban boards " + response.status);
-                }
-            })
-            .catch(function (error) {
-                alert("Fehler beim löschen des Kanban boards: " + error);
-            });
-    }
-
-
-    document.getElementById("submit-kanban").addEventListener("click", function (event) {
-        event.preventDefault(); // prevent the form from submitting
-
-        var inputField = document.getElementById("input-field");
-        var kanbanBoardTitel = inputField.value;
-
-        // neues Request object
-        var request = new Request("http://localhost:8080/kanban", {
-            method: "POST",
-            body: kanbanBoardTitel,
-            headers: { "Content-Type" : "application/json"}
-        });
-
-        // mit fetch zu quarkus markus senden
-        fetch(request)
-            .then(function (response) {
-                // popups erstellen, die dem user feedback geben
-                if (response.ok) {
-                    alert("Kanban board erstellt!");
-                } else {
-                    alert("Fehler bei erstellen des Kanban boards " + response.status);
-                }
-            })
-            .catch(function (error) {
-                alert("Fehler bei erstellen des Kanban boards: " + error);
-            });
-    });
 
 </script>
 </body>

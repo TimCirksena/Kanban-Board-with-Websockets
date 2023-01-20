@@ -114,8 +114,10 @@ document.getElementById("submit-kanban").addEventListener("click", function (eve
     // Close the modal
     modal.style.display = "none";
 });
-document.getElementById("open-modal-btn").addEventListener("click", function (event){
 
+modalAddBoard();
+
+function modalAddBoard(){
     var modal = document.getElementById("modal");
     console.log(modal);
 // Get the button that opens the modal
@@ -128,7 +130,6 @@ document.getElementById("open-modal-btn").addEventListener("click", function (ev
     btn.onclick = function () {
         modal.style.display = "block";
     }
-
 // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
         modal.style.display = "none";
@@ -142,6 +143,7 @@ document.getElementById("open-modal-btn").addEventListener("click", function (ev
     }
 // Get the form element
     var form = document.getElementById("modal-form");
+}
 
-});
+
 

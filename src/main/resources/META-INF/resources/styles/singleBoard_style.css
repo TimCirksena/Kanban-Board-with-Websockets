@@ -45,25 +45,6 @@ h1{
     opacity: 0.5;
 }
 
-.add-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px; /* half of width and height */
-    background-color: blue;
-    color: white;
-    font-size: 30px;
-    text-align: center;
-    line-height: 50px;
-    cursor: pointer;
-}
-
-.add-button:hover {
-    background-color: darkblue;
-}
-
 .back-button {
     position: absolute;
     top: 10px;

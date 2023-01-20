@@ -10,18 +10,20 @@
 </head>
 <body>
 <h1>Willkommen zu Rudi's Kanban Boards</h1>
-<button id="open-modal-btn">Kanban-board hinzufügen</button>
 <div class="grid-container" id="existing-div"></div>
+<button id="open-modal-btn">Kanban-board hinzufügen</button>
 <div id="modal" class="modal">
     <div class="modal-content">
+        <label>Titel des neuen Kanban Boards:</label>
         <button class="close-modal">&times;</button>
         <form id="modal-form">
-            <label>Titel des neuen Kanban Boards:</label>
+
             <input type="text" id="input-field" placeholder="Titel des Boards">
-            <button type="submit" class="plus radius" id="submit-kanban"></button>
+            <button type="submit" class="add-button" id="submit-kanban">Erstellen</button>
         </form>
     </div>
 </div>
+
 <script src="/scripts/allBoards_script.js"></script>
 <script>
 
@@ -29,7 +31,6 @@
     {#for board in boards}
     createKanbanBoard("{board.titel}",{board.boardId});
     {/for}
-
 
 
 </script>

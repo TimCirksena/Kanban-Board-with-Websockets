@@ -23,16 +23,9 @@ public class BoardKanbanResource {
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
     @Inject
-    Template display;
-    @Inject
     AllBoardsWebsocket allBoardsWebsocket;
-
     @Inject
     SingleBoardWebsocket singleBoardWebsocket;
-
-    @Inject
-    Template chat;
-
     @Inject
     Template allBoards_view;
 

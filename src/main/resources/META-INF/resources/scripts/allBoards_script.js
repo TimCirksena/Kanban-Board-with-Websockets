@@ -1,3 +1,4 @@
+
 function createKanbanBoard(titel, boardId) {
     // Create card element
     var card = document.createElement("div");
@@ -83,7 +84,6 @@ function deleteKanban(boardId) {
             alert("Fehler beim löschen des Kanban boards: " + error);
         });
 }
-
 
 document.getElementById("submit-kanban").addEventListener("click", function (event) {
     event.preventDefault(); // prevent the form from submitting

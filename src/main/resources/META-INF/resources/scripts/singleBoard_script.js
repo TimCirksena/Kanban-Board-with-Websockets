@@ -1,22 +1,16 @@
 let dragged;
-
-
 var modalElement = document.getElementById("modalElement");
-
-
 // Get the <span> element that closes the modal
 var close_modal_element = document.getElementsByClassName("close-modal-element")[0];
-
+modalAddListe();
 // When the user clicks on <span> (x), close the modal
 close_modal_element.onclick = function () {
     modalElement.style.display = "none";
 }
-
-
 // Get the form element
 var create_element_form = document.getElementById("modal-element-form");
 
-
+/** Erstellt die drag and drop listener für die listen und elemente */
 function dragzone() {
     /* events fired on the draggable target */
     const sources = document.querySelectorAll(".draggable");
@@ -85,12 +79,34 @@ socket.onmessage = function (event) {
     }
 };
 
-/** Methode die zur aktualisierung für die Websockets dient*/
-function elementEditFromWebsockt(message) {
+/** Erstellt ein neues Element in der Parent Liste */
+function createNewElement(listeId, titleInput, erstellerInput, descriptionInput) {
+    var obj = new Object();
+    obj.listeId = listeId;
+    obj.titel = titleInput;
+    obj.ersteller = erstellerInput;
+    obj.beschreibung = descriptionInput;
 
-    var element = document.getElementById('element' + message.elementId);
-    let childP = element.querySelector("p");
-    childP.textContent = message.titel;
+    console.log("post obj:");
+    console.log(obj);
+
+    fetch("/kanban/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+    }).then(function (response) {
+        // popups erstellen, die dem user feedback geben
+        if (response.ok) {
+            console.log("Element erstellt!");
+        } else {
+            alert("Fehler bei erstellen des Elements " + response.status);
+        }
+    })
+        .catch(function (error) {
+            alert("Fehler bei erstellen des Elements: " + error);
+        });
 }
 
 /** Erstellt eine neue Liste*/
@@ -157,7 +173,15 @@ function deleteListe(listeId, boardId) {
         });
 }
 
-/** Methode die zur aktualisierung für die Websockets dient*/
+/** Websocket: Methode die zur aktualisierung für die Websockets dient*/
+function elementEditFromWebsockt(message) {
+
+    var element = document.getElementById('element' + message.elementId);
+    let childP = element.querySelector("p");
+    childP.textContent = message.titel;
+}
+
+/** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function createKanbanList(titel, listeId) {
     // Create new dropzone element
     var newListKanbanDiv = document.createElement("div");
@@ -225,7 +249,7 @@ function createKanbanList(titel, listeId) {
     return newListKanbanDiv;
 }
 
-/** Methode die zur aktualisierung für die Websockets dient*/
+/** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function addElementToKanbanList(listeId, elementId, titel) {
     var parentDiv = document.getElementById("liste" + listeId);
     // Create new card element
@@ -258,7 +282,7 @@ function addElementToKanbanList(listeId, elementId, titel) {
 }
 
 /** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
- * Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen */
+ *  Modal: Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen */
 function openEditElementModal(elementId) {
     // When the user clicks the button, open the modal
     modalElement.style.display = "block";
@@ -330,7 +354,7 @@ function openEditElementModal(elementId) {
     });
 }
 
-/** Modal dient dazu ein neues Element anzulegen */
+/** Modal: Öffnet ein Modal welches dazu dient ein neues Element anzulegen */
 function openAddElementModal(listeId) {
 // When the user clicks the button, open the modal
     modalElement.style.display = "block";
@@ -360,39 +384,7 @@ function openAddElementModal(listeId) {
     }
 }
 
-/** Erstellt ein neues Element in der Parent Liste */
-function createNewElement(listeId, titleInput, erstellerInput, descriptionInput) {
-    var obj = new Object();
-    obj.listeId = listeId;
-    obj.titel = titleInput;
-    obj.ersteller = erstellerInput;
-    obj.beschreibung = descriptionInput;
-
-    console.log("post obj:");
-    console.log(obj);
-
-    fetch("/kanban/create", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(obj)
-    }).then(function (response) {
-        // popups erstellen, die dem user feedback geben
-        if (response.ok) {
-            console.log("Element erstellt!");
-        } else {
-            alert("Fehler bei erstellen des Elements " + response.status);
-        }
-    })
-        .catch(function (error) {
-            alert("Fehler bei erstellen des Elements: " + error);
-        });
-}
-
-modalAddListe();
-
-/** Modal poppt auf wenn man den grünen button auf der html drück */
+/** Modal: Poppt auf wenn man den grünen button auf der html drück für adden einer Liste */
 function modalAddListe() {
     var modal = document.getElementById("modal");
     console.log(modal);

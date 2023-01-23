@@ -29,6 +29,7 @@ h1{
     background: blueviolet;
     margin: 10px;
     padding: 10px;
+    border-radius: 5px;
 }
 
 .dropzone.dragover {
@@ -40,6 +41,7 @@ h1{
     color: #333333;
     padding: 10px;
     margin-top: 25px;
+    border-radius: 10px;
 }
 
 .dragging {

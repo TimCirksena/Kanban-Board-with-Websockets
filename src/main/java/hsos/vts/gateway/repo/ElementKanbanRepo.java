@@ -7,7 +7,6 @@ import hsos.vts.entity.ElementKanbanCatalog;
 import hsos.vts.entity.Kommentar;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +86,16 @@ public class ElementKanbanRepo implements ElementKanbanCatalog {
         ElementKanban elementKanban = new ElementKanban(ersteller,titel,beschreibung);
         elementKanban.persist();
         FullElementDTO fullElementDTO = new FullElementDTO(elementKanban);
+        return fullElementDTO;
+    }
+
+    @Override
+    public FullElementDTO updateElement(FullElementDTO fullElementDTO) {
+        System.out.println("!!!! " + fullElementDTO.elementId);
+        ElementKanban elementKanban = ElementKanban.findById(fullElementDTO.elementId);
+        elementKanban.setBeschreibung(fullElementDTO.beschreibung + "");
+        elementKanban.setTitel(fullElementDTO.titel + "");
+        elementKanban.setErsteller(fullElementDTO.ersteller + "");
         return fullElementDTO;
     }
 }

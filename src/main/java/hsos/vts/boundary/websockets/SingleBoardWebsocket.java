@@ -1,9 +1,6 @@
 package hsos.vts.boundary.websockets;
 
-import hsos.vts.boundary.acl.DeleteListeDTO;
-import hsos.vts.boundary.acl.ListeKanbanDTO;
-import hsos.vts.boundary.acl.StubBoardDTO;
-import hsos.vts.boundary.acl.StubElementDTO;
+import hsos.vts.boundary.acl.*;
 import hsos.vts.entity.BoardKanbanCatalog;
 import io.vertx.core.json.JsonObject;
 
@@ -49,6 +46,15 @@ public class SingleBoardWebsocket {
         jsonObject.put("listeId",stubElementDTO.listeId);
         jsonObject.put("elementId",stubElementDTO.elementId);
         jsonObject.put("titel",stubElementDTO.titel);
+        broadcast(jsonObject.toString());
+    }
+    public void updateElement(FullElementDTO fullElementDTO){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("type","element_edit");
+        jsonObject.put("elementId",fullElementDTO.elementId);
+        jsonObject.put("beschreibung",fullElementDTO.beschreibung);
+        jsonObject.put("titel",fullElementDTO.titel);
+        jsonObject.put("ersteller",fullElementDTO.ersteller);
         broadcast(jsonObject.toString());
     }
 

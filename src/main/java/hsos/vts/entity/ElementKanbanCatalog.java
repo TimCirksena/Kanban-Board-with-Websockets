@@ -19,4 +19,5 @@ public interface ElementKanbanCatalog {
 
     public List<FullElementDTO> getAllElements();
 
+    public FullElementDTO updateElement(FullElementDTO fullElementDTO);
 }

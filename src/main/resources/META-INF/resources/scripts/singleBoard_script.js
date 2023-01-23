@@ -3,6 +3,7 @@ let dragged;
 
 var modalElement = document.getElementById("modalElement");
 
+
 // Get the <span> element that closes the modal
 var close_modal_element = document.getElementsByClassName("close-modal-element")[0];
 
@@ -79,7 +80,18 @@ socket.onmessage = function (event) {
     if (message.type === "element_added") {
         addElementToKanbanList(message.listeId, message.elementId, message.titel);
     }
+    if (message.type === "element_edit") {
+        elementEditFromWebsockt(message);
+    }
 };
+
+function elementEditFromWebsockt(message) {
+
+    var element = document.getElementById('element' + message.elementId);
+    let childP = element.querySelector("p");
+    childP.textContent = message.titel;
+}
+
 //New List-Item
 document.getElementById("add-button").addEventListener("click", function (event) {
     event.preventDefault(); // prevent the form from submitting
@@ -190,6 +202,7 @@ function createKanbanList(titel, listeId) {
     addElementButton.id = listeId;
     addElementButton.addEventListener("click", function (event) {
         openAddElementModal(listeId);
+        openAddElementModal(listeId);
     })
 
     var eButtonDiv = document.createElement("div");
@@ -209,16 +222,6 @@ function createKanbanList(titel, listeId) {
     return newListKanbanDiv;
 }
 
-/*
-function createCard(title) {
-    // Create card element
-    var card = document.createElement("div");
-    card.setAttribute("draggable", "true");
-    card.classList.add("card", "draggable");
-    card.innerHTML = title;
-    return card;
-}*/
-
 function addElementToKanbanList(listeId, elementId, titel) {
     var parentDiv = document.getElementById("liste" + listeId);
     // Create new card element
@@ -232,8 +235,17 @@ function addElementToKanbanList(listeId, elementId, titel) {
     newCardTitle.classList.add("element-title");
     newCardTitle.innerHTML = titel;
 
+    //
+    var editLinkIcon = document.createElement("div");
+    editLinkIcon.classList.add("element-edit-icon");
+    editLinkIcon.setAttribute("id", "edit" + elementId);
+    editLinkIcon.addEventListener("click", function () {
+        openEditElementModal(elementId);
+    })
+
     // Append title to card
     newCard.appendChild(newCardTitle);
+    newCard.appendChild(editLinkIcon);
 
     // Append card to parent div
     parentDiv.appendChild(newCard);
@@ -241,6 +253,77 @@ function addElementToKanbanList(listeId, elementId, titel) {
     dragzone()
 }
 
+/** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type */
+function openEditElementModal(elementId) {
+    // When the user clicks the button, open the modal
+    modalElement.style.display = "block";
+
+    fetch("/kanban/board/element/" + elementId, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+            document.getElementById("title-input").value = data.titel;
+            document.getElementById("ersteller-input").value = data.ersteller;
+            document.getElementById("description-input").value = data.beschreibung;
+        })
+        .catch(error => {
+            console.log(error)
+        });
+
+
+    var el = document.getElementById('save-element-button'),
+        elClone = el.cloneNode(true);
+
+    el.parentNode.replaceChild(elClone, el);
+
+
+    console.log("Das ist die GET id " + elementId);
+    elClone.addEventListener("click", (e) => {
+        // Get form elements
+        const titleInput = document.getElementById("title-input");
+        const erstellerInput = document.getElementById("ersteller-input");
+        const descriptionInput = document.getElementById("description-input");
+
+        e.preventDefault();
+        var obj = new Object();
+        console.log("Das ist die PATCH id " + elementId);
+        obj.elementId = elementId;
+        obj.titel = titleInput.value;
+        obj.ersteller = erstellerInput.value;
+        obj.beschreibung = descriptionInput.value;
+
+        console.log("patch obj:");
+        console.log(obj);
+
+        fetch("/kanban/board/", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(obj)
+        }).then(function (response) {
+            // popups erstellen, die dem user feedback geben
+            if (response.ok) {
+                console.log("SUCCESSFUL PATCH!!!");
+            } else {
+                alert("Fehler bei erstellen des Elements " + response.status);
+            }
+        })
+            .catch(function (error) {
+                alert("Fehler bei erstellen des Elements: " + error);
+            });
+// When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modalElement) {
+                modalElement.style.display = "none";
+            }
+        }
+    });
+}
 
 function openAddElementModal(listeId) {
 // When the user clicks the button, open the modal
@@ -253,35 +336,14 @@ function openAddElementModal(listeId) {
     const saveButton = document.getElementById("save-element-button");
 
 
-// Handle form submission
-    saveButton.addEventListener("click", (e) => {
+    var el = document.getElementById('save-element-button'),
+        elClone = el.cloneNode(true);
+
+    el.parentNode.replaceChild(elClone, el);
+
+    elClone.addEventListener("click", (e) => {
         e.preventDefault();
-        var obj = new Object();
-        obj.listeId = listeId;
-        obj.titel = titleInput.value;
-        obj.ersteller = erstellerInput.value;
-        obj.beschreibung = descriptionInput.value;
-
-        console.log("post obj:");
-        console.log(obj);
-
-        fetch("/kanban/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(obj)
-        }).then(function (response) {
-            // popups erstellen, die dem user feedback geben
-            if (response.ok) {
-                console.log("Element erstellt!");
-            } else {
-                alert("Fehler bei erstellen des Elements " + response.status);
-            }
-        })
-            .catch(function (error) {
-                alert("Fehler bei erstellen des Elements: " + error);
-            });
+        createNewElement(listeId, titleInput.value, erstellerInput.value, descriptionInput.value);
     });
 
     // When the user clicks anywhere outside of the modal, close it
@@ -290,11 +352,37 @@ function openAddElementModal(listeId) {
             modalElement.style.display = "none";
         }
     }
-
 }
 
-modalAddListe();
+function createNewElement(listeId, titleInput, erstellerInput, descriptionInput) {
+    var obj = new Object();
+    obj.listeId = listeId;
+    obj.titel = titleInput;
+    obj.ersteller = erstellerInput;
+    obj.beschreibung = descriptionInput;
 
+    console.log("post obj:");
+    console.log(obj);
+
+    fetch("/kanban/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+    }).then(function (response) {
+        // popups erstellen, die dem user feedback geben
+        if (response.ok) {
+            console.log("Element erstellt!");
+        } else {
+            alert("Fehler bei erstellen des Elements " + response.status);
+        }
+    })
+        .catch(function (error) {
+            alert("Fehler bei erstellen des Elements: " + error);
+        });
+}
+modalAddListe();
 function modalAddListe() {
     var modal = document.getElementById("modal");
     console.log(modal);

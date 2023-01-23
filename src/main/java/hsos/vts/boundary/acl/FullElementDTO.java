@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FullElementDTO {
-    public long id;
+    public long elementId;
     public String titel;
     public String beschreibung;
     public String ersteller;
     public List<KommentarDTO> kommentare;
 
     public FullElementDTO(ElementKanban elementKanban) {
-        this.id = elementKanban.getElementId();
+        this.elementId = elementKanban.getElementId();
         this.ersteller = elementKanban.getErsteller();
         this.titel = elementKanban.getTitel();
         this.beschreibung = elementKanban.getBeschreibung();
@@ -30,10 +30,11 @@ public class FullElementDTO {
          */
     }
 
-    public FullElementDTO(long id, String titel, String beschreibung) {
-        this.id = id;
+    public FullElementDTO(long elementId, String titel, String beschreibung, String ersteller) {
+        this.elementId = elementId;
         this.titel = titel;
         this.beschreibung = beschreibung;
+        this.ersteller = ersteller;
         this.kommentare = new ArrayList<>();
     }
 

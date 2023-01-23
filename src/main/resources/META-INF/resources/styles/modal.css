@@ -69,3 +69,13 @@
 #open-modal-btn:hover {
     background-color: darkgreen;
 }
+.element-edit-icon {
+    position: relative;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/icon/edit-246.png');
+    background-size: cover;
+    cursor: pointer;
+}

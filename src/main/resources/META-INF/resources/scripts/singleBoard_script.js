@@ -85,6 +85,7 @@ socket.onmessage = function (event) {
     }
 };
 
+/** Methode die zur aktualisierung für die Websockets dient*/
 function elementEditFromWebsockt(message) {
 
     var element = document.getElementById('element' + message.elementId);
@@ -92,7 +93,7 @@ function elementEditFromWebsockt(message) {
     childP.textContent = message.titel;
 }
 
-//New List-Item
+/** Erstellt eine neue Liste*/
 document.getElementById("add-button").addEventListener("click", function (event) {
     event.preventDefault(); // prevent the form from submitting
 
@@ -127,6 +128,7 @@ document.getElementById("add-button").addEventListener("click", function (event)
     modal.style.display = "none";
 });
 
+/** Löscht eine bestehende Liste */
 function deleteListe(listeId, boardId) {
 
     var obj = new Object();
@@ -155,6 +157,7 @@ function deleteListe(listeId, boardId) {
         });
 }
 
+/** Methode die zur aktualisierung für die Websockets dient*/
 function createKanbanList(titel, listeId) {
     // Create new dropzone element
     var newListKanbanDiv = document.createElement("div");
@@ -222,6 +225,7 @@ function createKanbanList(titel, listeId) {
     return newListKanbanDiv;
 }
 
+/** Methode die zur aktualisierung für die Websockets dient*/
 function addElementToKanbanList(listeId, elementId, titel) {
     var parentDiv = document.getElementById("liste" + listeId);
     // Create new card element
@@ -253,7 +257,8 @@ function addElementToKanbanList(listeId, elementId, titel) {
     dragzone()
 }
 
-/** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type */
+/** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
+ * Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen */
 function openEditElementModal(elementId) {
     // When the user clicks the button, open the modal
     modalElement.style.display = "block";
@@ -325,6 +330,7 @@ function openEditElementModal(elementId) {
     });
 }
 
+/** Modal dient dazu ein neues Element anzulegen */
 function openAddElementModal(listeId) {
 // When the user clicks the button, open the modal
     modalElement.style.display = "block";
@@ -354,6 +360,7 @@ function openAddElementModal(listeId) {
     }
 }
 
+/** Erstellt ein neues Element in der Parent Liste */
 function createNewElement(listeId, titleInput, erstellerInput, descriptionInput) {
     var obj = new Object();
     obj.listeId = listeId;
@@ -382,7 +389,10 @@ function createNewElement(listeId, titleInput, erstellerInput, descriptionInput)
             alert("Fehler bei erstellen des Elements: " + error);
         });
 }
+
 modalAddListe();
+
+/** Modal poppt auf wenn man den grünen button auf der html drück */
 function modalAddListe() {
     var modal = document.getElementById("modal");
     console.log(modal);
@@ -415,7 +425,4 @@ function modalAddListe() {
 
 }
 
-function modalAddElement() {
-
-}
 

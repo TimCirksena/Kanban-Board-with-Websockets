@@ -34,7 +34,7 @@ function changeElementPos(listeId, elementId){
         .catch(function (error) {
             alert("Fehler bei erstellen des Elements: " + error);
         });
-};
+}
 
 var socket = new WebSocket("ws://localhost:8080/kanban/board");
 socket.onmessage = function (event) {

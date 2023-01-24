@@ -25,11 +25,12 @@ h1{
     display: inline-block;
     float: left;
     width: 200px;
-    height: 500px;
+    height: 355px;
     background: blueviolet;
     margin: 10px;
     padding: 10px;
     border-radius: 5px;
+    overflow: auto;
 }
 
 .dropzone.dragover {
@@ -91,4 +92,16 @@ h1{
 
 .delete-kanban:hover {
     background-color: darkred;
+}
+
+.listContainerDiv{
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 220px;
+    height: 520px;
+    background: blueviolet;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
 }

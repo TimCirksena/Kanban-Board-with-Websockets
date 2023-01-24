@@ -159,6 +159,8 @@ function elementEditFromWebsockt(message) {
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function createKanbanList(titel, listeId) {
     // Create new dropzone element
+    var outerDiv = document.createElement("div");
+    outerDiv.classList.add("listContainerDiv");
     var newListKanbanDiv = document.createElement("div");
     newListKanbanDiv.classList.add("dropzone");
     newListKanbanDiv.setAttribute("id", "color-picker" + listeId);
@@ -184,7 +186,7 @@ function createKanbanList(titel, listeId) {
         var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
         deleteListe(listeId, boardId);
     });
-    newListKanbanDiv.appendChild(deleteButton);
+    outerDiv.appendChild(deleteButton);
 
     // Create new color picker input
     var colorPickerInput = document.createElement("input");
@@ -194,6 +196,7 @@ function createKanbanList(titel, listeId) {
     colorPickerInput.setAttribute("style", "width: 30px; height: 15px;");
     colorPickerInput.addEventListener("change", function () {
         var parent = this.parentElement.parentElement;
+        newListKanbanDiv.style.backgroundColor = this.value;
         parent.style.backgroundColor = this.value;
     });
 
@@ -212,13 +215,16 @@ function createKanbanList(titel, listeId) {
     eButtonDiv.appendChild(addElementButton);
 
     // Append elements to new dropzone element
-    newListKanbanDiv.appendChild(newTitle);
-    newListKanbanDiv.appendChild(eButtonDiv);
-    newListKanbanDiv.appendChild(colorPickerLabel);
+
+    outerDiv.appendChild(newTitle);
+    //newListKanbanDiv.appendChild(eButtonDiv);
+    outerDiv.appendChild(colorPickerLabel);
     colorPickerLabel.appendChild(colorPickerInput);
+    outerDiv.appendChild(newListKanbanDiv);
+    outerDiv.appendChild(eButtonDiv);
 
     // Append new dropzone element to boardKanban div
-    document.getElementById("boardKanban").appendChild(newListKanbanDiv);
+    document.getElementById("boardKanban").appendChild(outerDiv);
 
     newListKanbanDiv.addEventListener("dragover", (event) => {
         // prevent default to allow drop

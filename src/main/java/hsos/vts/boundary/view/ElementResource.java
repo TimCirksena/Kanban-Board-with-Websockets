@@ -9,6 +9,7 @@ import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -22,6 +23,8 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ElementResource {
 
+    final static String ADMIN_ROLE = "admin";
+    final static String USER_ROLE = "kunde";
     @Inject
     SingleBoardWebsocket singleBoardWebsocket;
     @Inject
@@ -39,6 +42,7 @@ public class ElementResource {
 
     @GET
     @Path("/{listeId}")
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public TemplateInstance getElementCreate(@PathParam("listeId") long listeId){
         System.out.println("listeId check " + listeId);
@@ -46,6 +50,7 @@ public class ElementResource {
     }
 
     @POST
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public Response addElementToList(PostElementDTO postElementDTO){
         singleBoardWebsocket.addElementToList(listeKanbanCatalog.addKanbanElement(postElementDTO));

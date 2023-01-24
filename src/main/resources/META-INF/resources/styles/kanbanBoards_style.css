@@ -11,6 +11,10 @@
     border-radius: 70%;
 }
 
+h1{
+    padding: 15px;
+}
+
 /*Quelle: https://stackoverflow.com/questions/60253431/vertical-alignement-of-span-inside-a-div-when-the-font-size-is-big*/
 .plus {
     --b: 4px; /* the thickness */
@@ -36,6 +40,22 @@
 #titelBoardInput_label {
     margin-right: 5px;
 }
+
+.logout_button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 
 .delete-kanban {
     position: absolute;

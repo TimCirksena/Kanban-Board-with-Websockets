@@ -1,3 +1,9 @@
+const LOGGED_COOKIE = "quarkus-credential";
+function logout() {
+    console.log("logging out")
+    document.cookie = LOGGED_COOKIE + '=; Max-Age=0'
+    window.location.href = "/";
+}
 
 function createKanbanBoard(titel, boardId) {
     // Create card element

@@ -9,6 +9,7 @@ import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -21,6 +22,8 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ListeKanbanResource {
+    final static String ADMIN_ROLE = "admin";
+    final static String USER_ROLE = "kunde";
     @Inject
     ListeKanbanCatalog listeKanbanCatalog;
 
@@ -38,6 +41,7 @@ public class ListeKanbanResource {
 
     @Path("/{id}")
     @GET
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId) {
         return singleBoard_view.data("listeKanbans", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
@@ -46,6 +50,7 @@ public class ListeKanbanResource {
 
     @GET
     @Transactional
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/element/{elementId}")
@@ -59,6 +64,7 @@ public class ListeKanbanResource {
 
     @POST
     @Transactional
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/PostForList")
@@ -69,6 +75,7 @@ public class ListeKanbanResource {
 
     @DELETE
     @Transactional
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/listeDelete")
@@ -85,6 +92,7 @@ public class ListeKanbanResource {
 
     @PATCH
     @Transactional
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateElement(FullElementDTO fullElementDTO) {
@@ -95,6 +103,7 @@ public class ListeKanbanResource {
 
     @PATCH
     @Transactional
+    @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/changePos")

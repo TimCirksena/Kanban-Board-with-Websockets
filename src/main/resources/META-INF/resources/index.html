@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rudi's Kanban</title>
+</head>
+<body>
+<h1>Willkommen zu Rudi's Kanban-boards</h1>
+<div class="container">
+  <div class="left-column">
+
+  </div>
+  <div class="right-column">
+    <div class="right-section">
+      <button onclick="location.href='/kanban'" type="button">
+        Zum Login</button>
+      <button onclick="location.href='/register.html'" type="button">
+        Zur Registrierung</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<!--
+  <script lang="js">
+    const LOGGED_COOKIE = "quarkus-credential";
+    $(() => {
+      $.get("/sample/public", data => {
+        console.log(data);
+        $("#content_public").text(data);
+      });
+      $.get("/sample/info", data => {
+        if (data) {
+          console.log(data)
+          $("#login_link").hide();
+          $("#user_message").text("Hallo, " + data);
+          $("#logout").show();
+          $("#logged").show();
+          loadRestrictedContent();
+        } else {
+          $("#login_link").show()
+        }
+      });
+    });
+
+    function logout() {
+      console.log("logging out")
+      document.cookie = LOGGED_COOKIE + '=; Max-Age=0'
+      window.location.href = "/";
+    }
+
+    function loadRestrictedContent() {
+      $.get("/sample/user_managers", data => {
+        $("#content_users").text(data);
+      });
+
+      $.get("/sample/managers", data => {
+        $("#content_managers").text(data);
+      })
+    }
+  </script>-->
+</div>
+</body>
+</html>

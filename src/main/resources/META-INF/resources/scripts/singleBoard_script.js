@@ -10,71 +10,12 @@ close_modal_element.onclick = function () {
 // Get the form element
 var create_element_form = document.getElementById("modal-element-form");
 
-/** Erstellt die drag and drop listener für die listen und elemente */
-function dragzone() {
-    var listeId;
-    var elementId = "";
-    /* events fired on the draggable target */
-    const sources = document.querySelectorAll(".draggable");
-    sources.forEach(source => {
-        source.addEventListener("drag", (event) => {
-            console.log("dragging");
-        });
-        source.addEventListener("dragstart", (event) => {
-            // store a ref. on the dragged elem
-            dragged = event.target;
-            //ElementId wird für das tauschen geholt
-            elementId = event.target.id;
-            // make it half transparent
-            event.target.classList.add("dragging");
-        });
-        source.addEventListener("dragend", (event) => {
-            // reset the transparency
-            event.target.classList.remove("dragging");
-        });
-    })
-    /* events fired on the drop targets */
-    //const target = document.getElementById("droptarget");
-    const listTargets = document.querySelectorAll(".dropzone");
-    listTargets.forEach(target => {
-        target.addEventListener("dragover", (event) => {
-            // prevent default to allow drop
-            event.preventDefault();
-        }, false);
-        target.addEventListener("dragenter", (event) => {
-            // highlight potential drop target when the draggable element enters it
-            if (event.target.classList.contains("dropzone")) {
-                event.target.classList.add("dragover");
-            }
-        });
-        target.addEventListener("dragleave", (event) => {
-            // reset background of potential drop target when the draggable element leaves it
-            if (event.target.classList.contains("dropzone")) {
-                event.target.classList.remove("dragover");
-            }
-        });
-        target.addEventListener("drop", (event) => {
-            // prevent default action (open as link for some elements)
-            event.preventDefault();
-            // move dragged element to the selected drop target
-            if (event.target.classList.contains("dropzone")) {
-                event.target.classList.remove("dragover");
-                event.target.appendChild(dragged);
-
-                listeId = event.target.id;
-                //Schreibt in der Datenbank die Pos um
-                console.log("SAAAAAAAAAAAAAAAAAAAAAAAAAG "+elementId);
-                changeElementPos(listeId,elementId);
-            }
-        });
-    })
-}
 function changeElementPos(listeId, elementId){
     var obj = new Object();
-    var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
-    var elementCutId = elementId.substring(elementId.lastIndexOf('t') + 1);
-    obj.listeId = listeCutId;
-    obj.elementId = elementCutId;
+    //var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
+    //var elementCutId = elementId.substring(elementId.lastIndexOf('t') + 1);
+    obj.listeId = listeId;
+    obj.elementId = elementId;
 
     fetch("/kanban/board/changePos", {
         method: "PATCH",
@@ -85,7 +26,7 @@ function changeElementPos(listeId, elementId){
     }).then(function (response) {
         // popups erstellen, die dem user feedback geben
         if (response.ok) {
-            console.log("SUCCESSFUL PATCH!!!");
+            console.log("SUCCESSFUL PATCH!!!" + listeId);
         } else {
             alert("Fehler bei erstellen des Elements " + response.status);
         }
@@ -278,7 +219,39 @@ function createKanbanList(titel, listeId) {
 
     // Append new dropzone element to boardKanban div
     document.getElementById("boardKanban").appendChild(newListKanbanDiv);
-    dragzone();
+
+    newListKanbanDiv.addEventListener("dragover", (event) => {
+        // prevent default to allow drop
+        event.preventDefault();
+    }, false);
+    newListKanbanDiv.addEventListener("dragenter", (event) => {
+        // highlight potential drop target when the draggable element enters it
+        if (event.target.classList.contains("dropzone")) {
+            event.target.classList.add("dragover");
+        }
+    });
+    newListKanbanDiv.addEventListener("dragleave", (event) => {
+        // reset background of potential drop target when the draggable element leaves it
+        if (event.target.classList.contains("dropzone")) {
+            event.target.classList.remove("dragover");
+        }
+    });
+    newListKanbanDiv.addEventListener("drop", (event) => {
+        // prevent default action (open as link for some elements)
+        event.preventDefault();
+        // move dragged element to the selected drop target
+        if (event.target.classList.contains("dropzone")) {
+            event.target.classList.remove("dragover");
+            event.target.appendChild(dragged);
+            let elementId = event.dataTransfer.getData("text/plain");
+            console.log("elementId im listener von dropzone:" + elementId);
+            //Schreibt in der Datenbank die Pos um
+            console.log("SAAAAAAAAAAAAAAAAAAAAAAAAAG "+elementId);
+            changeElementPos(listeId,elementId);
+        }
+    });
+
+    //dragzone();
 
     return newListKanbanDiv;
 }
@@ -291,6 +264,23 @@ function addElementToKanbanList(listeId, elementId, titel) {
     newCard.setAttribute("draggable", "true");
     newCard.classList.add("element", "draggable");
     newCard.setAttribute("id", "element" + elementId);
+    newCard.addEventListener("drag", (event) => {
+        console.log("dragging");
+    });
+    newCard.addEventListener("dragstart", (event) => {
+        // store a ref. on the dragged elem
+        dragged = event.target;
+        //ElementId wird für das tauschen geholt
+        //elementId = event.target.id;
+        // make it half transparent
+        event.dataTransfer.setData('text/plain',elementId);
+
+        event.target.classList.add("dragging");
+    });
+    newCard.addEventListener("dragend", (event) => {
+        // reset the transparency
+        event.target.classList.remove("dragging");
+    });
 
     // Create new card title element
     var newCardTitle = document.createElement("p");
@@ -312,7 +302,7 @@ function addElementToKanbanList(listeId, elementId, titel) {
     // Append card to parent div
     parentDiv.appendChild(newCard);
 
-    dragzone()
+    //dragzone()
 }
 
 /** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type

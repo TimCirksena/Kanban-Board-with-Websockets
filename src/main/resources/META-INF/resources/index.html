@@ -2,39 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Rudi's Kanban</title>
 </head>
 <body>
-<div class="banner lead">
-  FXApps: Quarkus application Form Authentication using Database
-</div>
-
+<h1>Willkommen zu Rudi's Kanban-boards</h1>
 <div class="container">
   <div class="left-column">
-    <p class="lead">This application has login and authorization</p>
 
-    <h2>Public content</h2>
-
-    <h4 id="content_public" style="color: blue">
-    </h4>
-
-    <div id="logged" style="display:none">
-      <h2>Only for logged users!</h2>
-      <h3 style="color:orange" id="content_users"></h3>
-      <h4 style="color:red" id="content_managers"></h4>
-
-    </div>
   </div>
   <div class="right-column">
     <div class="right-section">
-      <h3><a id="login_link" href="login.html">Login</a> <em id="user_message"></em></h3>
-      <p>Try to see some <a href="/secured/secured.html">secured content</a></p>
-      <p><button id="logout" style="display:none" onclick="logout()">Logout</button></p>
+      <button onclick="location.href='/kanban'" type="button">
+        Zum Login</button>
+      <button onclick="location.href='/register.html'" type="button">
+        Zur Registrierung</button>
     </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
+<!--
   <script lang="js">
     const LOGGED_COOKIE = "quarkus-credential";
     $(() => {
@@ -46,7 +32,7 @@
         if (data) {
           console.log(data)
           $("#login_link").hide();
-          $("#user_message").text("Hello, " + data);
+          $("#user_message").text("Hallo, " + data);
           $("#logout").show();
           $("#logged").show();
           loadRestrictedContent();
@@ -71,7 +57,7 @@
         $("#content_managers").text(data);
       })
     }
-  </script>
+  </script>-->
 </div>
 </body>
 </html>

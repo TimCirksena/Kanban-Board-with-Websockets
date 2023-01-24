@@ -22,6 +22,7 @@ public class KundeRepository implements KundenCatalog {
         Kunde.deleteAll();
         addKunde("admin", "admin", "admin");
         addKunde("user", "user", "kunde");
+        addKunde("lol","lol","kunde");
     }
 
     @Override
@@ -45,7 +46,10 @@ public class KundeRepository implements KundenCatalog {
         kunde.setUsername(username);
         kunde.setPassword(BcryptUtil.bcryptHash(password));
         kunde.setRole(role);
-        kunde.persist();
+        kunde.persistAndFlush();
+        System.out.println(kunde.getUsername());
+        System.out.println(password);
+
         return new ReturnKundeDTO(kunde);
     }
     /**

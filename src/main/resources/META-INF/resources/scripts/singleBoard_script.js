@@ -12,6 +12,8 @@ var create_element_form = document.getElementById("modal-element-form");
 
 /** Erstellt die drag and drop listener für die listen und elemente */
 function dragzone() {
+    var listeId;
+    var elementId = "";
     /* events fired on the draggable target */
     const sources = document.querySelectorAll(".draggable");
     sources.forEach(source => {
@@ -21,6 +23,8 @@ function dragzone() {
         source.addEventListener("dragstart", (event) => {
             // store a ref. on the dragged elem
             dragged = event.target;
+            //ElementId wird für das tauschen geholt
+            elementId = event.target.id;
             // make it half transparent
             event.target.classList.add("dragging");
         });
@@ -56,10 +60,40 @@ function dragzone() {
             if (event.target.classList.contains("dropzone")) {
                 event.target.classList.remove("dragover");
                 event.target.appendChild(dragged);
+
+                listeId = event.target.id;
+                //Schreibt in der Datenbank die Pos um
+                console.log("SAAAAAAAAAAAAAAAAAAAAAAAAAG "+elementId);
+                changeElementPos(listeId,elementId);
             }
         });
     })
 }
+function changeElementPos(listeId, elementId){
+    var obj = new Object();
+    var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
+    var elementCutId = elementId.substring(elementId.lastIndexOf('t') + 1);
+    obj.listeId = listeCutId;
+    obj.elementId = elementCutId;
+
+    fetch("/kanban/board/changePos", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+    }).then(function (response) {
+        // popups erstellen, die dem user feedback geben
+        if (response.ok) {
+            console.log("SUCCESSFUL PATCH!!!");
+        } else {
+            alert("Fehler bei erstellen des Elements " + response.status);
+        }
+    })
+        .catch(function (error) {
+            alert("Fehler bei erstellen des Elements: " + error);
+        });
+};
 
 var socket = new WebSocket("ws://localhost:8080/kanban/board");
 socket.onmessage = function (event) {

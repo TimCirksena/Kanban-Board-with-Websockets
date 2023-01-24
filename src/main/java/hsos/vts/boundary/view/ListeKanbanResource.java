@@ -84,4 +84,16 @@ public class ListeKanbanResource {
         singleBoardWebsocket.updateElement(elementKanbanCatalog.updateElement(fullElementDTO));
         return Response.ok().build();
     }
+
+    @PATCH
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/changePos")
+    public Response elementChangePos(ElementChangePosDTO elementChangePosDTO){
+        System.out.println("!!!!!!!!ElementID" + elementChangePosDTO.elementId);
+        System.out.println("!!!!!!!!ListeID" + elementChangePosDTO.listeId);
+        listeKanbanCatalog.moveFromListToList(elementChangePosDTO.listeId,elementChangePosDTO.elementId);
+        return Response.ok().build();
+    }
 }

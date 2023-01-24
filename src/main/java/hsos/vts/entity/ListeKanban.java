@@ -24,11 +24,9 @@ public class ListeKanban extends PanacheEntityBase {
     private int position;
     @Column
     private String titel;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
     @Column
     private List<ElementKanban> kanbanElementList;
-
-    //private List<> moin;
 
     @ElementCollection
     public List<String> strings;

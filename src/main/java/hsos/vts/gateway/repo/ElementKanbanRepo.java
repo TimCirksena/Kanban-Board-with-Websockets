@@ -42,7 +42,6 @@ public class ElementKanbanRepo implements ElementKanbanCatalog {
         Kommentar kommentar = Kommentar.findById(kommentarId);
         KommentarDTO kommentarDTO = new KommentarDTO(kommentar);
         return kommentarDTO;
-
     }
 
     @Override

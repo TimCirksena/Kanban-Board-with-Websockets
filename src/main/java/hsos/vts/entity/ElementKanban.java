@@ -20,8 +20,8 @@ public class ElementKanban extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ElementKanbanSequence")
     @Basic(optional = false)
     private long elementId;
-    @Column
-    private int position;
+
+    private long listeId;
     @Column
     private String ersteller;
     @Column
@@ -34,19 +34,37 @@ public class ElementKanban extends PanacheEntityBase {
 
     public ElementKanban(){}
 
+    public ElementKanban(String ersteller, String titel, String beschreibung, long listeId) {
+        this.ersteller = ersteller;
+        this.titel = titel;
+        this.beschreibung = beschreibung;
+        this.listeId = listeId;
+        KommentareList = new ArrayList<>();
+    }
+
     public ElementKanban(String ersteller, String titel, String beschreibung) {
         this.ersteller = ersteller;
         this.titel = titel;
         this.beschreibung = beschreibung;
-        KommentareList = new ArrayList<>();
     }
 
-    public int getPosition() {
-        return position;
+    /*
+        public long getPosition() {
+            return position;
+        }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
+    */
+
+    public long getListeId() {
+        return listeId;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setListeId(long listeId) {
+        this.listeId = listeId;
     }
 
     public String getErsteller() {

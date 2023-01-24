@@ -1,5 +1,6 @@
 package hsos.vts.gateway.repo;
 
+import hsos.vts.boundary.acl.FullElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.StubElementDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
@@ -25,7 +26,8 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
 
     @Override
     public StubElementDTO addKanbanElement(PostElementDTO dto) {
-        ElementKanban elementKanban = new ElementKanban(dto.ersteller, dto.titel, dto.beschreibung);
+        System.out.println("!!!! " + dto.listeId);
+        ElementKanban elementKanban = new ElementKanban(dto.ersteller, dto.titel, dto.beschreibung, dto.listeId);
         elementKanban.persist();
 
         ListeKanban listeToAdd = ListeKanban.findById(dto.listeId);
@@ -35,31 +37,34 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
     }
 
     /**
-     *
-     * @param listIdProvider
      * @param listIdConsumer
-     * @param elementId
-     *
-     * wir gehen davon aus, dass es nur ein Element gibt
+     * @param elementId      wir gehen davon aus, dass es nur ein Element gibt
      */
     @Override
-    public void moveFromListToList(long listIdProvider, long listIdConsumer, long elementId) {
-        ListeKanban provider = ListeKanban.findById(listIdProvider);
+    public void moveFromListToList(long listIdConsumer, long elementId) {
+        ListeKanban.flush();
+        ElementKanban elementKanban = ElementKanban.findById(elementId);
+        ElementKanban.flush();
+        ListeKanban.flush();
+        ListeKanban provider = ListeKanban.findById(elementKanban.getListeId());
+        ListeKanban.flush();
         ListeKanban consumer = ListeKanban.findById(listIdConsumer);
-        Optional<ElementKanban> toMove = Optional.empty();
-        for (ElementKanban element : provider.getKanbanElementList()){
-            if(element.getElementId() == elementId){
-                toMove = Optional.of(element);
+        ListeKanban.flush();
 
-            }
-        }
-        if(toMove.isPresent()){
-            provider.getKanbanElementList().add(toMove.get());
-            consumer.getKanbanElementList().remove(toMove.get());
+        if (elementKanban != null) {
+            //FullElementDTO fullElementDTO = new FullElementDTO(elementKanban);
+            provider.getKanbanElementList().remove(elementKanban);
+            ListeKanban.flush();
+            //ElementKanban elementKanban1 = new ElementKanban(fullElementDTO.ersteller, fullElementDTO.titel, fullElementDTO.beschreibung,listIdConsumer);
+            consumer.getKanbanElementList().add(elementKanban);
+            ListeKanban.flush();
+            elementKanban.setListeId(listIdConsumer);
+            ListeKanban.flush();
+            ElementKanban.flush();
+
         } else {
             throw new RuntimeException("moveFromListToList, element wurde nicht in ProviderList gefunden");
         }
-
     }
 
     @Override

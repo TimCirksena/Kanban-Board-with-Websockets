@@ -35,52 +35,60 @@ public class ListeKanbanResource {
 
     @Inject
     Template singleBoard_view;
+
     @Path("/{id}")
     @GET
     @Transactional
-    public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId){
+    public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId) {
         return singleBoard_view.data("listeKanbans", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
                 "boardTitel", boardKanbanCatalog.getKanbanBoardById(kanbanId));
     }
+
     @GET
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/element/{elementId}")
-    public Response getElement(@PathParam("elementId")long elementId){
-        if(elementKanbanCatalog.getElementById(elementId).isPresent()){
+    public Response getElement(@PathParam("elementId") long elementId) {
+        if (elementKanbanCatalog.getElementById(elementId).isPresent()) {
             FullElementDTO fullElementDTO = elementKanbanCatalog.getElementById(elementId).get();
             return Response.ok(fullElementDTO).build();
         }
         return Response.serverError().build();
     }
+
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/PostForList")
-    public Response createNewListElement(PostListeDTO postListeDTO){
+    public Response createNewListElement(PostListeDTO postListeDTO) {
         singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel));
         return Response.ok().build();
     }
+
     @DELETE
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteListe(DeleteListeDTO deleteListeDTO){
+    @Path("/listeDelete")
+    public Response deleteListe(DeleteListeDTO deleteListeDTO) {
         long id = listeKanbanCatalog.deleteListeKanbanById(deleteListeDTO.listeId, deleteListeDTO.boardId);
-        if(0 < id) {
+        if (0 < id) {
             singleBoardWebsocket.listeKanbanDelete(deleteListeDTO);
             return Response.ok().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+
+
     @PATCH
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateElement(FullElementDTO fullElementDTO){
-        System.out.println("!!! "+fullElementDTO.elementId);
+    public Response updateElement(FullElementDTO fullElementDTO) {
+        System.out.println("!!! " + fullElementDTO.elementId);
         singleBoardWebsocket.updateElement(elementKanbanCatalog.updateElement(fullElementDTO));
         return Response.ok().build();
     }
@@ -90,10 +98,8 @@ public class ListeKanbanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/changePos")
-    public Response elementChangePos(ElementChangePosDTO elementChangePosDTO){
-        System.out.println("!!!!!!!!ElementID" + elementChangePosDTO.elementId);
-        System.out.println("!!!!!!!!ListeID" + elementChangePosDTO.listeId);
-        listeKanbanCatalog.moveFromListToList(elementChangePosDTO.listeId,elementChangePosDTO.elementId);
+    public Response elementChangePos(ElementChangePosDTO elementChangePosDTO) {
+        singleBoardWebsocket.changeElementPos(listeKanbanCatalog.moveFromListToList(elementChangePosDTO.listeId, elementChangePosDTO.elementId));
         return Response.ok().build();
     }
 }

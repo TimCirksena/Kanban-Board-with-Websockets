@@ -1,5 +1,6 @@
 package hsos.vts.entity;
 
+import hsos.vts.boundary.acl.ElementChangePosDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.StubElementDTO;
 
@@ -11,6 +12,6 @@ public interface ListeKanbanCatalog {
 
     long deleteListeKanbanById(long listeId, long boardId);
 
-    void moveFromListToList(long listeId, long elementId);
+    ElementChangePosDTO moveFromListToList(long listeId, long elementId);
 
 }

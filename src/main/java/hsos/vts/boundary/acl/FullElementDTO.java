@@ -19,7 +19,6 @@ public class FullElementDTO {
         this.ersteller = elementKanban.getErsteller();
         this.titel = elementKanban.getTitel();
         this.beschreibung = elementKanban.getBeschreibung();
-        //TODO:Hier könnte falsch sein: Spätere Überprüfung erforderlich!
         this.kommentare = elementKanban.getKommentareList().stream().map(KommentarDTO::new).collect(Collectors.toList());
         /**
          * Alternativ Lösung:

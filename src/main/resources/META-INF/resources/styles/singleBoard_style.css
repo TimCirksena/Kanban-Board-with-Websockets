@@ -2,17 +2,20 @@ body {
     /* Prevent the user selecting text in the example */
     user-select: none;
 }
-h1{
+
+h1 {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 #draggable {
     text-align: center;
     background: white;
 }
 
 .draggable {
+    position: relative;
     text-align: center;
     background: white;
     padding: 10px;
@@ -65,7 +68,8 @@ h1{
 .back-button:hover {
     background-color: #555;
 }
-.element-button-div{
+
+.element-button-div {
     position: absolute;
     bottom: 0;
     width: inherit;
@@ -75,6 +79,7 @@ h1{
 .add-element-button {
     width: inherit;
 }
+
 .delete-kanban {
     position: absolute;
     top: 0;
@@ -82,11 +87,10 @@ h1{
     margin: 5px;
     width: 25px;
     height: 25px;
-
-    background-color: red;
+    background-image: url('/icon/cancel-146131.svg');
+    background-size: cover;
+    background-color: white;
     color: white;
-    text-align: center;
-    line-height: 20px;
     cursor: pointer;
 }
 
@@ -94,7 +98,25 @@ h1{
     background-color: darkred;
 }
 
-.listContainerDiv{
+.delete-element-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/icon/cancel-146131.svg');
+    background-size: cover;
+    background-color: rgba(255, 0, 0, 0.45);
+    color: white;
+    cursor: pointer;
+}
+
+.delete-element-button:hover {
+    background-color: darkred;
+}
+
+.listContainerDiv {
     position: relative;
     display: inline-block;
     float: left;

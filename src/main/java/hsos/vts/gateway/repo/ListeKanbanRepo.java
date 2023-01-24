@@ -1,5 +1,6 @@
 package hsos.vts.gateway.repo;
 
+import hsos.vts.boundary.acl.ElementChangePosDTO;
 import hsos.vts.boundary.acl.FullElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.StubElementDTO;
@@ -41,7 +42,7 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
      * @param elementId      wir gehen davon aus, dass es nur ein Element gibt
      */
     @Override
-    public void moveFromListToList(long listIdConsumer, long elementId) {
+    public ElementChangePosDTO moveFromListToList(long listIdConsumer, long elementId) {
         ListeKanban.flush();
         ElementKanban elementKanban = ElementKanban.findById(elementId);
         ElementKanban.flush();
@@ -61,6 +62,8 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
             elementKanban.setListeId(listIdConsumer);
             ListeKanban.flush();
             ElementKanban.flush();
+            ElementChangePosDTO elementChangePosDTO = new ElementChangePosDTO(listIdConsumer,elementId);
+            return elementChangePosDTO;
 
         } else {
             throw new RuntimeException("moveFromListToList, element wurde nicht in ProviderList gefunden");

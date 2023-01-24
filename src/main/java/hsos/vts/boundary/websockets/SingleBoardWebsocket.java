@@ -37,8 +37,14 @@ public class SingleBoardWebsocket {
             typeHelper.put("type", "liste_kanban_deleted");
             typeHelper.put("listeId", deleteListeDTO.listeId);
             typeHelper.put("boardId", deleteListeDTO.boardId);
-            String finalJson = typeHelper.toString();
-            broadcast(finalJson);
+            broadcast(typeHelper.toString());
+
+    }
+    public void elementKanbanDelete(Long elementId){
+        JsonObject typeHelper = new JsonObject();
+        typeHelper.put("type", "element_kanban_deleted");
+        typeHelper.put("elementId", elementId);
+        broadcast(typeHelper.toString());
     }
     public void addElementToList(StubElementDTO stubElementDTO){
         JsonObject jsonObject = new JsonObject();
@@ -55,6 +61,13 @@ public class SingleBoardWebsocket {
         jsonObject.put("beschreibung",fullElementDTO.beschreibung);
         jsonObject.put("titel",fullElementDTO.titel);
         jsonObject.put("ersteller",fullElementDTO.ersteller);
+        broadcast(jsonObject.toString());
+    }
+    public void changeElementPos(ElementChangePosDTO elementChangePosDTO){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("type","element_moved");
+        jsonObject.put("elementId", elementChangePosDTO.elementId);
+        jsonObject.put("listeId", elementChangePosDTO.listeId);
         broadcast(jsonObject.toString());
     }
 

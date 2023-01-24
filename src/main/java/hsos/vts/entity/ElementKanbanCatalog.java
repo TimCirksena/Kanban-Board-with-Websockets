@@ -11,13 +11,15 @@ public interface ElementKanbanCatalog {
     Optional<FullElementDTO> getElementById(long elementId);
     KommentarDTO getKommentarById(long kommentarId);
     ArrayList<KommentarDTO> getKommentarFromKanbanElement(long elementId);
-    boolean deleteKanbanElementById(long elementId);
+    long deleteKanbanElementById(long elementId);
     FullElementDTO updateTitel(long elementId, String titel);
     FullElementDTO updateBeschreibung(long elementId, String beschreibung);
 
     FullElementDTO addElement(String ersteller, String titel, String beschreibung);
 
     public List<FullElementDTO> getAllElements();
+
+
 
     public FullElementDTO updateElement(FullElementDTO fullElementDTO);
 }

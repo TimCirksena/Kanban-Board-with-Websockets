@@ -1,4 +1,5 @@
 package hsos.vts.boundary.view;
+import hsos.vts.boundary.acl.DeleteElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.PostListeDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
@@ -53,6 +54,15 @@ public class ElementResource {
     @Transactional
     public Response addElementToList(PostElementDTO postElementDTO){
         singleBoardWebsocket.addElementToList(listeKanbanCatalog.addKanbanElement(postElementDTO));
+        return Response.ok().build();
+    }
+    @DELETE
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/delete")
+    public Response deleteElement(DeleteElementDTO deleteElementDTO) {
+        singleBoardWebsocket.elementKanbanDelete(elementKanbanCatalog.deleteKanbanElementById(deleteElementDTO.elementId));
         return Response.ok().build();
     }
 

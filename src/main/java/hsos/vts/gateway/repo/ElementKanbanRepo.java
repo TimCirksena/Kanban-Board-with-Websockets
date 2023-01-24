@@ -2,9 +2,7 @@ package hsos.vts.gateway.repo;
 
 import hsos.vts.boundary.acl.FullElementDTO;
 import hsos.vts.boundary.acl.KommentarDTO;
-import hsos.vts.entity.ElementKanban;
-import hsos.vts.entity.ElementKanbanCatalog;
-import hsos.vts.entity.Kommentar;
+import hsos.vts.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
@@ -60,8 +58,16 @@ public class ElementKanbanRepo implements ElementKanbanCatalog {
     }
 
     @Override
-    public boolean deleteKanbanElementById(long elementId) {
-        return ElementKanban.deleteById(elementId);
+    public long deleteKanbanElementById(long elementId) {
+        ElementKanban elementKanban = ElementKanban.findById(elementId);
+        Optional<ListeKanban> liste = ListeKanban.findByIdOptional(elementKanban.getListeId());
+        liste.get().getKanbanElementList().removeIf(elementKanban1 -> elementKanban1.getElementId() == elementId);
+        ElementKanban.deleteById(elementId);
+        Optional<ElementKanban> elementKanban1 = ElementKanban.findByIdOptional(elementId);
+        if(elementKanban1.isEmpty()){
+            return elementId;
+        }
+        return -1;
     }
 
     @Override

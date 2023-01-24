@@ -58,17 +58,6 @@ public class ElementKanbanResource {
         }
     }
 
-    @DELETE
-    @Transactional
-    @Path("/elements/{id}")
-    public Response deleteElementById(@PathParam("id") long elementId) {
-        boolean success = elementKanbanCatalog.deleteKanbanElementById(elementId);
-        if (success) {
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
 
     @PUT
     @Transactional

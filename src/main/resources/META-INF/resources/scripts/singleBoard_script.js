@@ -10,7 +10,7 @@ close_modal_element.onclick = function () {
 // Get the form element
 var create_element_form = document.getElementById("modal-element-form");
 
-function changeElementPos(listeId, elementId){
+function changeElementPos(listeId, elementId) {
     var obj = new Object();
     //var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
     //var elementCutId = elementId.substring(elementId.lastIndexOf('t') + 1);
@@ -44,13 +44,20 @@ socket.onmessage = function (event) {
         createKanbanList(message.titel, message.listeId);
     }
     if (message.type === "liste_kanban_deleted") {
-        document.getElementById("liste" + message.listeId).remove();
+        document.getElementById("outerListe" + message.listeId).remove();
     }
     if (message.type === "element_added") {
         addElementToKanbanList(message.listeId, message.elementId, message.titel);
     }
     if (message.type === "element_edit") {
         elementEditFromWebsockt(message);
+    }
+    if (message.type === "element_kanban_deleted") {
+        document.getElementById("element" + message.elementId).remove();
+    }
+    if (message.type === "element_moved") {
+        document.getElementById("liste" + message.listeId).appendChild(document.getElementById("element" + message.elementId));
+        //document.getElementById("element"+message.elementId).remove();
     }
 };
 
@@ -127,7 +134,7 @@ function deleteListe(listeId, boardId) {
     obj.boardId = boardId;
     var jsonString = JSON.stringify(obj);
 
-    var request = new Request("http://localhost:8080/kanban/board", {
+    var request = new Request("http://localhost:8080/kanban/board/listeDelete", {
         method: "DELETE",
         body: jsonString,
         headers: {"Content-Type": "application/json"}
@@ -148,6 +155,34 @@ function deleteListe(listeId, boardId) {
         });
 }
 
+function deleteElement(elementId) {
+
+    var obj = new Object();
+    obj.elementId = elementId;
+
+    var jsonString = JSON.stringify(obj);
+
+    var request = new Request("http://localhost:8080/kanban/create/delete", {
+        method: "DELETE",
+        body: jsonString,
+        headers: {"Content-Type": "application/json"}
+    });
+    // mit fetch zu quarkus markus senden
+    fetch(request)
+        .then(function (response) {
+            // popups erstellen, die dem user feedback geben
+            if (response.ok) {
+                console.log("Die Element wurde deleted")
+
+            } else {
+                alert("Fehler beim löschen des Elements " + response.status);
+            }
+        })
+        .catch(function (error) {
+            alert("Fehler beim löschen des Elements: " + error);
+        });
+}
+
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function elementEditFromWebsockt(message) {
 
@@ -161,6 +196,7 @@ function createKanbanList(titel, listeId) {
     // Create new dropzone element
     var outerDiv = document.createElement("div");
     outerDiv.classList.add("listContainerDiv");
+    outerDiv.id = "outerListe" + listeId;
     var newListKanbanDiv = document.createElement("div");
     newListKanbanDiv.classList.add("dropzone");
     newListKanbanDiv.setAttribute("id", "color-picker" + listeId);
@@ -179,8 +215,7 @@ function createKanbanList(titel, listeId) {
     // Create delete button
     var deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-kanban");
-    deleteButton.id = "delete" + listeId;
-    deleteButton.innerHTML = "X";
+    deleteButton.id = "deleteListe" + listeId;
     deleteButton.addEventListener("click", function (e) {
         var currentUrl = window.location.href;
         var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
@@ -207,7 +242,8 @@ function createKanbanList(titel, listeId) {
     addElementButton.id = listeId;
     addElementButton.addEventListener("click", function (event) {
         openAddElementModal(listeId);
-        openAddElementModal(listeId);
+        //Warum hier zweimal?
+        //openAddElementModal(listeId);
     })
 
     var eButtonDiv = document.createElement("div");
@@ -252,8 +288,8 @@ function createKanbanList(titel, listeId) {
             let elementId = event.dataTransfer.getData("text/plain");
             console.log("elementId im listener von dropzone:" + elementId);
             //Schreibt in der Datenbank die Pos um
-            console.log("SAAAAAAAAAAAAAAAAAAAAAAAAAG "+elementId);
-            changeElementPos(listeId,elementId);
+            console.log("SAAAAAAAAAAAAAAAAAAAAAAAAAG " + elementId);
+            changeElementPos(listeId, elementId);
         }
     });
 
@@ -273,13 +309,22 @@ function addElementToKanbanList(listeId, elementId, titel) {
     newCard.addEventListener("drag", (event) => {
         console.log("dragging");
     });
+
+    var deleteElementButton = document.createElement("button");
+    deleteElementButton.classList.add("delete-element-button");
+    deleteElementButton.id = "deleteElement" + elementId;
+    deleteElementButton.addEventListener("click", function (e) {
+        deleteElement(elementId);
+    });
+
+
     newCard.addEventListener("dragstart", (event) => {
         // store a ref. on the dragged elem
         dragged = event.target;
         //ElementId wird für das tauschen geholt
         //elementId = event.target.id;
         // make it half transparent
-        event.dataTransfer.setData('text/plain',elementId);
+        event.dataTransfer.setData('text/plain', elementId);
 
         event.target.classList.add("dragging");
     });
@@ -302,13 +347,12 @@ function addElementToKanbanList(listeId, elementId, titel) {
     })
 
     // Append title to card
+    newCard.appendChild(deleteElementButton);
     newCard.appendChild(newCardTitle);
     newCard.appendChild(editLinkIcon);
 
     // Append card to parent div
     parentDiv.appendChild(newCard);
-
-    //dragzone()
 }
 
 /** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type

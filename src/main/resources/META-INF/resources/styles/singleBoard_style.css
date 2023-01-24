@@ -21,8 +21,12 @@ h1 {
     padding: 10px;
     margin: 8px;
     border-radius: 5px;
-}
 
+}
+.draggable:hover{
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px #333;
+}
 .dropzone {
     position: relative;
     display: inline-block;

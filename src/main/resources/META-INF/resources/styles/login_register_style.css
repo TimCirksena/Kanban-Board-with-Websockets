@@ -1,11 +1,22 @@
-.container {
+.containerCustom {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .big {
-    margin: 7rem;
+    margin: 6rem;
+}
+
+.cool-link{
+    padding: 1rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease-out;
+    border-radius: 5px;
+}
+.cool-link:hover{
+    border-color: blue;
 }
 
 .startoflogin {

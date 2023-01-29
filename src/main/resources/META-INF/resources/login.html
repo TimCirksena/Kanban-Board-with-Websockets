@@ -8,25 +8,53 @@
 </head>
 <body>
 <a href="/" class="button backB">Back</a>
+<div class="containerCustom block big">
+    <h1 class="title">Login</h1>
+</div>
+<!--
 <form action="j_security_check" method="post">
-    <div class="container block big">
-        <h1 class="title">Login</h1>
-    </div>
-    <div class="container block startoflogin">
+    <div class="containerCustom block startoflogin">
         <div class="block">
             <label for="j_username"><b>Nutzername</b></label>
             <input type="text" placeholder="Nutzername eingeben" name="j_username" id="j_username" required>
         </div>
     </div>
-    <div class="container block">
+    <div class="containerCustom block">
         <div class="block">
             <label for="j_password"><b>Passwort</b></label>
             <input type="password" placeholder="Passwort eingeben" name="j_password" id="j_password" required>
         </div>
     </div>
-    <div class="container block">
+    <div class="containerCustom block">
         <div class="block">
             <button class="button is-primary" type="submit">Login</button>
+        </div>
+    </div>
+</form>-->
+
+<form action="j_security_check" method="post">
+    <div class="block container is-max-desktop">
+        <div class="field">
+            <label class="label">Nutzername</label>
+            <div class="control">
+                <input type="text" class="input" placeholder="Nutzername" name="j_username" id="j_username" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+                <input type="password" class="input" placeholder="********" name="j_password" id="j_password" required>
+            </div>
+        </div>
+    </div>
+    <div class="containerCustom block">
+        <div class="block">
+            <button class="button is-primary" type="submit">Login</button>
+        </div>
+    </div>
+    <div class="containerCustom block big">
+        <div class="block">
+            <a class="cool-link" href="/register.html">Neuen Account Registrieren</a>
         </div>
     </div>
 </form>

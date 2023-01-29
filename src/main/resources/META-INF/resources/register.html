@@ -8,10 +8,11 @@
 </head>
 <body>
 <a href="/" class="button backB">Back</a>
-<div class="container block big">
+<div class="containerCustom block big">
     <h1 class="title">Registrierung</h1>
 </div>
-<form>
+<!--
+<form class="box">
     <div class="container block startofregister">
         <div class="block">
             <label for="username"><b>Nutzername</b></label>
@@ -30,6 +31,36 @@
         </div>
     </div>
     <div class="container block big">
+        <div class="block">
+            <button onclick="location.href='/kanban'" type="button" class="button giantbutton is-warning">
+                Zum Login
+            </button>
+        </div>
+    </div>
+</form>-->
+
+<form class="">
+    <div class="block container is-max-desktop">
+        <div class="field">
+            <label class="label">Nutzername</label>
+            <div class="control">
+                <input type="text" class="input" placeholder="Nutzername" name="username" id="username" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+                <input type="password" class="input" placeholder="********" name="password" id="password" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="containerCustom block">
+        <div class="block">
+            <input type="button" class="button is-primary" value="Registrieren" onclick="registerKunde()">
+        </div>
+    </div>
+    <div class="containerCustom big">
         <div class="block">
             <button onclick="location.href='/kanban'" type="button" class="button giantbutton is-warning">
                 Zum Login

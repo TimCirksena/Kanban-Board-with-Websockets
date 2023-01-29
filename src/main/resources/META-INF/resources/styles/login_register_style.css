@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.big {
+    margin: 7rem;
+}
+
+.startoflogin {
+    margin-top: 5rem;
+}
+
+.startofregister{
+    margin-top: 3rem;
+}
+
+.backB {
+    margin: 1rem;
+}
+
+.giantbutton{
+    font-size: 30px;
+}

@@ -5,6 +5,10 @@ function logout() {
     window.location.href = "/";
 }
 
+//https://stackoverflow.com/questions/10593013/delete-cookie-by-name
+//falls cookies nicht richtig gelöscht werden
+//document.cookie = LOGGED_COOKIE +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
 function createKanbanBoard(titel, boardId) {
     // Create card element
     var card = document.createElement("div");

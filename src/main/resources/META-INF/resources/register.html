@@ -3,50 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrierung</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="styles/login_register_style.css">
 </head>
 <body>
-<a href="/" class="back-button">Back</a>
-    <h1>Registrierung</h1>
-  <form>
-      <label for="username"><b>Nutzername</b></label>
-      <input type="text" placeholder="Nutzername" name="username" id="username" required>
+<a href="/" class="button backB">Back</a>
+<div class="container block big">
+    <h1 class="title">Registrierung</h1>
+</div>
+<form>
+    <div class="container block startofregister">
+        <div class="block">
+            <label for="username"><b>Nutzername</b></label>
+            <input type="text" placeholder="Nutzername" name="username" id="username" required>
+        </div>
+    </div>
+    <div class="container block">
+        <div class="block">
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Passwort" name="password" id="password" required>
+        </div>
+    </div>
+    <div class="container block">
+        <div class="block">
+            <input type="button" class="button is-primary" value="Registrieren" onclick="registerKunde()">
+        </div>
+    </div>
+    <div class="container block big">
+        <div class="block">
+            <button onclick="location.href='/kanban'" type="button" class="button giantbutton is-warning">
+                Zum Login
+            </button>
+        </div>
+    </div>
+</form>
 
-      <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Passwort" name="password" id="password" required>
-
-      <input type="button" value="Registrieren" onclick="registerKunde()">
-  </form>
-    <button onclick="location.href='/kanban'" type="button">
-        Zum Login</button>
-<script type="text/javascript">
-    function registerKunde(){
-        let username = document.getElementById("username");
-        let password = document.getElementById("password");
-
-        let obj = new Object();
-        obj.username = username.value;
-        obj.password = password.value;
-
-        console.log(obj);
-
-        fetch("/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(obj)
-        }).then(function (response) {
-            // popups erstellen, die dem user feedback geben
-            if (response.ok) {
-                console.log("Nutzer erstellt!");
-            } else {
-                alert("Fehler bei erstellen des Nutzers " + response.status);
-            }
-        })
-            .catch(function (error) {
-                alert("Fehler bei erstellen des Nutzers: " + error);
-            });
-    }
-</script>
+<script src="/scripts/register_script.js"></script>
 </body>
 </html>

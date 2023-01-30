@@ -1,8 +1,6 @@
 package hsos.vts.gateway.repo;
 
-import hsos.vts.boundary.acl.FullBoardDTO;
-import hsos.vts.boundary.acl.ListeKanbanDTO;
-import hsos.vts.boundary.acl.StubBoardDTO;
+import hsos.vts.boundary.acl.*;
 import hsos.vts.entity.BoardKanban;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ListeKanban;
@@ -32,7 +30,9 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         //hier noch project hinkriegen, man kann ja safe optional selber machen
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
         if(board.isPresent()){
+
             FullBoardDTO fullBoardDTO = new FullBoardDTO(board.get());
+            fullBoardDTO.kanbanLists.sort(new ListeKanbanDTOComparator());
             return fullBoardDTO;
         }
         else {
@@ -63,19 +63,20 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
 
 
     @Override
-    public ListeKanbanDTO addListToBoard(long boardId, String listTitel) {
+    public PostListeDTO addListToBoard(long boardId, String listTitel, String color) {
         //Zuerst persisten dann adden, sonst geht die Id verloren
         ListeKanban listeKanban = new ListeKanban(listTitel);
+        listeKanban.setFarbe(color);
         listeKanban.persist();
         //Board wird gefunden
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
         //Mittels get() bekommen wir das richtige board, weil vorher nur optional
         board.get().getKanbanListen().add(listeKanban);
-        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(listeKanban);
+        PostListeDTO postListeDTO = new PostListeDTO(listeKanban);
         //Debugging
         //System.out.println("DTO" + listeKanbanDTO.toString());
         //System.out.println("ListeKanban:" + listeKanban.toString());
-        return listeKanbanDTO;
+        return postListeDTO;
     }
 
 }

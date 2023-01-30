@@ -33,7 +33,6 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
 
         ListeKanban listeToAdd = ListeKanban.findById(dto.listeId);
         listeToAdd.getKanbanElementList().add(elementKanban);
-
         return new StubElementDTO(listeToAdd.getListeId(), elementKanban.getElementId(), elementKanban.getTitel());
     }
 
@@ -68,6 +67,18 @@ public class ListeKanbanRepo implements ListeKanbanCatalog {
         } else {
             throw new RuntimeException("moveFromListToList, element wurde nicht in ProviderList gefunden");
         }
+    }
+
+    @Override
+    public String getColorFromList(long listeId) {
+        ListeKanban listeKanban = ListeKanban.findById(listeId);
+        return listeKanban.getFarbe();
+    }
+    @Override
+    public String setColorFromList(long listeId, String color) {
+        ListeKanban listeKanban = ListeKanban.findById(listeId);
+        listeKanban.setFarbe(color);
+        return listeKanban.getFarbe();
     }
 
     @Override

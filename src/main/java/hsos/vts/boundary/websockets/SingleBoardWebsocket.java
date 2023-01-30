@@ -10,6 +10,7 @@ import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,15 +22,14 @@ public class SingleBoardWebsocket {
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
 
-    public void listeKanbanCreate(ListeKanbanDTO listeKanbanDTO){
-        Jsonb jsonb = JsonbBuilder.create();
-        String json = jsonb.toJson(listeKanbanDTO);
-        JsonObject typeHelper = new JsonObject(json);
+    public void listeKanbanCreate(PostListeDTO postListeDTO){
+
+        JsonObject typeHelper = new JsonObject();
         typeHelper.put("type", "liste_kanban_created");
-        String finalJson = typeHelper.toString();
-        System.out.println(finalJson);
+        typeHelper.put("titel", postListeDTO.titel);
+        typeHelper.put("color", postListeDTO.color);
         //Darf kein Obj sein weil er das nicht richtig checkt
-        broadcast(finalJson);
+        broadcast(typeHelper.toString());
     }
     public void listeKanbanDelete(DeleteListeDTO deleteListeDTO) {
 
@@ -70,15 +70,12 @@ public class SingleBoardWebsocket {
         jsonObject.put("listeId", elementChangePosDTO.listeId);
         broadcast(jsonObject.toString());
     }
-
-
-    /**
-     * TODO: hier ist noch unklar wie genau das mit javascript dann geht
-     * refreshen wir einfach nur die listen?
-     * vielleicht alerts wenn was nicht klappt und dann reseten
-     * */
-    public void elementVonListeZuListeGetauscht(){
-
+    public void setColor(ColorDTO colorDTO){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("type","color_changed");
+        jsonObject.put("listeId", colorDTO.listeId);
+        jsonObject.put("color", colorDTO.color);
+        broadcast(jsonObject.toString());
     }
 
     @OnOpen

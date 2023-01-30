@@ -12,6 +12,7 @@ public class ListeKanbanDTO {
     public List<StubElementDTO> stubElementDTOS;
     public String titel;
     public long listeId;
+    public String color;
 
     public ListeKanbanDTO() {
     }
@@ -19,6 +20,7 @@ public class ListeKanbanDTO {
     public ListeKanbanDTO(ListeKanban listeKanban) {
         this.titel = listeKanban.getTitel();
         this.listeId = listeKanban.getListeId();
+        this.color = listeKanban.getFarbe();
         this.stubElementDTOS = new ArrayList<>();
         for (ElementKanban elementKanban : listeKanban.getKanbanElementList()) {
             this.stubElementDTOS.add(new StubElementDTO(elementKanban));

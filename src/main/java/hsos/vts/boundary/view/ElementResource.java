@@ -39,7 +39,7 @@ public class ElementResource {
     @Inject
     Template elementCreate_view;
 
-
+/*
     @GET
     @Path("/{listeId}")
     @RolesAllowed({ADMIN_ROLE,USER_ROLE})
@@ -48,7 +48,7 @@ public class ElementResource {
         System.out.println("listeId check " + listeId);
         return elementCreate_view.data("listeId", listeId);
     }
-
+ */
     @POST
     @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional

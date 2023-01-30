@@ -10,6 +10,43 @@ close_modal_element.onclick = function () {
 // Get the form element
 var create_element_form = document.getElementById("modal-element-form");
 
+/** Erstellt eine neue Liste*/
+document.getElementById("add-button").addEventListener("click", function (event) {
+    event.preventDefault(); // prevent the form from submitting
+
+    var inputField = document.getElementById("input-field");
+    var listKanbanTitel = inputField.value;
+    var obj = new Object();
+    var currentUrl = window.location.href;
+    var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+
+    obj.boardId = boardId;
+    obj.titel = listKanbanTitel;
+    obj.color = "#000000";
+
+    var jsonString = JSON.stringify(obj);
+    console.log(jsonString);
+    var request = new Request("http://localhost:8080/kanban/board/PostForList", {
+        method: "POST",
+        body: jsonString,
+        headers: {"Content-Type": "application/json"}
+    });
+    // mit fetch zu quarkus markus senden
+    fetch(request)
+        .then(function (response) {
+            // popups erstellen, die dem user feedback geben
+            if (response.ok) {
+                console.log("Liste erstellt!");
+            } else {
+                alert("Fehler bei erstellen der Liste" + response.status);
+            }
+        })
+        .catch(function (error) {
+            alert("Fehler bei erstellen der Liste: " + error);
+        });
+    modal.style.display = "none";
+});
+
 function changeElementPos(listeId, elementId) {
     var obj = new Object();
     //var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
@@ -59,6 +96,10 @@ socket.onmessage = function (event) {
         document.getElementById("liste" + message.listeId).appendChild(document.getElementById("element" + message.elementId));
         //document.getElementById("element"+message.elementId).remove();
     }
+    if (message.type === "color_changed") {
+        document.getElementById("liste"+message.listeId).style.backgroundColor = message.color;
+        document.getElementById("liste"+message.listeId).parentElement.style.backgroundColor = message.color;
+    }
 };
 
 /** Erstellt ein neues Element in der Parent Liste */
@@ -91,40 +132,7 @@ function createNewElement(listeId, titleInput, erstellerInput, descriptionInput)
         });
 }
 
-/** Erstellt eine neue Liste*/
-document.getElementById("add-button").addEventListener("click", function (event) {
-    event.preventDefault(); // prevent the form from submitting
 
-    var inputField = document.getElementById("input-field");
-    var listKanbanTitel = inputField.value;
-    var obj = new Object();
-    var currentUrl = window.location.href;
-    var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    obj.boardId = boardId;
-    obj.titel = listKanbanTitel;
-
-    var jsonString = JSON.stringify(obj);
-    console.log(jsonString);
-    var request = new Request("http://localhost:8080/kanban/board/PostForList", {
-        method: "POST",
-        body: jsonString,
-        headers: {"Content-Type": "application/json"}
-    });
-    // mit fetch zu quarkus markus senden
-    fetch(request)
-        .then(function (response) {
-            // popups erstellen, die dem user feedback geben
-            if (response.ok) {
-                console.log("Liste erstellt!");
-            } else {
-                alert("Fehler bei erstellen der Liste" + response.status);
-            }
-        })
-        .catch(function (error) {
-            alert("Fehler bei erstellen der Liste: " + error);
-        });
-    modal.style.display = "none";
-});
 
 /** Löscht eine bestehende Liste */
 function deleteListe(listeId, boardId) {
@@ -192,7 +200,7 @@ function elementEditFromWebsockt(message) {
 }
 
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
-function createKanbanList(titel, listeId) {
+function createKanbanList(titel, listeId, colorFromDB) {
     // Create new dropzone element
     var outerDiv = document.createElement("div");
     outerDiv.classList.add("listContainerDiv");
@@ -226,13 +234,15 @@ function createKanbanList(titel, listeId) {
     // Create new color picker input
     var colorPickerInput = document.createElement("input");
     colorPickerInput.setAttribute("type", "color");
-    colorPickerInput.setAttribute("id", "color-picker");
+    colorPickerInput.setAttribute("id", "color-picker" + listeId);
     colorPickerInput.setAttribute("name", "color-picker");
     colorPickerInput.setAttribute("style", "width: 30px; height: 15px;");
     colorPickerInput.addEventListener("change", function () {
         var parent = this.parentElement.parentElement;
-        newListKanbanDiv.style.backgroundColor = this.value;
+        newListKanbanDiv.style.backgroundColor = color;
         parent.style.backgroundColor = this.value;
+        var color = this.value;
+        setColor(listeId, color);
     });
 
     var addElementButton = document.createElement("button");
@@ -242,6 +252,7 @@ function createKanbanList(titel, listeId) {
     addElementButton.id = listeId;
     addElementButton.addEventListener("click", function (event) {
         openAddElementModal(listeId);
+
         //Warum hier zweimal?
         //openAddElementModal(listeId);
     })
@@ -258,6 +269,9 @@ function createKanbanList(titel, listeId) {
     colorPickerLabel.appendChild(colorPickerInput);
     outerDiv.appendChild(newListKanbanDiv);
     outerDiv.appendChild(eButtonDiv);
+
+    outerDiv.style.backgroundColor = colorFromDB;
+    newListKanbanDiv.style.backgroundColor = colorFromDB;
 
     // Append new dropzone element to boardKanban div
     document.getElementById("boardKanban").appendChild(outerDiv);
@@ -292,12 +306,32 @@ function createKanbanList(titel, listeId) {
             changeElementPos(listeId, elementId);
         }
     });
-
-    //dragzone();
-
     return newListKanbanDiv;
 }
+function setColor(listeId, color){
 
+    var obj = new Object();
+    obj.listeId = listeId;
+    obj.color = color;
+
+    fetch("/kanban/board/setColor", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+    }).then(function (response) {
+        // popups erstellen, die dem user feedback geben
+        if (response.ok) {
+            console.log("FARBE WURDE GELAUNCHT");
+        } else {
+            alert("Fehler bei erstellen des Elements" + response.status);
+        }
+    })
+        .catch(function (error) {
+            alert("Fehler bei erstellen des Elements: " + error);
+        });
+}
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function addElementToKanbanList(listeId, elementId, titel) {
     var parentDiv = document.getElementById("liste" + listeId);
@@ -361,6 +395,8 @@ function openEditElementModal(elementId) {
     // When the user clicks the button, open the modal
     modalElement.style.display = "block";
 
+    /** Hier wird <b>GETTET</b>
+     *  */
     fetch("/kanban/board/element/" + elementId, {
         method: "GET",
         headers: {
@@ -377,13 +413,13 @@ function openEditElementModal(elementId) {
             console.log(error)
         });
 
-
+    //Mehrere Events mit einem Button
     var el = document.getElementById('save-element-button'),
         elClone = el.cloneNode(true);
 
     el.parentNode.replaceChild(elClone, el);
 
-
+    /** Hier wird <b>gepatch</b> */
     console.log("Das ist die GET id " + elementId);
     elClone.addEventListener("click", (e) => {
         // Get form elements
@@ -419,7 +455,7 @@ function openEditElementModal(elementId) {
             .catch(function (error) {
                 alert("Fehler bei erstellen des Elements: " + error);
             });
-// When the user clicks anywhere outside of the modal, close it
+            // Wenn der benutzer irgendwo hinklickt wird das modal geschlossen
         window.onclick = function (event) {
             if (event.target == modalElement) {
                 modalElement.style.display = "none";
@@ -430,8 +466,24 @@ function openEditElementModal(elementId) {
 
 /** Modal: Öffnet ein Modal welches dazu dient ein neues Element anzulegen */
 function openAddElementModal(listeId) {
+
 // When the user clicks the button, open the modal
     modalElement.style.display = "block";
+
+    fetch("/kanban/board/userName", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            document.getElementById("ersteller-input").value = data.username;
+        })
+        .catch(error => {
+            console.log(error)
+        });
 
     // Get form elements
     const titleInput = document.getElementById("title-input");
@@ -456,6 +508,8 @@ function openAddElementModal(listeId) {
             modalElement.style.display = "none";
         }
     }
+    document.getElementById("title-input").value = "";
+    document.getElementById("description-input").value = "";
 }
 
 /** Modal: Poppt auf wenn man den grünen button auf der html drück für adden einer Liste */

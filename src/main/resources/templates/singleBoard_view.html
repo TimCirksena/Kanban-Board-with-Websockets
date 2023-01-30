@@ -50,7 +50,7 @@
 <script>
 
     {#for listeKanban in listeKanbans}
-    var newListKanbanDiv = createKanbanList("{listeKanban.titel}",{listeKanban.listeId});
+    var newListKanbanDiv = createKanbanList("{listeKanban.titel}",{listeKanban.listeId}, "{listeKanban.color}");
     {#for elementKanban in listeKanban.stubElementDTOS}
     addElementToKanbanList({listeKanban.listeId},{elementKanban.elementId}, "{elementKanban.titel}");
     {/for}

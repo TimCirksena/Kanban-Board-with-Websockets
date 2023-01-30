@@ -22,6 +22,9 @@ public class ListeKanban extends PanacheEntityBase {
     private long listeId;
     @Column
     private int position;
+
+    @Column
+    private String farbe;
     @Column
     private String titel;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
@@ -68,6 +71,14 @@ public class ListeKanban extends PanacheEntityBase {
 
     public void setListeId(long listeId) {
         this.listeId = listeId;
+    }
+
+    public String getFarbe() {
+        return farbe;
+    }
+
+    public void setFarbe(String farbe) {
+        this.farbe = farbe;
     }
 
     @Override

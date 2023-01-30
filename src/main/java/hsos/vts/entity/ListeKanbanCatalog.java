@@ -14,4 +14,7 @@ public interface ListeKanbanCatalog {
 
     ElementChangePosDTO moveFromListToList(long listeId, long elementId);
 
+    String getColorFromList(long listeId);
+
+    String setColorFromList(long listeId, String color);
 }

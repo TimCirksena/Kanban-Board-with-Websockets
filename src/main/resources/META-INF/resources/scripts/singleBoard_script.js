@@ -22,7 +22,7 @@ document.getElementById("add-button").addEventListener("click", function (event)
 
     obj.boardId = boardId;
     obj.titel = listKanbanTitel;
-    obj.color = "#000000";
+    obj.color = "#8080c0";
 
     var jsonString = JSON.stringify(obj);
     console.log(jsonString);
@@ -78,7 +78,7 @@ socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);
     if (message.type === "liste_kanban_created") {
-        createKanbanList(message.titel, message.listeId);
+        createKanbanList(message.titel, message.listeId, message.color);
     }
     if (message.type === "liste_kanban_deleted") {
         document.getElementById("outerListe" + message.listeId).remove();
@@ -131,8 +131,6 @@ function createNewElement(listeId, titleInput, erstellerInput, descriptionInput)
             alert("Fehler bei erstellen des Elements: " + error);
         });
 }
-
-
 
 /** Löscht eine bestehende Liste */
 function deleteListe(listeId, boardId) {
@@ -238,10 +236,8 @@ function createKanbanList(titel, listeId, colorFromDB) {
     colorPickerInput.setAttribute("name", "color-picker");
     colorPickerInput.setAttribute("style", "width: 30px; height: 15px;");
     colorPickerInput.addEventListener("change", function () {
-        var parent = this.parentElement.parentElement;
-        newListKanbanDiv.style.backgroundColor = color;
-        parent.style.backgroundColor = this.value;
         var color = this.value;
+        console.log("ander funktion " + listeId)
         setColor(listeId, color);
     });
 
@@ -310,6 +306,7 @@ function createKanbanList(titel, listeId, colorFromDB) {
 }
 function setColor(listeId, color){
 
+    console.log("Das ist die ListeId von Color: "+ listeId)
     var obj = new Object();
     obj.listeId = listeId;
     obj.color = color;

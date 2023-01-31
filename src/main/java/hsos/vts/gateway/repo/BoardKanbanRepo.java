@@ -63,7 +63,7 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
 
 
     @Override
-    public PostListeDTO addListToBoard(long boardId, String listTitel, String color) {
+    public ListeKanbanDTO addListToBoard(long boardId, String listTitel, String color) {
         //Zuerst persisten dann adden, sonst geht die Id verloren
         ListeKanban listeKanban = new ListeKanban(listTitel);
         listeKanban.setFarbe(color);
@@ -72,11 +72,11 @@ public class BoardKanbanRepo implements BoardKanbanCatalog {
         Optional<BoardKanban> board = BoardKanban.findByIdOptional(boardId);
         //Mittels get() bekommen wir das richtige board, weil vorher nur optional
         board.get().getKanbanListen().add(listeKanban);
-        PostListeDTO postListeDTO = new PostListeDTO(listeKanban);
+        ListeKanbanDTO listeKanbanDTO = new ListeKanbanDTO(listeKanban);
         //Debugging
         //System.out.println("DTO" + listeKanbanDTO.toString());
         //System.out.println("ListeKanban:" + listeKanban.toString());
-        return postListeDTO;
+        return listeKanbanDTO;
     }
 
 }

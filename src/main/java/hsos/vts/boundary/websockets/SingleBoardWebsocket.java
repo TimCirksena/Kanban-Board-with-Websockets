@@ -22,12 +22,13 @@ public class SingleBoardWebsocket {
     @Inject
     BoardKanbanCatalog boardKanbanCatalog;
 
-    public void listeKanbanCreate(PostListeDTO postListeDTO){
+    public void listeKanbanCreate(ListeKanbanDTO listeKanbanDTO){
 
         JsonObject typeHelper = new JsonObject();
         typeHelper.put("type", "liste_kanban_created");
-        typeHelper.put("titel", postListeDTO.titel);
-        typeHelper.put("color", postListeDTO.color);
+        typeHelper.put("listeId", listeKanbanDTO.listeId);
+        typeHelper.put("titel", listeKanbanDTO.titel);
+        typeHelper.put("color", listeKanbanDTO.color);
         //Darf kein Obj sein weil er das nicht richtig checkt
         broadcast(typeHelper.toString());
     }

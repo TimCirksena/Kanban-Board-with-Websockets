@@ -14,7 +14,7 @@ public interface BoardKanbanCatalog {
 
     long deleteKanbanBoardById(long boardId);
 
-    PostListeDTO addListToBoard(long boardId, String listTitel, String color);
+    ListeKanbanDTO addListToBoard(long boardId, String listTitel, String color);
 
 }
 

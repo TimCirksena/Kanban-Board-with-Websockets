@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="/styles/singleBoard_style.css" rel="stylesheet">
     <link href="/styles/modal.css" rel="stylesheet">
     <link href="/scripts/singleBoard_script.js" rel="script">
@@ -12,9 +13,9 @@
 </head>
 <body>
 
-<a href="http://localhost:8080/kanban" class="back-button">Back</a>
+<a href="http://localhost:8080/kanban" class="button backB">Back</a>
 <div id="boardKanban">
-    <h1>{boardTitel.titel}</h1>
+    <h1  class="title">{boardTitel.titel}</h1>
 
 </div>
 <button id="open-modal-btn">Neue Liste erstellen</button>

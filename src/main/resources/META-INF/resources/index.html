@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Rudi's Kanban</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="styles/login_register_style.css">
 </head>
 <body>
-<h1>Willkommen zu Rudi's Kanban-boards</h1>
+<div class="containerCustom block big">
+  <h1 class="title">Willkommen zu Rudi's Kanban-boards</h1>
+</div>
 <div class="containerCustom">
   <div class="left-column">
 
   </div>
-  <div class="right-column">
+  <div class="right-column big">
     <div class="right-section">
-      <button onclick="location.href='/kanban'" type="button">
+      <button class="button is-primary" onclick="location.href='/kanban'" type="button">
         Zum Login</button>
-      <button onclick="location.href='/register.html'" type="button">
+      <button class="button is-primary is-outlined" onclick="location.href='/register.html'" type="button">
         Zur Registrierung</button>
     </div>
   </div>

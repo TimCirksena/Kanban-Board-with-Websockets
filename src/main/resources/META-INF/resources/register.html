@@ -41,10 +41,14 @@
 
 <form class="">
     <div class="block container is-max-desktop">
-        <div class="field">
+        <div class="field" id="usernameDiv">
             <label class="label">Nutzername</label>
             <div class="control">
                 <input type="text" class="input" placeholder="Nutzername" name="username" id="username" required>
+            </div>
+            <div class="control">
+                <p></p>
+                <p id="usernameOccupied">Dieser Nutzername ist bereits vergeben</p>
             </div>
         </div>
         <div class="field">
@@ -59,12 +63,15 @@
         <div class="block">
             <input type="button" class="button is-primary" value="Registrieren" onclick="registerKunde()">
         </div>
+
+
     </div>
-    <div class="containerCustom big">
+    <div class="containerCustom block"><p id="registerSuccess">Registrieren erfolgreich!</p></div>
+
+
+    <div class="containerCustom block big">
         <div class="block">
-            <button onclick="location.href='/kanban'" type="button" class="button giantbutton is-warning">
-                Zum Login
-            </button>
+            <a class="cool-link" href="/kanban">Zum Login</a>
         </div>
     </div>
 </form>

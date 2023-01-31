@@ -237,7 +237,6 @@ function createKanbanList(titel, listeId, colorFromDB) {
     colorPickerInput.setAttribute("style", "width: 30px; height: 15px;");
     colorPickerInput.addEventListener("change", function () {
         var color = this.value;
-        console.log("ander funktion " + listeId)
         setColor(listeId, color);
     });
 
@@ -306,7 +305,6 @@ function createKanbanList(titel, listeId, colorFromDB) {
 }
 function setColor(listeId, color){
 
-    console.log("Das ist die ListeId von Color: "+ listeId)
     var obj = new Object();
     obj.listeId = listeId;
     obj.color = color;

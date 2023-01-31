@@ -38,6 +38,7 @@ public class BoardKanbanResource {
     @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public TemplateInstance getBoardKanbans(){
+
         return allBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
     }
     @POST

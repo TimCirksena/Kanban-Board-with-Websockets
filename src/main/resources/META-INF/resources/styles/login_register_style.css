@@ -34,3 +34,21 @@
 .giantbutton{
     font-size: 30px;
 }
+
+#usernameOccupied{
+    color: red;
+    display: block;
+    opacity: 0;
+    position: absolute;
+}
+
+#registerSuccess{
+    position: absolute;
+    display: block;
+    color: forestgreen;
+    opacity: 0;
+}
+
+#usernameDiv{
+    margin-bottom: 1.5rem;
+}

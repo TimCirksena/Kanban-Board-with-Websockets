@@ -65,9 +65,17 @@ public class KundeRepository implements KundenCatalog {
         return Kunde.findById(id);
     }
 
+    /**
+     * gibt -1 in long zurück wenn kunde nicht vorhanden
+     * */
     @Override
     public Long getKundenIdByUsername(String username) {
         Kunde k = Kunde.find("username", username).firstResult();
-        return k.id;
+        try{
+            return k.id;
+        } catch (NullPointerException n){
+            return -1L;
+        }
+
     }
 }

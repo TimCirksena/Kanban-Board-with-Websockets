@@ -19,6 +19,7 @@ public class FullBoardDTO {
         this.kanbanLists = new ArrayList<>();
         for (ListeKanban listeKanban : boardKanban.getKanbanListen()) {
             this.kanbanLists.add(new ListeKanbanDTO(listeKanban));
+
         }
     }
 }

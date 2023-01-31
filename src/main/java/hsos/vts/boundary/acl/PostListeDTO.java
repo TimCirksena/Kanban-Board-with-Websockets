@@ -9,16 +9,12 @@ public class PostListeDTO {
     public String titel;
     public String color;
 
-    public PostListeDTO(long listeId, String titel, String color) {
+    public PostListeDTO(long boardId, String titel, String color) {
         this.titel = titel;
-        this.boardId = listeId;
+        this.boardId = boardId;
         this.color = color;
     }
-    public PostListeDTO(ListeKanban listeKanban){
-        this.titel = listeKanban.getTitel();
-        this.boardId = listeKanban.getListeId();
-        this.color = listeKanban.getFarbe();
-    }
+
 
     public PostListeDTO() {
     }

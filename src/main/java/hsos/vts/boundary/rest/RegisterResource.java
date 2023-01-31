@@ -24,7 +24,14 @@ public class RegisterResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerKunde(PostKundeDTO postKundeDTO){
-        System.out.println("registerKunde caled");
-       return Response.ok(kundenCatalog.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
+        Long bestehendeKundenId = kundenCatalog.getKundenIdByUsername(postKundeDTO.username);
+        //wenn kunde nicht existiert
+        if(bestehendeKundenId == -1){
+            return Response.ok(kundenCatalog.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
+        } else {
+            return Response.status(422).build();
+        }
+
+
     }
 }

@@ -17,9 +17,24 @@ function registerKunde() {
     }).then(function (response) {
         // popups erstellen, die dem user feedback geben
         if (response.ok) {
-            console.log("Nutzer erstellt!");
+            //console.log("Nutzer erstellt!");
+            var registerSuccess = document.getElementById("registerSuccess");
+            registerSuccess.style.opacity = "1";
+            setTimeout(() => {
+                registerSuccess.style.transition = "opacity 3s";
+                registerSuccess.style.opacity = "0";
+            }, 2000);
         } else {
-            alert("Fehler bei erstellen des Nutzers " + response.status);
+            if(response.status === 422){
+                var usernameOccupied = document.getElementById("usernameOccupied");
+                usernameOccupied.style.opacity = "1";
+                setTimeout(() => {
+                    usernameOccupied.style.transition = "opacity 3s";
+                    usernameOccupied.style.opacity = "0";
+                }, 2000);
+            } else {
+                alert("Fehler bei erstellen des Nutzers " + response.status);
+            }
         }
     })
         .catch(function (error) {

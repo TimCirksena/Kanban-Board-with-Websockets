@@ -3,8 +3,8 @@ package hsos.vts.boundary.view;
 
 import hsos.vts.boundary.acl.*;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
+import hsos.vts.control.ElementKanbanInterface;
 import hsos.vts.entity.BoardKanbanCatalog;
-import hsos.vts.entity.ElementKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -37,7 +37,7 @@ public class ListeKanbanResource {
     BoardKanbanCatalog boardKanbanCatalog;
 
     @Inject
-    ElementKanbanCatalog elementKanbanCatalog;
+    ElementKanbanInterface elementKanbanInterface;
 
     @Inject
     Template singleBoard_view;
@@ -58,8 +58,8 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/element/{elementId}")
     public Response getElement(@PathParam("elementId") long elementId) {
-        if (elementKanbanCatalog.getElementById(elementId).isPresent()) {
-            FullElementDTO fullElementDTO = elementKanbanCatalog.getElementById(elementId).get();
+        if (elementKanbanInterface.getElementById(elementId).isPresent()) {
+            FullElementDTO fullElementDTO = elementKanbanInterface.getElementById(elementId).get();
             return Response.ok(fullElementDTO).build();
         }
         return Response.serverError().build();
@@ -113,7 +113,7 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateElement(FullElementDTO fullElementDTO) {
         System.out.println("!!! " + fullElementDTO.elementId);
-        singleBoardWebsocket.updateElement(elementKanbanCatalog.updateElement(fullElementDTO));
+        singleBoardWebsocket.updateElement(elementKanbanInterface.updateElement(fullElementDTO));
         return Response.ok().build();
     }
 

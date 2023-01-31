@@ -3,6 +3,7 @@ import hsos.vts.boundary.acl.DeleteElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.acl.PostListeDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
+import hsos.vts.control.ElementKanbanInterface;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ElementKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
@@ -34,7 +35,7 @@ public class ElementResource {
     BoardKanbanCatalog boardKanbanCatalog;
 
     @Inject
-    ElementKanbanCatalog elementKanbanCatalog;
+    ElementKanbanInterface elementKanbanInterface;
 
     @Inject
     Template elementCreate_view;
@@ -62,7 +63,7 @@ public class ElementResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/delete")
     public Response deleteElement(DeleteElementDTO deleteElementDTO) {
-        singleBoardWebsocket.elementKanbanDelete(elementKanbanCatalog.deleteKanbanElementById(deleteElementDTO.elementId));
+        singleBoardWebsocket.elementKanbanDelete(elementKanbanInterface.deleteKanbanElementById(deleteElementDTO.elementId));
         return Response.ok().build();
     }
 

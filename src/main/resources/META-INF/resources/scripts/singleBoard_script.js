@@ -211,6 +211,7 @@ function createKanbanList(titel, listeId, colorFromDB) {
     // Create new h2 element for the title
     var newTitle = document.createElement("h2");
     newTitle.classList.add("list-title");
+    newTitle.classList.add("title");
     newTitle.innerHTML = titel;
 
     // Create new label for color picker

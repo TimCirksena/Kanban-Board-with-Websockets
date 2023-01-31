@@ -2,11 +2,13 @@ package hsos.vts.gateway.repo;
 
 import hsos.vts.entity.BoardKanban;
 import hsos.vts.entity.ElementKanban;
+import hsos.vts.entity.Kunde;
 import hsos.vts.entity.ListeKanban;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,21 @@ import java.util.List;
 public class StartupRepoInitializer {
 
     //idee: das hier aufrufen können um die datenbank mit sachen zu befüllen von resource aus
+    @Inject KundeRepository kundeRepository;
 
     @Transactional
     public void startupInit(@Observes StartupEvent evt){
         //deleteEverything();
         //kanbanBoardsErstellen();
+        loadUsers();
+    }
+
+
+    public void loadUsers() {
+        // reset and load all test users
+        Kunde.deleteAll();
+        kundeRepository.addKunde("admin", "admin", "admin");
+        kundeRepository.addKunde("user", "user", "kunde");
     }
 
     private void deleteEverything(){

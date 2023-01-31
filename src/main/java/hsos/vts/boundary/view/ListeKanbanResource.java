@@ -3,6 +3,8 @@ package hsos.vts.boundary.view;
 
 import hsos.vts.boundary.acl.*;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
+import hsos.vts.control.boardKanban.BoardKanbanInterface;
+import hsos.vts.control.listeKanban.ListeKanbanInterface;
 import hsos.vts.control.ElementKanbanInterface;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
@@ -28,13 +30,13 @@ public class ListeKanbanResource {
     final static String ADMIN_ROLE = "admin";
     final static String USER_ROLE = "kunde";
     @Inject
-    ListeKanbanCatalog listeKanbanCatalog;
+    ListeKanbanInterface listeKanbanInterface;
 
     @Inject
     SingleBoardWebsocket singleBoardWebsocket;
 
     @Inject
-    BoardKanbanCatalog boardKanbanCatalog;
+    BoardKanbanInterface boardKanbanInterface;
 
     @Inject
     ElementKanbanInterface elementKanbanInterface;
@@ -47,8 +49,8 @@ public class ListeKanbanResource {
     @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public TemplateInstance getListsFromBoard(@PathParam("id") long kanbanId) {
-        return singleBoard_view.data("listeKanbans", boardKanbanCatalog.getKanbanBoardById(kanbanId).kanbanLists,
-                "boardTitel", boardKanbanCatalog.getKanbanBoardById(kanbanId));
+        return singleBoard_view.data("listeKanbans", boardKanbanInterface.getKanbanBoardById(kanbanId).kanbanLists,
+                "boardTitel", boardKanbanInterface.getKanbanBoardById(kanbanId));
     }
 
     @GET
@@ -86,7 +88,7 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/PostForList")
     public Response createNewListElement(PostListeDTO postListeDTO) {
-        singleBoardWebsocket.listeKanbanCreate(boardKanbanCatalog.addListToBoard(postListeDTO.boardId, postListeDTO.titel,postListeDTO.color));
+        singleBoardWebsocket.listeKanbanCreate(boardKanbanInterface.addListToBoard(postListeDTO.boardId, postListeDTO.titel,postListeDTO.color));
         return Response.ok().build();
     }
 
@@ -97,7 +99,7 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/listeDelete")
     public Response deleteListe(DeleteListeDTO deleteListeDTO) {
-        long id = listeKanbanCatalog.deleteListeKanbanById(deleteListeDTO.listeId, deleteListeDTO.boardId);
+        long id = listeKanbanInterface.deleteListeKanbanById(deleteListeDTO.listeId, deleteListeDTO.boardId);
         if (0 < id) {
             singleBoardWebsocket.listeKanbanDelete(deleteListeDTO);
             return Response.ok().build();
@@ -124,7 +126,7 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/changePos")
     public Response elementChangePos(ElementChangePosDTO elementChangePosDTO) {
-        singleBoardWebsocket.changeElementPos(listeKanbanCatalog.moveFromListToList(elementChangePosDTO.listeId, elementChangePosDTO.elementId));
+        singleBoardWebsocket.changeElementPos(listeKanbanInterface.moveFromListToList(elementChangePosDTO.listeId, elementChangePosDTO.elementId));
         return Response.ok().build();
     }
 
@@ -136,7 +138,7 @@ public class ListeKanbanResource {
     @Path("/setColor")
     public Response setColor(ColorDTO colorDTO){
         if(colorDTO != null){
-            listeKanbanCatalog.setColorFromList(colorDTO.listeId,colorDTO.color);
+            listeKanbanInterface.setColorFromList(colorDTO.listeId,colorDTO.color);
             singleBoardWebsocket.setColor(colorDTO);
             return Response.accepted().build();
         }

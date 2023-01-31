@@ -1,9 +1,8 @@
 package hsos.vts.boundary.view;
 
-import hsos.vts.boundary.acl.PostListeDTO;
 import hsos.vts.boundary.websockets.AllBoardsWebsocket;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
-import hsos.vts.entity.BoardKanbanCatalog;
+import hsos.vts.control.boardKanban.BoardKanbanInterface;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
@@ -23,7 +22,7 @@ public class BoardKanbanResource {
     final static String ADMIN_ROLE = "admin";
     final static String USER_ROLE = "kunde";
     @Inject
-    BoardKanbanCatalog boardKanbanCatalog;
+    BoardKanbanInterface boardKanbanInterface;
 
     @Inject
     AllBoardsWebsocket allBoardsWebsocket;
@@ -39,7 +38,7 @@ public class BoardKanbanResource {
     @Transactional
     public TemplateInstance getBoardKanbans(){
 
-        return allBoards_view.data("boards", boardKanbanCatalog.getAllKanbanBoards());
+        return allBoards_view.data("boards", boardKanbanInterface.getAllKanbanBoards());
     }
     @POST
     @Transactional
@@ -48,7 +47,7 @@ public class BoardKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewBoardKanban(String titel){
         System.out.println(titel);
-        allBoardsWebsocket.kanbanBoardCreated(boardKanbanCatalog.createBoard(titel));
+        allBoardsWebsocket.kanbanBoardCreated(boardKanbanInterface.createBoard(titel));
         return Response.ok().build();
     }
 
@@ -58,7 +57,7 @@ public class BoardKanbanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteBoard(long boardId){
-        allBoardsWebsocket.kanbanBoardDelete(boardKanbanCatalog.deleteKanbanBoardById(boardId));
+        allBoardsWebsocket.kanbanBoardDelete(boardKanbanInterface.deleteKanbanBoardById(boardId));
         return Response.ok().build();
     }
 }

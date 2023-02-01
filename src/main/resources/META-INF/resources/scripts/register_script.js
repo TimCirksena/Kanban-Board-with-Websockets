@@ -7,6 +7,9 @@ function registerKunde() {
     obj.password = password.value;
 
     console.log(obj);
+    username.value = "";
+    password.value = "";
+
 
     fetch("/register", {
         method: "POST",

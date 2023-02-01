@@ -23,7 +23,6 @@ public class AllBoardsWebsocket {
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);
-
     }
 
     @OnMessage

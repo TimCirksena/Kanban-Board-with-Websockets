@@ -17,7 +17,7 @@ public class Main {
         System.out.println("Present Project Directory : " + System.getProperty("user.dir"));
         //Path databaseFiles = Paths.get(System.getProperty("user.dir")+ "\\databaseFiles");
         try {
-            pg = EmbeddedPostgres.builder().setPort(6976).start();
+            pg = EmbeddedPostgres.builder().setPort(6977).start();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

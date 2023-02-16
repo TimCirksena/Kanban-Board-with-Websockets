@@ -93,6 +93,7 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-security-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-elytron-security-jdbc</artifactId>
@@ -135,7 +136,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
                 <configuration>
-                    <compilerArgs>
+                    <compilerArgs>./mvnw quarkus:dev
                         <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>

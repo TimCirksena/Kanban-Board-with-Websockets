@@ -26,7 +26,7 @@ document.getElementById("add-button").addEventListener("click", function (event)
 
     var jsonString = JSON.stringify(obj);
     console.log(jsonString);
-    var request = new Request("http://localhost:8080/kanban/board/PostForList", {
+    var request = new Request("http://"+ location.hostname +":8080/kanban/board/PostForList", {
         method: "POST",
         body: jsonString,
         headers: {"Content-Type": "application/json"}
@@ -73,7 +73,7 @@ function changeElementPos(listeId, elementId) {
         });
 }
 
-var socket = new WebSocket("ws://localhost:8080/kanban/board");
+var socket = new WebSocket("ws://"+ location.hostname +":8080/kanban/board");
 socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);
@@ -140,7 +140,7 @@ function deleteListe(listeId, boardId) {
     obj.boardId = boardId;
     var jsonString = JSON.stringify(obj);
 
-    var request = new Request("http://localhost:8080/kanban/board/listeDelete", {
+    var request = new Request("http://"+ location.hostname +":8080/kanban/board/listeDelete", {
         method: "DELETE",
         body: jsonString,
         headers: {"Content-Type": "application/json"}
@@ -168,7 +168,7 @@ function deleteElement(elementId) {
 
     var jsonString = JSON.stringify(obj);
 
-    var request = new Request("http://localhost:8080/kanban/create/delete", {
+    var request = new Request("http://"+ location.hostname +":8080/kanban/create/delete", {
         method: "DELETE",
         body: jsonString,
         headers: {"Content-Type": "application/json"}

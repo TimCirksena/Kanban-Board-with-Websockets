@@ -5,8 +5,9 @@ function logout() {
     window.location.href = "/";
 }
 
+console.log(location.hostname);
 //https://stackoverflow.com/questions/10593013/delete-cookie-by-name
-//falls cookies nicht richtig gelöscht werden
+// //falls cookies nicht richtig gelöscht werden
 //document.cookie = LOGGED_COOKIE +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
 function createKanbanBoard(titel, boardId) {
@@ -53,7 +54,7 @@ function createKanbanBoard(titel, boardId) {
     cardLink2.innerHTML = "Zum Kanbanboard";
     cardLink2.addEventListener("click", function (e) {
         e.preventDefault();
-        window.location.href = "http://localhost:8080/kanban/board/" + boardId;
+        window.location.href = "http://"+ location.hostname +":8080/kanban/board/" + boardId;
     });
     cardBody.appendChild(cardLink2);
 
@@ -61,7 +62,7 @@ function createKanbanBoard(titel, boardId) {
     existingDiv.appendChild(card);
 }
 
-var socket = new WebSocket("ws://localhost:8080/kanban");
+var socket = new WebSocket("ws://" + location.hostname +":8080/kanban");
 socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);
@@ -74,7 +75,7 @@ socket.onmessage = function (event) {
 };
 
 function deleteKanban(boardId) {
-    var request = new Request("http://localhost:8080/kanban", {
+    var request = new Request("http://"+ location.hostname +":8080/kanban", {
         method: "DELETE",
         body: boardId,
         headers: {"Content-Type": "application/json"}
@@ -102,7 +103,7 @@ document.getElementById("submit-kanban").addEventListener("click", function (eve
     var kanbanBoardTitel = inputField.value;
 
     // neues Request object
-    var request = new Request("http://localhost:8080/kanban", {
+    var request = new Request("http://"+ location.hostname +":8080/kanban", {
         method: "POST",
         body: kanbanBoardTitel,
         headers: {"Content-Type": "application/json"}

@@ -1,18 +1,19 @@
 let dragged;
 var modalElement = document.getElementById("modalElement");
-// Get the <span> element that closes the modal
 var close_modal_element = document.getElementsByClassName("close-modal-element")[0];
+
+// Back button Link auf den Current Host stellen
+document.getElementById("backButton").href = location.protocol + '//' + location.host + "/kanban";
+
 modalAddListe();
-// When the user clicks on <span> (x), close the modal
 close_modal_element.onclick = function () {
     modalElement.style.display = "none";
 }
-// Get the form element
 var create_element_form = document.getElementById("modal-element-form");
 
 /** Erstellt eine neue Liste*/
 document.getElementById("add-button").addEventListener("click", function (event) {
-    event.preventDefault(); // prevent the form from submitting
+    event.preventDefault(); // um zu verhindern das Submittet wird
 
     var inputField = document.getElementById("input-field");
     var listKanbanTitel = inputField.value;
@@ -199,7 +200,6 @@ function elementEditFromWebsockt(message) {
 
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
 function createKanbanList(titel, listeId, colorFromDB) {
-    // Create new dropzone element
     var outerDiv = document.createElement("div");
     outerDiv.classList.add("listContainerDiv");
     outerDiv.id = "outerListe" + listeId;
@@ -208,18 +208,18 @@ function createKanbanList(titel, listeId, colorFromDB) {
     newListKanbanDiv.setAttribute("id", "color-picker" + listeId);
     newListKanbanDiv.id = "liste" + listeId;
 
-    // Create new h2 element for the title
+    // Titel element ersteleln
     var newTitle = document.createElement("h2");
     newTitle.classList.add("list-title");
     newTitle.classList.add("title");
     newTitle.innerHTML = titel;
 
-    // Create new label for color picker
+    // label für colorpicker erstellen
     var colorPickerLabel = document.createElement("label");
     colorPickerLabel.setAttribute("for", "color-picker");
     colorPickerLabel.innerHTML = "Background color: ";
 
-    // Create delete button
+    // Delete button erstellen
     var deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-kanban");
     deleteButton.id = "deleteListe" + listeId;
@@ -230,7 +230,7 @@ function createKanbanList(titel, listeId, colorFromDB) {
     });
     outerDiv.appendChild(deleteButton);
 
-    // Create new color picker input
+    // Input für color picker erstellen
     var colorPickerInput = document.createElement("input");
     colorPickerInput.setAttribute("type", "color");
     colorPickerInput.setAttribute("id", "color-picker" + listeId);
@@ -257,7 +257,7 @@ function createKanbanList(titel, listeId, colorFromDB) {
     eButtonDiv.classList.add("element-button-div")
     eButtonDiv.appendChild(addElementButton);
 
-    // Append elements to new dropzone element
+    //alle elemente an div anhängen
 
     outerDiv.appendChild(newTitle);
     //newListKanbanDiv.appendChild(eButtonDiv);
@@ -269,29 +269,30 @@ function createKanbanList(titel, listeId, colorFromDB) {
     outerDiv.style.backgroundColor = colorFromDB;
     newListKanbanDiv.style.backgroundColor = colorFromDB;
 
-    // Append new dropzone element to boardKanban div
+    // neue Liste an Dokument anhängen
     document.getElementById("boardKanban").appendChild(outerDiv);
 
     newListKanbanDiv.addEventListener("dragover", (event) => {
-        // prevent default to allow drop
+
         event.preventDefault();
     }, false);
     newListKanbanDiv.addEventListener("dragenter", (event) => {
-        // highlight potential drop target when the draggable element enters it
+        // wenn man mit einem Element über eine Liste draggt, dann wird es transparenter
         if (event.target.classList.contains("dropzone")) {
             event.target.classList.add("dragover");
         }
     });
     newListKanbanDiv.addEventListener("dragleave", (event) => {
-        // reset background of potential drop target when the draggable element leaves it
+        // transparenz aufheben
         if (event.target.classList.contains("dropzone")) {
             event.target.classList.remove("dragover");
         }
     });
     newListKanbanDiv.addEventListener("drop", (event) => {
-        // prevent default action (open as link for some elements)
+        // um ungewollte effekte zu verhindern
         event.preventDefault();
-        // move dragged element to the selected drop target
+        // in der webseite die position des Elements verändern und eine Request an den Server schicken
+        // damit es auch dor geändert wird
         if (event.target.classList.contains("dropzone")) {
             event.target.classList.remove("dragover");
             event.target.appendChild(dragged);
@@ -349,21 +350,17 @@ function addElementToKanbanList(listeId, elementId, titel) {
 
 
     newCard.addEventListener("dragstart", (event) => {
-        // store a ref. on the dragged elem
         dragged = event.target;
-        //ElementId wird für das tauschen geholt
-        //elementId = event.target.id;
-        // make it half transparent
-        event.dataTransfer.setData('text/plain', elementId);
 
+        event.dataTransfer.setData('text/plain', elementId);
+        //transparenz hinzufügen
         event.target.classList.add("dragging");
     });
     newCard.addEventListener("dragend", (event) => {
-        // reset the transparency
+        //transparenz entfernen
         event.target.classList.remove("dragging");
     });
 
-    // Create new card title element
     var newCardTitle = document.createElement("p");
     newCardTitle.classList.add("element-title");
     newCardTitle.innerHTML = titel;
@@ -376,19 +373,17 @@ function addElementToKanbanList(listeId, elementId, titel) {
         openEditElementModal(elementId);
     })
 
-    // Append title to card
     newCard.appendChild(deleteElementButton);
     newCard.appendChild(newCardTitle);
     newCard.appendChild(editLinkIcon);
 
-    // Append card to parent div
     parentDiv.appendChild(newCard);
 }
 
 /** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
  *  Modal: Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen */
 function openEditElementModal(elementId) {
-    // When the user clicks the button, open the modal
+    // Modal anzeigen
     modalElement.style.display = "block";
 
     /** Hier wird <b>GETTET</b>
@@ -418,7 +413,6 @@ function openEditElementModal(elementId) {
     /** Hier wird <b>gepatch</b> */
     console.log("Das ist die GET id " + elementId);
     elClone.addEventListener("click", (e) => {
-        // Get form elements
         const titleInput = document.getElementById("title-input");
         const erstellerInput = document.getElementById("ersteller-input");
         const descriptionInput = document.getElementById("description-input");
@@ -463,7 +457,6 @@ function openEditElementModal(elementId) {
 /** Modal: Öffnet ein Modal welches dazu dient ein neues Element anzulegen */
 function openAddElementModal(listeId) {
 
-// When the user clicks the button, open the modal
     modalElement.style.display = "block";
 
     fetch("/kanban/board/userName", {
@@ -481,7 +474,6 @@ function openAddElementModal(listeId) {
             console.log(error)
         });
 
-    // Get form elements
     const titleInput = document.getElementById("title-input");
     const erstellerInput = document.getElementById("ersteller-input");
     const descriptionInput = document.getElementById("description-input");
@@ -498,7 +490,7 @@ function openAddElementModal(listeId) {
         createNewElement(listeId, titleInput.value, erstellerInput.value, descriptionInput.value);
     });
 
-    // When the user clicks anywhere outside of the modal, close it
+    // Modal schließen wenn ausserhalb des Modals gedrückt wird
     window.onclick = function (event) {
         if (event.target == modalElement) {
             modalElement.style.display = "none";
@@ -512,33 +504,26 @@ function openAddElementModal(listeId) {
 function modalAddListe() {
     var modal = document.getElementById("modal");
     console.log(modal);
-// Get the button that opens the modal
     var btn = document.getElementById("open-modal-btn");
     console.log(btn);
-// Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close-modal")[0];
 
-// When the user clicks the button, open the modal
     btn.onclick = function () {
         modal.style.display = "block";
         //Für den autofocus, damit instant geschrieben werden kann
         document.getElementById("input-field").focus();
     }
-
-// When the user clicks on <span> (x), close the modal
+    // wenn auf schliessen gedrückt wird, dann modal schliessen
     span.onclick = function () {
         modal.style.display = "none";
     }
+    // Modal schließen wenn ausserhalb des Modals gedrückt wird
 
-// When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
-// Get the form element
-    var form = document.getElementById("modal-form");
-
 }
 
 

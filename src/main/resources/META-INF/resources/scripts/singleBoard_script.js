@@ -78,7 +78,12 @@ var socket = new WebSocket("ws://"+ location.host +"/kanban/board");
 socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);
-    if (message.type === "liste_kanban_created") {
+    var currentUrl = window.location.href;
+    var boardId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    //console.log(parseInt(boardId));
+    //console.log(message.boardId);
+    if (message.type === "liste_kanban_created" && message.boardId === parseInt(boardId)) {
+
         createKanbanList(message.titel, message.listeId, message.color);
     }
     if (message.type === "liste_kanban_deleted") {

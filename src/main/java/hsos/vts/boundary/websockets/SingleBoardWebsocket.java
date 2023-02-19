@@ -19,13 +19,12 @@ import java.util.List;
 public class SingleBoardWebsocket {
 
     List<Session> sessions = new ArrayList<>();
-    @Inject
-    BoardKanbanCatalog boardKanbanCatalog;
 
-    public void listeKanbanCreate(ListeKanbanDTO listeKanbanDTO){
+    public void listeKanbanCreate(ListeKanbanDTO listeKanbanDTO, Long boardId){
 
         JsonObject typeHelper = new JsonObject();
         typeHelper.put("type", "liste_kanban_created");
+        typeHelper.put("boardId", boardId);
         typeHelper.put("listeId", listeKanbanDTO.listeId);
         typeHelper.put("titel", listeKanbanDTO.titel);
         typeHelper.put("color", listeKanbanDTO.color);

@@ -86,7 +86,7 @@ public class ListeKanbanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/PostForList")
     public Response createNewListElement(PostListeDTO postListeDTO) {
-        singleBoardWebsocket.listeKanbanCreate(boardKanbanInterface.addListToBoard(postListeDTO.boardId, postListeDTO.titel,postListeDTO.color));
+        singleBoardWebsocket.listeKanbanCreate(boardKanbanInterface.addListToBoard(postListeDTO.boardId, postListeDTO.titel,postListeDTO.color), postListeDTO.boardId);
         return Response.ok().build();
     }
 

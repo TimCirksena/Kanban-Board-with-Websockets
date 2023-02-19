@@ -18,7 +18,7 @@ document.getElementById("submit-kanban").addEventListener("click", function (eve
     var kanbanBoardTitel = inputField.value;
 
     // neues Request object
-    var request = new Request("http://"+ location.host +":8080/kanban", {
+    var request = new Request("http://"+ location.host +"/kanban", {
         method: "POST",
         body: kanbanBoardTitel,
         headers: {"Content-Type": "application/json"}
@@ -41,7 +41,7 @@ document.getElementById("submit-kanban").addEventListener("click", function (eve
     modal.style.display = "none";
 });
 
-var socket = new WebSocket("ws://" + location.hostname +":8080/kanban");
+var socket = new WebSocket("ws://" + location.host +"/kanban");
 socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     console.log(message);

@@ -133,7 +133,7 @@ function createNewElement(listeId, titleInput, erstellerInput, descriptionInput)
         });
 }
 
-/** Löscht eine bestehende Liste */
+/** Löscht eine bestehende Liste per Websocket */
 function deleteListe(listeId, boardId) {
 
     var obj = new Object();
@@ -162,6 +162,7 @@ function deleteListe(listeId, boardId) {
         });
 }
 
+/** Löscht ein bestehendes Element per Websocket */
 function deleteElement(elementId) {
 
     var obj = new Object();
@@ -305,6 +306,7 @@ function createKanbanList(titel, listeId, colorFromDB) {
     });
     return newListKanbanDiv;
 }
+/** Ändert die Farbe einer Liste per Websocket */
 function setColor(listeId, color){
 
     var obj = new Object();
@@ -322,11 +324,11 @@ function setColor(listeId, color){
         if (response.ok) {
             console.log("FARBE WURDE GELAUNCHT");
         } else {
-            alert("Fehler bei erstellen des Elements" + response.status);
+            alert("Fehler beim ändern der Farbe" + response.status);
         }
     })
         .catch(function (error) {
-            alert("Fehler bei erstellen des Elements: " + error);
+            alert("Fehler beim ändern der Farbe: " + error);
         });
 }
 /** Websocket: Methode die zur aktualisierung für die Websockets dient*/
@@ -381,7 +383,7 @@ function addElementToKanbanList(listeId, elementId, titel) {
 }
 
 /** QUELLE: https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
- *  Modal: Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen */
+ *  Modal: Öffnet ein Modal welches dazu dient ein bestehendes Element zu patchen per Websocket*/
 function openEditElementModal(elementId) {
     // Modal anzeigen
     modalElement.style.display = "block";

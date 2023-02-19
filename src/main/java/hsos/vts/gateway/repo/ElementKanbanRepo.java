@@ -1,7 +1,6 @@
 package hsos.vts.gateway.repo;
 
 import hsos.vts.boundary.acl.FullElementDTO;
-import hsos.vts.boundary.acl.KommentarDTO;
 import hsos.vts.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,28 +32,6 @@ public class ElementKanbanRepo implements ElementKanbanCatalog {
             elementList.add(new FullElementDTO(element));
         }
         return elementList;
-    }
-
-    @Override
-    public KommentarDTO getKommentarById(long kommentarId) {
-        Kommentar kommentar = Kommentar.findById(kommentarId);
-        KommentarDTO kommentarDTO = new KommentarDTO(kommentar);
-        return kommentarDTO;
-    }
-
-    @Override
-    public ArrayList<KommentarDTO> getKommentarFromKanbanElement(long elementId) {
-        ElementKanban elementKanban = ElementKanban.findById(elementId);
-        ArrayList<KommentarDTO> kommentarDTOs = new ArrayList<>();
-        if (elementKanban != null) {
-            for (Kommentar kommentar : elementKanban.getKommentareList()) {
-                // Create a new KommentarDTO instance
-                KommentarDTO kommentarDTO = new KommentarDTO(kommentar);
-                kommentarDTOs.add(kommentarDTO);
-            }
-            return kommentarDTOs;
-        }
-        return null;
     }
 
     @Override

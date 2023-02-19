@@ -1,9 +1,7 @@
 package hsos.vts.boundary.rest;
 
 import hsos.vts.boundary.acl.FullElementDTO;
-import hsos.vts.boundary.acl.KommentarDTO;
-import hsos.vts.entity.ElementKanban;
-import hsos.vts.entity.ElementKanbanCatalog;
+import hsos.vts.control.elementKanban.ElementKanbanInterface;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,7 +9,6 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Path("/element")
@@ -20,39 +17,15 @@ import java.util.Optional;
 public class ElementKanbanResource {
 
     @Inject
-    ElementKanbanCatalog elementKanbanCatalog;
+    ElementKanbanInterface elementKanbanInterface;
 
     @GET
     @Transactional
     @Path("/elements/{id}")
     public Response getElementById(@PathParam("id") long elementId) {
-        Optional<FullElementDTO> element = elementKanbanCatalog.getElementById(elementId);
+        Optional<FullElementDTO> element = elementKanbanInterface.getElementById(elementId);
         if (element.isPresent()) {
             return Response.ok(element.get()).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
-
-    @GET
-    @Transactional
-    @Path("/comments/{id}")
-    public Response getCommentById(@PathParam("id") long commentId) {
-        KommentarDTO comment = elementKanbanCatalog.getKommentarById(commentId);
-        if (comment != null) {
-            return Response.ok(comment).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
-
-    @GET
-    @Transactional
-    @Path("/elements/{id}/comments")
-    public Response getCommentsForElement(@PathParam("id") long elementId) {
-        ArrayList<KommentarDTO> comments = elementKanbanCatalog.getKommentarFromKanbanElement(elementId);
-        if (comments != null) {
-            return Response.ok(comments).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -63,7 +36,7 @@ public class ElementKanbanResource {
     @Transactional
     @Path("/elements/{id}/title")
     public Response updateElementTitle(@PathParam("id") long elementId, String titel) {
-        FullElementDTO updatedElement = elementKanbanCatalog.updateTitel(elementId, titel);
+        FullElementDTO updatedElement = elementKanbanInterface.updateTitel(elementId, titel);
         if (updatedElement != null) {
             return Response.ok(updatedElement).build();
         } else {
@@ -74,7 +47,7 @@ public class ElementKanbanResource {
     @Transactional
     @Path("/elements/{id}/description")
     public Response updateElementDescription(@PathParam("id") long elementId, String beschreibung) {
-        FullElementDTO updatedElement = elementKanbanCatalog.updateBeschreibung(elementId, beschreibung);
+        FullElementDTO updatedElement = elementKanbanInterface.updateBeschreibung(elementId, beschreibung);
         if (updatedElement != null) {
             return Response.ok(updatedElement).build();
         } else {
@@ -85,14 +58,14 @@ public class ElementKanbanResource {
     @Transactional
     @Path("/elements")
     public Response addElement(FullElementDTO fullElementDTO) {
-        return Response.ok( elementKanbanCatalog.addElement(fullElementDTO.ersteller, fullElementDTO.titel, fullElementDTO.beschreibung)).build();
+        return Response.ok( elementKanbanInterface.addElement(fullElementDTO.ersteller, fullElementDTO.titel, fullElementDTO.beschreibung)).build();
     }
 
     @GET
     @Transactional
     @Path("/elements")
     public Response getElements() {
-        List<FullElementDTO> elementList = elementKanbanCatalog.getAllElements();
+        List<FullElementDTO> elementList = elementKanbanInterface.getAllElements();
         return Response.ok(elementList).build();
     }
 }

@@ -1,14 +1,11 @@
 package hsos.vts.boundary.view;
 import hsos.vts.boundary.acl.DeleteElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
-import hsos.vts.boundary.acl.PostListeDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
-import hsos.vts.control.ElementKanbanInterface;
+import hsos.vts.control.elementKanban.ElementKanbanInterface;
 import hsos.vts.entity.BoardKanbanCatalog;
-import hsos.vts.entity.ElementKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;

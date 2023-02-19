@@ -1,4 +1,4 @@
-package hsos.vts.control;
+package hsos.vts.control.kundeKanban;
 
 import hsos.vts.boundary.acl.logindto.ReturnKundeDTO;
 

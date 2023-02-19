@@ -12,14 +12,12 @@ public class FullElementDTO {
     public String titel;
     public String beschreibung;
     public String ersteller;
-    public List<KommentarDTO> kommentare;
 
     public FullElementDTO(ElementKanban elementKanban) {
         this.elementId = elementKanban.getElementId();
         this.ersteller = elementKanban.getErsteller();
         this.titel = elementKanban.getTitel();
         this.beschreibung = elementKanban.getBeschreibung();
-        this.kommentare = elementKanban.getKommentareList().stream().map(KommentarDTO::new).collect(Collectors.toList());
         /**
          * Alternativ Lösung:
          this.kommentare = new ArrayList<>();
@@ -34,7 +32,6 @@ public class FullElementDTO {
         this.titel = titel;
         this.beschreibung = beschreibung;
         this.ersteller = ersteller;
-        this.kommentare = new ArrayList<>();
     }
 
     public FullElementDTO() {

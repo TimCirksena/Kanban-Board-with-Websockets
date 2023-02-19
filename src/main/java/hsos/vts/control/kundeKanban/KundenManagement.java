@@ -1,13 +1,14 @@
-package hsos.vts.control;
+package hsos.vts.control.kundeKanban;
 
 import hsos.vts.boundary.acl.logindto.ReturnKundeDTO;
+import hsos.vts.control.kundeKanban.KundenInterface;
 import hsos.vts.entity.KundenCatalog;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
 @ApplicationScoped
-public class KundenManagement implements KundenInterface{
+public class KundenManagement implements KundenInterface {
     @Inject
     KundenCatalog kundenCatalog;
 

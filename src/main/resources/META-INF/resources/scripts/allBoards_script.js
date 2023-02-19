@@ -33,13 +33,13 @@ function createKanbanBoard(titel, boardId) {
     cardBody.appendChild(deleteButton);
 
     // Create card link
-    var cardLink1 = document.createElement("a");
-    cardLink1.classList.add("card-link");
-    cardLink1.href = "#";
-    cardLink1.innerHTML = "Another link";
+    //var cardLink1 = document.createElement("a");
+    //cardLink1.classList.add("card-link");
+    //cardLink1.href = "#";
+    //cardLink1.innerHTML = "Another link";
     var paddingLeft = document.createElement("div");
     paddingLeft.classList.add("padding-left-xl");
-    paddingLeft.appendChild(cardLink1);
+    //paddingLeft.appendChild(cardLink1);
     cardBody.appendChild(paddingLeft);
 
     // Create card title

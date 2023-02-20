@@ -1,7 +1,7 @@
 package hsos.vts.boundary.rest;
 
 import hsos.vts.boundary.acl.logindto.PostKundeDTO;
-import hsos.vts.entity.KundenCatalog;
+import hsos.vts.control.kundeKanban.KundenInterface;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,17 +17,17 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class RegisterResource {
     @Inject
-    KundenCatalog kundenCatalog;
+    KundenInterface kundenInterface;
 
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerKunde(PostKundeDTO postKundeDTO){
-        Long bestehendeKundenId = kundenCatalog.getKundenIdByUsername(postKundeDTO.username);
+        Long bestehendeKundenId = kundenInterface.getKundenIdByUsername(postKundeDTO.username);
         //wenn kunde nicht existiert
         if(bestehendeKundenId == -1){
-            return Response.ok(kundenCatalog.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
+            return Response.ok(kundenInterface.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
         } else {
             return Response.status(422).build();
         }

@@ -72,7 +72,6 @@ public class ListeKanbanViewResource {
     @Path("/userName")
     public Response getUserName(@Context SecurityContext securityContext){
         String username = securityContext.getUserPrincipal().getName();
-        System.out.println(username);
 
         JsonObject typeHelper = new JsonObject();
         typeHelper.put("username", username);
@@ -112,7 +111,6 @@ public class ListeKanbanViewResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateElement(FullElementDTO fullElementDTO) {
-        System.out.println("!!! " + fullElementDTO.elementId);
         singleBoardWebsocket.updateElement(elementKanbanInterface.updateElement(fullElementDTO));
         return Response.ok().build();
     }

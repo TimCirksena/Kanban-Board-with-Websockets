@@ -41,7 +41,6 @@ public class AllBoardsWebsocket {
             stubBoardDTO.boardId = 1L;
             Jsonb jsonb = JsonbBuilder.create();
             String json = jsonb.toJson(stubBoardDTO);
-            System.out.println(json);
             //Darf kein Obj sein weil er das nicht richtig checkt
             for (Session session : sessions) {
                 session.getAsyncRemote().sendText(json);
@@ -64,7 +63,6 @@ public class AllBoardsWebsocket {
         JsonObject typeHelper = new JsonObject(json);
         typeHelper.put("type", "kanban_board_created");
         String finalJson = typeHelper.toString();
-        System.out.println(finalJson);
         //Darf kein Obj sein weil er das nicht richtig checkt
         for (Session session : sessions) {
             session.getAsyncRemote().sendText(finalJson);

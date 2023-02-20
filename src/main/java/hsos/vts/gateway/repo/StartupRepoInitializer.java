@@ -15,7 +15,7 @@ import java.util.List;
 
 @ApplicationScoped
 public class StartupRepoInitializer {
-
+    //sack
     //idee: das hier aufrufen können um die datenbank mit sachen zu befüllen von resource aus
     @Inject
     KundeRepo kundeRepo;

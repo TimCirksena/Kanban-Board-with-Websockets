@@ -3,6 +3,7 @@ import hsos.vts.boundary.acl.DeleteElementDTO;
 import hsos.vts.boundary.acl.PostElementDTO;
 import hsos.vts.boundary.websockets.SingleBoardWebsocket;
 import hsos.vts.control.elementKanban.ElementKanbanInterface;
+import hsos.vts.control.listeKanban.ListeKanbanInterface;
 import hsos.vts.entity.BoardKanbanCatalog;
 import hsos.vts.entity.ListeKanbanCatalog;
 import io.quarkus.qute.Template;
@@ -19,23 +20,17 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ElementResource {
+public class ElementViewResource {
 
     final static String ADMIN_ROLE = "admin";
     final static String USER_ROLE = "kunde";
     @Inject
     SingleBoardWebsocket singleBoardWebsocket;
     @Inject
-    ListeKanbanCatalog listeKanbanCatalog;
-
-    @Inject
-    BoardKanbanCatalog boardKanbanCatalog;
+    ListeKanbanInterface listeKanbanInterface;
 
     @Inject
     ElementKanbanInterface elementKanbanInterface;
-
-    @Inject
-    Template elementCreate_view;
 
 /*
     @GET
@@ -51,7 +46,7 @@ public class ElementResource {
     @RolesAllowed({ADMIN_ROLE,USER_ROLE})
     @Transactional
     public Response addElementToList(PostElementDTO postElementDTO){
-        singleBoardWebsocket.addElementToList(listeKanbanCatalog.addKanbanElement(postElementDTO));
+        singleBoardWebsocket.addElementToList(listeKanbanInterface.addKanbanElement(postElementDTO));
         return Response.ok().build();
     }
     @DELETE

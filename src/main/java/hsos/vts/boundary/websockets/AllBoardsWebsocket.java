@@ -17,8 +17,6 @@ import java.util.List;
 @ApplicationScoped
 public class AllBoardsWebsocket {
     List<Session> sessions = new ArrayList<>();
-    @Inject
-    BoardKanbanCatalog boardKanbanCatalog;
 
     @OnOpen
     public void onOpen(Session session) {
@@ -87,28 +85,5 @@ public class AllBoardsWebsocket {
             System.out.println("Fehler im Websocket bei delete");
         }
     }
-
-    /*
-        @OnMessage
-        public void onMessage(String message) {
-            System.out.println("Received message: " + message);
-            BoardKanban boardKanban = new BoardKanban();
-            boardKanban.setTitel("kaka");
-            boardKanban.id = 1L;
-            sessions.get("hello").getAsyncRemote().sendObject(boardKanban);
-        }
-    */
-    /*
-    private void broadcast(String message) {
-        sessions.values().forEach(s -> {
-            s.getAsyncRemote().sendObject(message, result -> {
-                if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
-                }
-            });
-        });
-    }
-     */
-
 }
 

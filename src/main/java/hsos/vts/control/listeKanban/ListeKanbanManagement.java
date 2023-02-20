@@ -14,7 +14,6 @@ public class ListeKanbanManagement implements ListeKanbanInterface{
 
     @Inject
     ListeKanbanCatalog listeKanbanCatalog;
-    BoardKanbanCatalog boardKanbanCatalog;
 
     @Override
     public List<StubElementDTO> getAllStubElementDTOInList(long listId) {

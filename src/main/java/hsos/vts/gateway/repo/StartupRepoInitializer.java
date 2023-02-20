@@ -17,7 +17,8 @@ import java.util.List;
 public class StartupRepoInitializer {
 
     //idee: das hier aufrufen können um die datenbank mit sachen zu befüllen von resource aus
-    @Inject KundeRepository kundeRepository;
+    @Inject
+    KundeRepo kundeRepo;
 
     @Transactional
     public void startupInit(@Observes StartupEvent evt){
@@ -30,8 +31,8 @@ public class StartupRepoInitializer {
     public void loadUsers() {
         // reset and load all test users
         Kunde.deleteAll();
-        kundeRepository.addKunde("admin", "admin", "admin");
-        kundeRepository.addKunde("user", "user", "kunde");
+        kundeRepo.addKunde("admin", "admin", "admin");
+        kundeRepo.addKunde("user", "user", "kunde");
     }
 
     private void deleteEverything(){

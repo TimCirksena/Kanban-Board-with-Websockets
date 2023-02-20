@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.APPLICATION_JSON)
-public class BoardKanbanResource {
+public class BoardKanbanViewResource {
     final static String ADMIN_ROLE = "admin";
     final static String USER_ROLE = "kunde";
     @Inject
@@ -26,9 +26,6 @@ public class BoardKanbanResource {
 
     @Inject
     AllBoardsWebsocket allBoardsWebsocket;
-
-    @Inject
-    SingleBoardWebsocket singleBoardWebsocket;
 
     @Inject
     Template allBoards_view;

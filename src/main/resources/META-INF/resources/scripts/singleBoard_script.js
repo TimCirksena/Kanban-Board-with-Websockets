@@ -50,8 +50,6 @@ document.getElementById("add-button").addEventListener("click", function (event)
 
 function changeElementPos(listeId, elementId) {
     var obj = new Object();
-    //var listeCutId = listeId.substring(listeId.lastIndexOf('e') + 1);
-    //var elementCutId = elementId.substring(elementId.lastIndexOf('t') + 1);
     obj.listeId = listeId;
     obj.elementId = elementId;
 

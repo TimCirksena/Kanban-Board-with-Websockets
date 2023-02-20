@@ -1,6 +1,5 @@
 package hsos.vts.gateway.repo;
 
-import hsos.vts.Adresse;
 import hsos.vts.boundary.acl.logindto.ReturnKundeDTO;
 import hsos.vts.entity.Kunde;
 import hsos.vts.entity.KundenCatalog;
@@ -15,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @ApplicationScoped
-public class KundeRepository implements KundenCatalog {
+public class KundeRepo implements KundenCatalog {
     @Transactional
     public void loadUsers(@Observes StartupEvent evt) {
         // reset and load all test users

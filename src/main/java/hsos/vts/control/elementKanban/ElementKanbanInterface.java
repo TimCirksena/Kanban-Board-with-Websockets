@@ -13,10 +13,10 @@ public interface ElementKanbanInterface {
 
     FullElementDTO addElement(String ersteller, String titel, String beschreibung);
 
-    public List<FullElementDTO> getAllElements();
+    List<FullElementDTO> getAllElements();
 
 
 
-    public FullElementDTO updateElement(FullElementDTO fullElementDTO);
+    FullElementDTO updateElement(FullElementDTO fullElementDTO);
 
 }

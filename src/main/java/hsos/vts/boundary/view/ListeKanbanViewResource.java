@@ -24,7 +24,7 @@ import javax.ws.rs.core.SecurityContext;
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ListeKanbanResource {
+public class ListeKanbanViewResource {
     final static String ADMIN_ROLE = "admin";
     final static String USER_ROLE = "kunde";
     @Inject
